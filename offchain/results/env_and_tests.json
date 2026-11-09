@@ -1,0 +1,28 @@
+{
+  "environment": {
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "logical_cpus": 1,
+    "python": "3.12.3",
+    "os": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39",
+    "library": "py_arkworks_bls12381 0.5.0",
+    "curve": "BLS12-381",
+    "delta_bits": 64
+  },
+  "tests": {
+    "valid_all_accept": true,
+    "single_invalid_rejected": {
+      "individual": true,
+      "naive": true,
+      "set": true,
+      "grouped": true
+    },
+    "cancellation_attack": {
+      "msg3_valid": false,
+      "naive_ACCEPTS": true,
+      "set_accepts": false,
+      "grouped_accepts": false
+    },
+    "fresh_randomness_per_signature": true,
+    "kgc_trace_ok": true
+  }
+}

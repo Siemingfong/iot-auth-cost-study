@@ -1,0 +1,13 @@
+{
+  "attack1_key_recovery": {
+    "PrK1_recovered": true,
+    "PrK2_recovered": true,
+    "forgery_accepted": true
+  },
+  "attack2_batch_cancellation": {
+    "msg3_valid": false,
+    "msg11_valid": false,
+    "naive_batch_accepts": true,
+    "small_exponent_batch_accepts": false
+  }
+}

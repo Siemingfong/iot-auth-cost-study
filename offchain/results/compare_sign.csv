@@ -1,0 +1,5 @@
+scheme,sign_ms,sig_bytes_per_msg
+K1,0.024,65
+R1,0.0256,64
+BLS,0.3996,48
+IBS,0.3982,96

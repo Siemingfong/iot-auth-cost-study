@@ -1,0 +1,84 @@
+% Figure 2: supply chain finance workflow as a sequence diagram. Compile: pdflatex fig2_workflow.tex
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{mathptmx}
+\usetikzlibrary{arrows.meta,calc}
+\definecolor{okblue}{HTML}{0072B2}
+\definecolor{okorange}{HTML}{E69F00}
+\definecolor{okgreen}{HTML}{009E73}
+\definecolor{okverm}{HTML}{D55E00}
+\begin{document}
+\begin{tikzpicture}[
+  font=\footnotesize, >={Stealth[length=4pt,width=3.5pt]},
+  actor/.style={draw, rounded corners=2pt, minimum width=31mm, minimum height=8mm, align=center, line width=0.5pt},
+  msg/.style={->, line width=0.6pt},
+  pay/.style={->, line width=0.6pt, densely dashed, okverm},
+  lab/.style={font=\scriptsize, above=1.2pt, inner sep=0.8pt, fill=white},
+  act/.style={draw, fill=white, minimum width=2.2mm, inner sep=0pt, line width=0.4pt},
+  stage/.style={font=\scriptsize\bfseries, align=center, anchor=center},
+  frame/.style={draw=black!55, line width=0.45pt},
+  ftag/.style={draw=black!55, fill=white, font=\scriptsize, inner sep=1.5pt, anchor=north west},
+]
+% lifeline x positions (cm)
+\def\xD{3.4} \def\xF{6.95} \def\xS{10.5} \def\xP{14.05}
+\def\top{0} \def\bot{-13.0}
+% ---------------------------------------------------------------- actors
+\node[actor, fill=okorange!15] (D) at (\xD,\top) {Distributor};
+\node[actor, fill=okblue!12]   (F) at (\xF,\top) {Financial institution};
+\node[actor, fill=okgreen!14]  (S) at (\xS,\top) {Smallholder\\[-1pt]{\scriptsize with IoP sensors}};
+\node[actor, fill=black!6]     (P) at (\xP,\top) {Platform\\[-1pt]{\scriptsize consortium chain + Ethereum}};
+\foreach \x in {\xD,\xF,\xS,\xP} \draw[black!45, line width=0.4pt, dash pattern=on 2pt off 1.5pt] (\x,\top-0.45) -- (\x,\bot);
+
+% helpers
+\newcommand{\m}[5][msg]{\draw[#1] (#2,#4) -- node[lab] {#5} (#3,#4);}           % message from x#2 to x#3 at y#4
+\newcommand{\self}[3]{\draw[msg] (#1+0.11,#2) -- ++(0.55,0) -- ++(0,-0.38) node[midway, right=1pt, font=\scriptsize, align=left] {#3} -- ++(-0.55,0);}
+
+% ---------------------------------------------------------------- 1. contract stage
+\def\y{-1.15}
+\m{\xS}{\xP}{\y}{register devices (KGC)}
+\self{\xP}{\y-0.35}{authenticate,\\ issue keys}
+\m{\xD}{\xS}{\y-1.35}{sign purchase contract (smart contract)}
+\m{\xS}{\xP}{\y-1.9}{anchor contract}
+\draw[frame] (0.15,\y+0.45) rectangle (17.35,\y-2.2);
+\node[stage] at (1.15,\y-0.85) {Contract\\stage};
+
+% ---------------------------------------------------------------- 2. loan stage
+\def\y{-3.95}
+\m{\xS}{\xF}{\y}{apply for loan}
+\m[msg, densely dotted]{\xF}{\xP}{\y-0.55}{check contract and verified history}
+\m{\xF}{\xS}{\y-1.1}{approve loan}
+\m[pay]{\xD}{\xF}{\y-1.65}{deposit}
+\draw[frame] (0.15,\y+0.45) rectangle (17.35,\y-1.95);
+\node[stage] at (1.15,\y-0.75) {Loan\\stage};
+
+% ---------------------------------------------------------------- 3. production loop
+\def\y{-6.55}
+\m{\xS}{\xP}{\y}{signed records of checkpoint $i$}
+\self{\xP}{\y-0.35}{verify and\\ anchor (T0--T2)}
+\m[msg, densely dotted]{\xF}{\xP}{\y-1.25}{check milestone $i$}
+\m[pay]{\xF}{\xS}{\y-1.8}{release payment for stage $i$}
+\draw[frame] (0.15,\y+0.45) rectangle (17.35,\y-2.1);
+\node[ftag] at (2.15,\y+0.45) {\textbf{loop} [each checkpoint $i$]};
+\node[stage] at (1.15,\y-0.85) {Production\\stage};
+
+% ---------------------------------------------------------------- 4. settlement (alt)
+\def\y{-9.5}
+\m[pay]{\xD}{\xF}{\y}{pay balance}
+\m[pay]{\xF}{\xS}{\y-0.55}{settle account (net of loan)}
+\draw[frame, dash pattern=on 3pt off 2pt] (2.15,\y-0.85) -- (17.2,\y-0.85);
+\m[pay]{\xS}{\xF}{\y-1.45}{repay instalments}
+\m[pay]{\xF}{\xD}{\y-2.0}{return deposit}
+\node[ftag] at (2.15,\y+0.3) {\textbf{alt}};
+\node[font=\scriptsize, anchor=north west, inner sep=1.5pt] at (2.15,\y-0.05) {[yield met]};
+\node[font=\scriptsize, anchor=north west, inner sep=1.5pt] at (2.25,\y-0.88) {[yield not met]};
+\draw[frame] (2.15,\y+0.3) rectangle (17.2,\y-2.3);
+\m{\xF}{\xP}{\y-2.95}{anchor settlement record (credit history)}
+\draw[frame] (0.15,\y+0.75) rectangle (17.35,\y-3.25);
+\node[stage] at (1.15,\y-1.25) {Settle-\\ment};
+
+% ---------------------------------------------------------------- legend
+\node[anchor=north east, font=\scriptsize, inner sep=1pt] at (17.35,\bot-0.05) {%
+\tikz[baseline=-0.6ex]\draw[msg] (0,0)--(6mm,0); message / data\quad
+\tikz[baseline=-0.6ex]\draw[msg, densely dotted] (0,0)--(6mm,0); query\quad
+\tikz[baseline=-0.6ex]\draw[pay] (0,0)--(6mm,0); payment};
+\end{tikzpicture}
+\end{document}

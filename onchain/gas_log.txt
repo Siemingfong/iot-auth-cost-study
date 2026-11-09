@@ -1,0 +1,15 @@
+max n under cap  B3 grouped small-exponent batch    ~701
+sweep n=200 m=  1 B2 small-exponent batch            5,725,686
+sweep n=200 m=  1 B3 grouped small-exponent batch    4,452,025
+sweep n=200 m=  5 B2 small-exponent batch            5,748,293
+sweep n=200 m=  5 B3 grouped small-exponent batch    4,501,328
+sweep n=200 m= 10 B2 small-exponent batch            5,773,465
+sweep n=200 m= 10 B3 grouped small-exponent batch    4,561,132
+sweep n=200 m= 50 B2 small-exponent batch            5,976,027
+sweep n=200 m= 50 B3 grouped small-exponent batch    5,036,221
+sweep n=200 m=200 B2 small-exponent batch            6,741,825
+sweep n=200 m=200 B3 grouped small-exponent batch    6,834,362
+anchor n=10 each=249,130 root=57,924
+anchor n=100 each=2,295,520 root=165,844
+anchor n=500 each=11,390,628 root=660,330
+written to results

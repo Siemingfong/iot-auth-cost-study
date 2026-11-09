@@ -1,0 +1,56 @@
+# Off-chain benchmarks (device signing, aggregator verification, MLAV-IBS primitives and batch
+# verification) on GitHub-hosted ARM64 and x86-64 runners, with the machine's specification recorded.
+# Runs only when started by hand.
+name: Off-chain benchmarks (ARM64 and x86-64)
+
+on:
+  workflow_dispatch:
+    inputs:
+      quick:
+        description: "Quick mode (smaller batch sizes, fewer repetitions; for testing the workflow)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04-arm, ubuntu-24.04]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: offchain
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the package versions used in the manuscript
+        run: pip install coincurve==21.0.0 cryptography==46.0.6 py_arkworks_bls12381==0.5.0
+
+      - name: Record the machine
+        run: python machine_info.py results-${{ runner.arch }}
+
+      - name: Device signing and aggregator verification (all designs)
+        run: |
+          set -o pipefail
+          python compare_schemes.py --out results-${{ runner.arch }} ${{ inputs.quick && '--quick' || '' }} 2>&1 | tee results-${{ runner.arch }}/compare_console.txt
+
+      - name: MLAV-IBS primitives and batch verification
+        run: |
+          set -o pipefail
+          python mlav_ibs_bench.py --out results-${{ runner.arch }} ${{ inputs.quick && '--quick' || '' }} 2>&1 | tee results-${{ runner.arch }}/mlav_console.txt
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offchain-results-${{ runner.arch }}-${{ github.run_number }}
+          path: offchain/results-${{ runner.arch }}/

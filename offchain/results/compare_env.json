@@ -1,0 +1,6 @@
+{
+  "coincurve": "21.0.0",
+  "cryptography": "46.0.6",
+  "py_arkworks_bls12381": "0.5.0",
+  "devices": 10
+}
