@@ -24,7 +24,17 @@ try:
     info["mem_total_kb"] = int(next(l.split()[1] for l in open("/proc/meminfo") if l.startswith("MemTotal")))
 except Exception:
     pass
+# Raspberry Pi and other single-board computers: board model, temperature, throttling
+try:
+    info["board_model"] = open("/proc/device-tree/model").read().strip("\x00").strip()
+except Exception:
+    pass
+if run(["which", "vcgencmd"]).strip():
+    info["vcgencmd"] = {"temp": run(["vcgencmd", "measure_temp"]).strip(),
+                        "throttled": run(["vcgencmd", "get_throttled"]).strip(),
+                        "arm_clock_hz": run(["vcgencmd", "measure_clock", "arm"]).strip()}
 out = sys.argv[1] if len(sys.argv) > 1 else "results"
 os.makedirs(out, exist_ok=True)
-json.dump(info, open(os.path.join(out, "machine.json"), "w"), indent=2)
+name = sys.argv[2] if len(sys.argv) > 2 else "machine.json"
+json.dump(info, open(os.path.join(out, name), "w"), indent=2)
 print(json.dumps(info, indent=2))

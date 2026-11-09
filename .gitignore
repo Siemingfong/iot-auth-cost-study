@@ -1,3 +1,5 @@
 node_modules/
 __pycache__/
 *.pyc
+.venv-bench/
+offchain/results-device-*.tar.gz

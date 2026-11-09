@@ -52,3 +52,12 @@ in the manuscript, and records each machine's specification (`offchain/machine_i
 Start it from the Actions tab (Run workflow); results are uploaded as artifacts
 `offchain-results-ARM64-<n>` and `offchain-results-X64-<n>`. GitHub-hosted runners are shared virtual
 machines, so timings vary between runs; the scripts report medians.
+
+### Results of the GitHub-hosted runs (Table 3 of the manuscript)
+`offchain/results-github-arm64/` (Arm Neoverse-N2, 4 vCPUs) and `offchain/results-github-x64/` (AMD EPYC 9V74,
+4 vCPUs) hold the full-mode results of workflow run 1, including each machine's `machine.json`.
+
+## Device-side measurements on single-board computers
+`offchain/run_device_bench.sh` runs the same off-chain benchmarks on a Raspberry Pi (64-bit OS) with one
+command and records the board model, temperature and throttling state before and after. Step-by-step
+instructions (in Traditional Chinese) are in [`docs/RASPBERRY_PI.md`](docs/RASPBERRY_PI.md).
