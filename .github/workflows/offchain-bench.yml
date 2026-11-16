@@ -48,6 +48,11 @@ jobs:
           set -o pipefail
           python mlav_ibs_bench.py --out results-${{ runner.arch }} ${{ inputs.quick && '--quick' || '' }} 2>&1 | tee results-${{ runner.arch }}/mlav_console.txt
 
+      - name: Parallel aggregator throughput (1, 2 and 4 worker processes)
+        run: |
+          set -o pipefail
+          python parallel_bench.py --out results-${{ runner.arch }} ${{ inputs.quick && '--quick' || '' }} 2>&1 | tee results-${{ runner.arch }}/parallel_console.txt
+
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
