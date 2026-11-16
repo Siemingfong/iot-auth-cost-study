@@ -1,11 +1,11 @@
 n,devices,method,total_gas,per_msg_gas,ok
-200,1,B2 small-exponent batch,5968539,29843,true
-200,1,B3 grouped small-exponent batch,4693722,23469,true
-200,5,B2 small-exponent batch,6010498,30052,true
-200,5,B3 grouped small-exponent batch,4762056,23810,true
-200,10,B2 small-exponent batch,6059445,30297,true
-200,10,B3 grouped small-exponent batch,4845908,24230,true
-200,50,B2 small-exponent batch,6455258,32276,true
-200,50,B3 grouped small-exponent batch,5514491,27572,true
-200,200,B2 small-exponent batch,7942770,39714,true
-200,200,B3 grouped small-exponent batch,8036317,40182,true
+200,1,B2 small-exponent batch,5969223,29846,true
+200,1,B3 grouped small-exponent batch,4693530,23468,true
+200,5,B2 small-exponent batch,6010102,30051,true
+200,5,B3 grouped small-exponent batch,4761888,23809,true
+200,10,B2 small-exponent batch,6060225,30301,true
+200,10,B3 grouped small-exponent batch,4845572,24228,true
+200,50,B2 small-exponent batch,6455138,32276,true
+200,50,B3 grouped small-exponent batch,5514107,27571,true
+200,200,B2 small-exponent batch,7942878,39714,true
+200,200,B3 grouped small-exponent batch,8036137,40181,true

@@ -182,7 +182,8 @@ const results = { environment: {
   const first = (await batchTx(rb, 2)).ok
   results.tests.replay = { first_submission_accepted: first, resubmission_rejected: !(await batchTx(rb, 2)).ok,
     wrong_chain_rejected: !(await batchTx(makeBatch(20, 5, { chainId: DOM.chainId + 1n, addr: DOM.addr }), 2)).ok,
-    wrong_contract_rejected: !(await batchTx(makeBatch(20, 5, { chainId: DOM.chainId, addr: '0x' + '42'.repeat(20) }), 2)).ok }
+    wrong_contract_rejected: !(await batchTx(makeBatch(20, 5, { chainId: DOM.chainId, addr: '0x' + '42'.repeat(20) }), 2)).ok,
+    reregistration_rejected: !(await send(target, hexToBytes(iface.encodeFunctionData('registerDevice', [0, words4(devices[1].qh)])))).ok }
   console.log(JSON.stringify(results.tests, null, 1))
 }
 

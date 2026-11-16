@@ -30,6 +30,7 @@ contract MLAVVerifier {
 
     function registerDevice(uint32 idx, bytes32[4] calldata q) external {
         require(msg.sender == kgc, "only KGC");
+        require(lastTs[idx] == 0, "registered");   // each pseudonym once: no key or timestamp reset
         devCommit[idx] = keccak256(abi.encode(q));
         lastTs[idx] = 1;
     }

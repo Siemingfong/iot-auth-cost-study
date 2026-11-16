@@ -114,6 +114,7 @@ schemes.K1 = {
     return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', [ms]))
   },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', [this.sign(record(0), 0)])) },
+  reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [this.devs[0].addr])) },
 }
 
 // --- R1: ECDSA P-256 / EIP-7951
@@ -146,6 +147,7 @@ schemes.R1 = {
     return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', [Array.from({ length: m }, (_, j) => this.dev(j)), ms]))
   },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', [this.dev(0), this.sign(record(0), 0)])) },
+  reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [0, this.devs[1].qx, this.devs[1].qy])) },
 }
 
 // --- BLS: per-device keys, aggregate signature
@@ -179,6 +181,7 @@ schemes.BLS = {
   },
   batch(n, tamper = false, dom) { return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', this.build(n, Math.min(n, M), tamper, dom))) },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', this.build(1, 1, false))) },
+  reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [0, words(this.devs[1].pkh, 8)])) },
 }
 
 // ------------------------------------------------------------------ run
@@ -196,6 +199,7 @@ for (const [key, S] of Object.entries(schemes)) {
     info.replay_first_accepted = (await send(S.c.addr, data)).ok
     info.replay_resubmission_rejected = !(await send(S.c.addr, data)).ok
     info.wrong_chain_rejected = !(await send(S.c.addr, S.batch(20, false, { chainId: CHAIN_ID + 1n, addr: S.c.addr.toString() }))).ok
+    info.reregistration_rejected = !(await send(S.c.addr, S.reregister())).ok
     info.wrong_contract_rejected = !(await send(S.c.addr, S.batch(20, false, { chainId: CHAIN_ID, addr: '0x' + '42'.repeat(20) }))).ok
   }
   if (key === 'BLS') {   // on-chain hash_to_curve must equal RFC 9380 reference (noble)

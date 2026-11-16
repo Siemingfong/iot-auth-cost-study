@@ -62,7 +62,10 @@ contract K1Verifier is Anchoring {
     error BadSignature(uint256 i);
 
     constructor() { kgc = msg.sender; }
-    function registerDevice(address dev) external { require(msg.sender == kgc); lastTs[uint160(dev)] = 1; }
+    function registerDevice(address dev) external {
+        require(msg.sender == kgc && lastTs[uint160(dev)] == 0);   // each device once: no key or timestamp reset
+        lastTs[uint160(dev)] = 1;
+    }
 
     function _check(Msg calldata m, uint256 i) internal returns (bytes32 leaf) {
         bytes32 h = keccak256(abi.encode(block.chainid, address(this), m.ct, m.ts, m.chk, m.seed));
@@ -91,7 +94,8 @@ contract R1Verifier is Anchoring {
 
     constructor() { kgc = msg.sender; }
     function registerDevice(uint32 idx, bytes32 qx, bytes32 qy) external {
-        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(qx, qy)); lastTs[idx] = 1;
+        require(msg.sender == kgc && lastTs[idx] == 0);   // each device once: no key or timestamp reset
+        devCommit[idx] = keccak256(abi.encode(qx, qy)); lastTs[idx] = 1;
     }
     function _commit(Dev calldata d, uint256 j) internal view returns (bytes32 c) {
         c = devCommit[d.idx];
@@ -133,7 +137,8 @@ contract BLSAggVerifier is Anchoring {
 
     constructor() { kgc = msg.sender; }
     function registerDevice(uint32 idx, bytes32[8] calldata pk) external {
-        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(pk)); lastTs[idx] = 1;
+        require(msg.sender == kgc && lastTs[idx] == 0);   // each device once: no key or timestamp reset
+        devCommit[idx] = keccak256(abi.encode(pk)); lastTs[idx] = 1;
     }
 
     // ---------------------------------------------------------- RFC 9380 hash_to_curve
