@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it as below."
+title: "iot-auth-cost-study: cost of authenticating and anchoring IoT data on Ethereum after Pectra and Fusaka"
+authors:
+  - family-names: Sie
+    given-names: Ming-Fong
+    orcid: "https://orcid.org/0009-0006-8735-9332"
+    affiliation: "Chung Yuan Christian University"
+  - family-names: Chen
+    given-names: Jian-Hong
+    affiliation: "National Taiwan University"
+  - family-names: Lin
+    given-names: Gwan-yen
+    affiliation: "National Taiwan University"
+  - family-names: Chen
+    given-names: Yen-Shuo
+    affiliation: "National Taiwan University"
+  - family-names: Liao
+    given-names: Shih-wei
+    affiliation: "National Taiwan University"
+license: MIT
+version: "v1.0"
+date-released: "2026-11-16"
+repository-code: "https://github.com/Siemingfong/iot-auth-cost-study"
+keywords:
+  - IoT data authentication
+  - Ethereum
+  - gas
+  - batch verification
+  - BLS signatures
+  - ECDSA
