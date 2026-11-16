@@ -113,3 +113,9 @@ manuscript); Table 3 uses run 1.
 ### Parallel throughput on the Raspberry Pi boards (Table 4 of the manuscript)
 `offchain/results-parallel-pi-4/` and `offchain/results-parallel-pi-zero-2-w/` hold `run_parallel_bench.sh` on the
 Pi 4 Model B and the Pi Zero 2 W (16 November 2026); both report `throttled=0x0` before and after the run.
+
+## Repeated runs and statistics
+`offchain/run_repeated.sh device|parallel` repeats the device or parallel benchmark on a single-board computer
+(`RUNS`, default 10; `PAUSE` seconds between runs, default 60) and `offchain/summarize_runs.py` reports, for every
+timing, the number of runs, mean, standard deviation, coefficient of variation, median, quartiles, minimum, maximum
+and spread, together with the throttling flags recorded before and after each run.

@@ -16,9 +16,9 @@ if [ "$arch" != "aarch64" ] && [ "${ALLOW_ANY_ARCH:-0}" != "1" ]; then
 fi
 python3 -c 'import sys; assert sys.version_info >= (3, 10), "Python 3.10 or newer is required"'
 
-model=$(tr -d '\0' < /proc/device-tree/model 2>/dev/null || echo "unknown-board")
+model=$( (tr -d '\0' < /proc/device-tree/model) 2>/dev/null || echo "unknown-board")
 slug=$(echo "$model" | tr 'A-Z' 'a-z' | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')
-out="results-device-${slug}-$(date +%Y%m%d-%H%M)"
+out="results-device-${slug}-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$out"
 echo "Board: $model"
 echo "Results: offchain/$out"

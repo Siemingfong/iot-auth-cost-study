@@ -99,3 +99,37 @@ scp <使用者名稱>@<樹莓派位址>:~/iot-auth-cost-study/offchain/results-d
 3. 看到 `Done.` 後，把 `results-parallel-....tar.gz` 傳回（方法同第 6 步）。
 
 四個核心同時滿載時最容易因為電壓不足或過熱而降頻，**請務必使用原廠電源並保持通風**。Pi 4 先前的量測顯示開機時曾發生電壓不足，請先確認電源再執行。
+
+---
+
+## 8. 重複量測（穩定性與統計）
+
+為了在論文中報告每項數據在多次執行之間的變異（平均值、標準差、變異係數、中位數、四分位距），請用 `run_repeated.sh` 一次跑多組。它會自動依序執行、每組之間暫停讓板子降溫、全部完成後計算統計，並打包成一個檔案。
+
+**先更新程式碼並重新開機：**
+```bash
+cd ~/iot-auth-cost-study && git pull
+sudo reboot
+```
+
+**需要跑的組數：**
+
+| 板子 | 指令 | 說明 |
+|---|---|---|
+| Pi 4 | `RUNS=10 bash run_repeated.sh device` | 用**原廠電源**重跑。先前 16 組的旗標是 `0x50000`（開機時電壓不足），這次確認是 `0x0` 就能在論文中拿掉這個但書 |
+| Pi Zero 2 W | `RUNS=10 bash run_repeated.sh device` | 目前只有 1 組 |
+| Pi 4 | `RUNS=10 bash run_repeated.sh parallel` | 目前只有 1 組 |
+| Pi Zero 2 W | `RUNS=10 bash run_repeated.sh parallel` | 目前只有 1 組 |
+
+**在背景執行**（以 Pi Zero 2 W 的單核量測為例；Zero 2 W 一組就要跑一段時間，10 組可以放著過夜）：
+```bash
+cd ~/iot-auth-cost-study/offchain
+nohup env RUNS=10 bash run_repeated.sh device > repeated.log 2>&1 &
+tail -f repeated.log        # Ctrl+C 只會停止觀察，不會中斷量測
+```
+
+每組結束時，`repeated.log` 會顯示該組的降頻旗標。全部完成後會出現：
+```
+Done. Send this file back:  offchain/batch-....tar.gz
+```
+把 `batch-....tar.gz` 傳回即可（方法同第 6 步）。**同一塊板子的 device 和 parallel 請分開跑，不要同時執行。**

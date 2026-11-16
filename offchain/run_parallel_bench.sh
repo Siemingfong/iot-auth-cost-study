@@ -7,11 +7,11 @@ cd "$(dirname "$0")"
 [ "$(uname -m)" = "aarch64" ] || [ "${ALLOW_ANY_ARCH:-0}" = "1" ] || { echo "ERROR: install Raspberry Pi OS (64-bit)" >&2; exit 1; }
 [ -d .venv-bench ] || { echo "ERROR: run 'bash run_device_bench.sh' first (it creates the Python environment)" >&2; exit 1; }
 . .venv-bench/bin/activate
-model=$(tr -d '\0' < /proc/device-tree/model 2>/dev/null || echo "unknown-board")
+model=$( (tr -d '\0' < /proc/device-tree/model) 2>/dev/null || echo "unknown-board")
 slug=$(echo "$model" | tr 'A-Z' 'a-z' | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')
-out="results-parallel-${slug}-$(date +%Y%m%d-%H%M)"; mkdir -p "$out"
+out="results-parallel-${slug}-$(date +%Y%m%d-%H%M%S)"; mkdir -p "$out"
 python machine_info.py "$out" machine.json > /dev/null
-python parallel_bench.py --out "$out" 2>&1 | tee "$out/parallel_console.txt"
+python parallel_bench.py --out "$out" ${PB_ARGS:-} 2>&1 | tee "$out/parallel_console.txt"
 python machine_info.py "$out" machine_after.json > /dev/null
 tar czf "$out.tar.gz" "$out"
 echo; echo "Done. Send this file back:  offchain/$out.tar.gz"
