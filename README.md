@@ -94,3 +94,8 @@ Both harnesses take `--fork cancun|prague|osaka` (default `osaka`). `onchain/res
 Pectra (Prague); `onchain/results/` holds the Osaka (Fusaka) run. Designs whose precompile does not exist under a
 fork are reported as unsupported (R1 before Osaka; BLS and MLAV-IBS before Prague). Before Osaka there is no
 per-transaction cap, so transactions are limited to the 36-million block gas limit and no largest batch is searched.
+
+## Parallel aggregator throughput
+`offchain/parallel_bench.py` measures batch-verification throughput with 1, 2 and 4 worker processes (each worker
+verifies its own pre-signed batches of 1,000 records; throughput = records / slowest worker's time). It runs in the
+GitHub Actions workflow and, on a Raspberry Pi, with `offchain/run_parallel_bench.sh` (see `docs/RASPBERRY_PI.md`).

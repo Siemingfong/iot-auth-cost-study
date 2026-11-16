@@ -78,3 +78,24 @@ scp <使用者名稱>@<樹莓派位址>:~/iot-auth-cost-study/offchain/results-d
 把 `.tar.gz` 檔案寄給謝銘峰（mingfong@cycu.edu.tw），並註明是哪一台。兩台都完成後就結束了。
 
 有任何錯誤訊息，直接截圖或複製全文回報即可。
+
+---
+
+## 7. 平行化量測（第二階段）
+
+這一項量測 aggregator 用 1、2、4 個核心同時驗證批次的吞吐量。**請在已經完成上面步驟的樹莓派上執行**（會沿用同一個 Python 環境）。
+
+1. 先更新程式碼，並**重新開機**：
+   ```bash
+   cd ~/iot-auth-cost-study && git pull
+   sudo reboot
+   ```
+2. 重新登入後，在背景執行：
+   ```bash
+   cd ~/iot-auth-cost-study/offchain
+   nohup bash run_parallel_bench.sh > parallel.log 2>&1 &
+   tail -f parallel.log
+   ```
+3. 看到 `Done.` 後，把 `results-parallel-....tar.gz` 傳回（方法同第 6 步）。
+
+四個核心同時滿載時最容易因為電壓不足或過熱而降頻，**請務必使用原廠電源並保持通風**。Pi 4 先前的量測顯示開機時曾發生電壓不足，請先確認電源再執行。
