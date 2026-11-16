@@ -61,3 +61,9 @@ machines, so timings vary between runs; the scripts report medians.
 `offchain/run_device_bench.sh` runs the same off-chain benchmarks on a Raspberry Pi (64-bit OS) with one
 command and records the board model, temperature and throttling state before and after. Step-by-step
 instructions (in Traditional Chinese) are in [`docs/RASPBERRY_PI.md`](docs/RASPBERRY_PI.md).
+
+### Raspberry Pi Zero 2 W (Table 3 of the manuscript)
+`offchain/results-device-pi-zero-2-w/` holds the full run of `run_device_bench.sh` on a Raspberry Pi Zero 2 W
+(Cortex-A53 at 1 GHz, 64-bit Raspberry Pi OS, Python 3.13), measured by the co-authors on 14 November 2026.
+`machine.json` and `machine_after.json` record the board, temperature and throttling state (0x0, no throttling)
+before and after the run.

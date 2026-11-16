@@ -1,0 +1,24 @@
+  sign K1   0.2888 ms
+  sign R1   0.3624 ms
+  sign BLS  5.6541 ms
+  sign IBS  5.7657 ms
+  n=    1 K1                    0.68 ms  0.6814 ms/msg
+  n=    1 R1                    1.15 ms  1.1507 ms/msg
+  n=    1 BLS                  24.51 ms  24.5110 ms/msg
+  n=    1 IBS                  28.54 ms  28.5378 ms/msg
+  n=    1 IBS (Q cached)       25.40 ms  25.4028 ms/msg
+  n=   10 K1                    5.78 ms  0.5785 ms/msg
+  n=   10 R1                    8.06 ms  0.8058 ms/msg
+  n=   10 BLS                  96.69 ms  9.6691 ms/msg
+  n=   10 IBS                  67.44 ms  6.7442 ms/msg
+  n=   10 IBS (Q cached)       37.90 ms  3.7905 ms/msg
+  n=  100 K1                   58.04 ms  0.5804 ms/msg
+  n=  100 R1                   79.86 ms  0.7986 ms/msg
+  n=  100 BLS                 363.04 ms  3.6304 ms/msg
+  n=  100 IBS                 108.88 ms  1.0888 ms/msg
+  n=  100 IBS (Q cached)       78.91 ms  0.7891 ms/msg
+  n= 1000 K1                  583.29 ms  0.5833 ms/msg
+  n= 1000 R1                  800.57 ms  0.8006 ms/msg
+  n= 1000 BLS                3028.28 ms  3.0283 ms/msg
+  n= 1000 IBS                 402.93 ms  0.4029 ms/msg
+  n= 1000 IBS (Q cached)      373.57 ms  0.3736 ms/msg
