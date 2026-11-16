@@ -77,3 +77,11 @@ batch signed for another chain and a batch signed for another contract are all r
 (`replay_*` and `wrong_*` entries in `onchain/results/*.json`). All on-chain results in `onchain/results/` were
 re-measured with these contracts. The off-chain timing scripts sign the record without the domain prefix,
 which adds 64 bytes to the hashed input and does not measurably change signing or verification times.
+
+### Raspberry Pi 4 Model B (Table 3 of the manuscript)
+`offchain/results-device-pi-4/` holds 16 full runs of `run_device_bench.sh` on a Raspberry Pi 4 Model B
+(Cortex-A72 at 1.8 GHz, 2 GB, 64-bit Raspberry Pi OS, Python 3.13), measured by the co-authors on 13 November
+2026. Every reading reports `throttled=0x50000`: under-voltage and throttling had occurred since boot, but not at
+the time of any reading. The 16 runs agree within 1% for most timings and within 10% for all, so none was
+throttled; the manuscript reports their medians, computed by `python3 summarize_runs.py results-device-pi-4`
+into `results-device-pi-4/summary_median.csv`.
