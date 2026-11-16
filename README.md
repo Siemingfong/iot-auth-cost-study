@@ -105,3 +105,7 @@ GitHub Actions workflow and, on a Raspberry Pi, with `offchain/run_parallel_benc
 different runs (run 1 used an AMD EPYC 9V74 x86-64 runner, runs 2 and 3 an Intel Xeon 6975P-C with two cores and
 two hardware threads each). Run 3 includes the parallel aggregator throughput (`parallel.csv`, Table 4 of the
 manuscript); Table 3 uses run 1.
+
+### Parallel throughput on the Raspberry Pi boards (Table 4 of the manuscript)
+`offchain/results-parallel-pi-4/` and `offchain/results-parallel-pi-zero-2-w/` hold `run_parallel_bench.sh` on the
+Pi 4 Model B and the Pi Zero 2 W (16 November 2026); both report `throttled=0x0` before and after the run.
