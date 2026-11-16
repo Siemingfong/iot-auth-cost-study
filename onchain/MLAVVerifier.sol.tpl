@@ -18,8 +18,11 @@ contract MLAVVerifier {
     mapping(uint32 => bytes32) public devCommit;      // keccak256(Q) of each registered pseudonym
     mapping(bytes32 => uint256) public recordBlock;   // per-record anchoring (baseline)
     mapping(bytes32 => uint256) public rootBlock;     // Merkle-root anchoring (MLAV layer 1)
+    /// last accepted timestamp per pseudonym; 1 after registration, 0 for unregistered ones
+    mapping(uint32 => uint64) public lastTs;
 
     event BatchAnchored(bytes32 indexed root, uint256 n);
+    error Stale(uint256 i);
     error BadDevice(uint256 i);
     error BadSignature();
 
@@ -28,6 +31,13 @@ contract MLAVVerifier {
     function registerDevice(uint32 idx, bytes32[4] calldata q) external {
         require(msg.sender == kgc, "only KGC");
         devCommit[idx] = keccak256(abi.encode(q));
+        lastTs[idx] = 1;
+    }
+    /// replay protection: a pseudonym's records must carry strictly increasing timestamps
+    function _fresh(uint32 idx, uint64 ts, uint256 i) internal {
+        uint64 last = lastTs[idx];
+        if (last == 0 || ts <= last) revert Stale(i);
+        lastTs[idx] = ts;
     }
 
     // ------------------------------------------------------------------ helpers
@@ -36,8 +46,8 @@ contract MLAVVerifier {
         if (c == bytes32(0) || c != keccak256(abi.encode(d.q))) revert BadDevice(d.idx);
     }
 
-    function _h(bytes32 c, Msg calldata m) internal pure returns (uint256) {
-        return uint256(keccak256(abi.encode(c, m.ct, m.ts, m.chk, m.seed, m.u))) % R;
+    function _h(bytes32 c, Msg calldata m) internal view returns (uint256) {
+        return uint256(keccak256(abi.encode(block.chainid, address(this), c, m.ct, m.ts, m.chk, m.seed, m.u))) % R;
     }
 
     function _recordHash(bytes32 c, Msg calldata m) internal pure returns (bytes32) {
@@ -98,6 +108,7 @@ contract MLAVVerifier {
     // ------------------------------------------------------------------ individual
     function submitIndividual(Dev calldata d, Msg calldata m) external {
         bytes32 c = _commit(d);
+        _fresh(d.idx, m.ts, 0);
         bytes memory hq = new bytes(160);
         _put(hq, 0, d.q, _h(c, m));
         bytes memory t = _g1add(_msm(hq), m.u);              // U + h*Q
@@ -113,6 +124,7 @@ contract MLAVVerifier {
         uint256 n = msgs.length;
         bytes32[] memory cs = new bytes32[](m);
         for (uint256 j = 0; j < m; j++) cs[j] = _commit(devs[j]);
+        for (uint256 i = 0; i < n; i++) _fresh(devs[msgs[i].dev].idx, msgs[i].ts, i);
         bytes32[] memory leaves = new bytes32[](n);
         bytes memory S;
         bytes memory T;

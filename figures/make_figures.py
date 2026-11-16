@@ -78,7 +78,7 @@ def fig_onchain(onchain, out):
     a.set_xticks([1, 10, 100, 1000]); a.set_xticklabels(["1", "10", "100", "1,000"])
     a.yaxis.set_major_formatter(thousands)
     a.set_xlabel("Records per transaction, $n$"); a.set_ylabel("Gas per record")
-    a.legend(loc="upper center", ncol=2, handlelength=2.4, columnspacing=1.0, borderaxespad=0.2)
+    a.legend(loc="upper center", ncol=2, handlelength=2.0, columnspacing=0.8, borderaxespad=0.2, fontsize=6.4)
     a.text(0.02, 0.03, "(a)", transform=a.transAxes, fontweight="bold")
 
     # (b) largest batch under EIP-7825

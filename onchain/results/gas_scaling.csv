@@ -1,33 +1,33 @@
 n,devices,method,total_gas,per_msg_gas,calldata_bytes,ok
-1,1,V individual (n txs),171504,171504,580,true
-1,1,B1 naive batch (insecure),186371,186371,740,true
-1,1,B2 small-exponent batch,199877,199877,740,true
-1,1,B3 grouped small-exponent batch,200727,200727,740,true
-10,10,V individual (n txs),1715316,171532,5800,true
-10,10,B1 naive batch (insecure),442088,44209,5924,true
-10,10,B2 small-exponent batch,525733,52573,5924,true
-10,10,B3 grouped small-exponent batch,530188,53019,5924,true
-50,10,V individual (n txs),8576748,171535,29000,true
-50,10,B1 naive batch (insecure),1285420,25708,22564,true
-50,10,B2 small-exponent batch,1625995,32520,22564,true
-50,10,B3 grouped small-exponent batch,1399328,27987,22564,true
-100,10,V individual (n txs),17153316,171533,58000,true
-100,10,B1 naive batch (insecure),2342000,23420,43364,true
-100,10,B2 small-exponent batch,2961052,29611,43364,true
-100,10,B3 grouped small-exponent batch,2414746,24147,43364,true
-200,10,V individual (n txs),34306956,171535,116000,true
-200,10,B1 naive batch (insecure),4562655,22813,84964,true
-200,10,B2 small-exponent batch,5773273,28866,84964,true
-200,10,B3 grouped small-exponent batch,4561120,22806,84964,true
-300,10,B1 naive batch (insecure),6859013,22863,126564,true
-300,10,B2 small-exponent batch,8713129,29044,126564,true
-300,10,B3 grouped small-exponent batch,6832575,22775,126564,true
-400,10,B1 naive batch (insecure),9230112,23075,168164,true
-400,10,B2 small-exponent batch,11753404,29384,168164,true
-400,10,B3 grouped small-exponent batch,9185911,22965,168164,true
-500,10,B1 naive batch (insecure),11677436,23355,209764,true
-500,10,B2 small-exponent batch,14895904,29792,209764,true
-500,10,B3 grouped small-exponent batch,11621772,23244,209764,true
-600,10,B1 naive batch (insecure),14199953,23667,251364,true
+1,1,V individual (n txs),176944,176944,580,true
+1,1,B1 naive batch (insecure),192330,192330,740,true
+1,1,B2 small-exponent batch,205836,205836,740,true
+1,1,B3 grouped small-exponent batch,206698,206698,740,true
+10,10,V individual (n txs),1769512,176951,5800,true
+10,10,B1 naive batch (insecure),501246,50125,5924,true
+10,10,B2 small-exponent batch,584855,58486,5924,true
+10,10,B3 grouped small-exponent batch,589430,58943,5924,true
+50,10,V individual (n txs),8847428,176949,29000,true
+50,10,B1 naive batch (insecure),1389874,27797,22564,true
+50,10,B2 small-exponent batch,1730507,34610,22564,true
+50,10,B3 grouped small-exponent batch,1503994,30080,22564,true
+100,10,V individual (n txs),17694628,176946,58000,true
+100,10,B1 naive batch (insecure),2504727,25047,43364,true
+100,10,B2 small-exponent batch,3124117,31241,43364,true
+100,10,B3 grouped small-exponent batch,2577541,25775,43364,true
+200,10,V individual (n txs),35389520,176948,116000,true
+200,10,B1 naive batch (insecure),4846755,24234,84964,true
+200,10,B2 small-exponent batch,6059937,30300,84964,true
+200,10,B3 grouped small-exponent batch,4845728,24229,84964,true
+300,10,B1 naive batch (insecure),7271408,24238,126564,true
+300,10,B2 small-exponent batch,9130940,30436,126564,true
+300,10,B3 grouped small-exponent batch,7247025,24157,126564,true
+400,10,B1 naive batch (insecure),9778543,24446,168164,true
+400,10,B2 small-exponent batch,12307450,30769,168164,true
+400,10,B3 grouped small-exponent batch,9737054,24343,168164,true
+500,10,B1 naive batch (insecure),12368322,24737,209764,true
+500,10,B2 small-exponent batch,15600635,31201,209764,true
+500,10,B3 grouped small-exponent batch,12316760,24634,209764,true
+600,10,B1 naive batch (insecure),15041465,25069,251364,true
 600,10,B2 small-exponent batch,,,251364,false
-600,10,B3 grouped small-exponent batch,14141513,23569,251364,true
+600,10,B3 grouped small-exponent batch,14988169,24980,251364,true

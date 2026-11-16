@@ -1,15 +1,77 @@
-max n under cap  B3 grouped small-exponent batch    ~701
-sweep n=200 m=  1 B2 small-exponent batch            5,725,686
-sweep n=200 m=  1 B3 grouped small-exponent batch    4,452,025
-sweep n=200 m=  5 B2 small-exponent batch            5,748,293
-sweep n=200 m=  5 B3 grouped small-exponent batch    4,501,328
-sweep n=200 m= 10 B2 small-exponent batch            5,773,465
-sweep n=200 m= 10 B3 grouped small-exponent batch    4,561,132
-sweep n=200 m= 50 B2 small-exponent batch            5,976,027
-sweep n=200 m= 50 B3 grouped small-exponent batch    5,036,221
-sweep n=200 m=200 B2 small-exponent batch            6,741,825
-sweep n=200 m=200 B3 grouped small-exponent batch    6,834,362
-anchor n=10 each=249,130 root=57,924
-anchor n=100 each=2,295,520 root=165,844
-anchor n=500 each=11,390,628 root=660,330
-written to results
+deployed, gas 1180040n
+device registration gas 67906
+{
+ "valid": {
+  "naive": true,
+  "set": true,
+  "grouped": true
+ },
+ "single_invalid_rejected": {
+  "naive": true,
+  "set": true,
+  "grouped": true
+ },
+ "cancellation_attack": {
+  "msg3_individual_accepted": false,
+  "naive_batch_ACCEPTS": true,
+  "set_batch_accepts": false,
+  "grouped_batch_accepts": false
+ },
+ "individual_valid": true,
+ "replay": {
+  "first_submission_accepted": true,
+  "resubmission_rejected": true,
+  "wrong_chain_rejected": true,
+  "wrong_contract_rejected": true
+ }
+}
+n=   1 V individual (n txs)                    176,944  176,944/msg
+n=   1 B1 naive batch (insecure)               192,330  192,330/msg
+n=   1 B2 small-exponent batch                 205,836  205,836/msg
+n=   1 B3 grouped small-exponent batch         206,698  206,698/msg
+n=  10 V individual (n txs)                  1,769,512  176,951/msg
+n=  10 B1 naive batch (insecure)               501,246  50,125/msg
+n=  10 B2 small-exponent batch                 584,855  58,486/msg
+n=  10 B3 grouped small-exponent batch         589,430  58,943/msg
+n=  50 V individual (n txs)                  8,847,428  176,949/msg
+n=  50 B1 naive batch (insecure)             1,389,874  27,797/msg
+n=  50 B2 small-exponent batch               1,730,507  34,610/msg
+n=  50 B3 grouped small-exponent batch       1,503,994  30,080/msg
+n= 100 V individual (n txs)                 17,694,628  176,946/msg
+n= 100 B1 naive batch (insecure)             2,504,727  25,047/msg
+n= 100 B2 small-exponent batch               3,124,117  31,241/msg
+n= 100 B3 grouped small-exponent batch       2,577,541  25,775/msg
+n= 200 V individual (n txs)                 35,389,520  176,948/msg
+n= 200 B1 naive batch (insecure)             4,846,755  24,234/msg
+n= 200 B2 small-exponent batch               6,059,937  30,300/msg
+n= 200 B3 grouped small-exponent batch       4,845,728  24,229/msg
+n= 300 B1 naive batch (insecure)             7,271,408  24,238/msg
+n= 300 B2 small-exponent batch               9,130,940  30,436/msg
+n= 300 B3 grouped small-exponent batch       7,247,025  24,157/msg
+n= 400 B1 naive batch (insecure)             9,778,543  24,446/msg
+n= 400 B2 small-exponent batch              12,307,450  30,769/msg
+n= 400 B3 grouped small-exponent batch       9,737,054  24,343/msg
+n= 500 B1 naive batch (insecure)            12,368,322  24,737/msg
+n= 500 B2 small-exponent batch              15,600,635  31,201/msg
+n= 500 B3 grouped small-exponent batch      12,316,760  24,634/msg
+n= 600 B1 naive batch (insecure)            15,041,465  25,069/msg
+n= 600 B2 small-exponent batch            FAILED (gas cap)
+n= 600 B3 grouped small-exponent batch      14,988,169  24,980/msg
+max n under cap  B1 naive batch (insecure)          ~662
+max n under cap  B2 small-exponent batch            ~533
+max n under cap  B3 grouped small-exponent batch    ~662
+sweep n=200 m=  1 B2 small-exponent batch            5,968,539
+sweep n=200 m=  1 B3 grouped small-exponent batch    4,693,722
+sweep n=200 m=  5 B2 small-exponent batch            6,010,498
+sweep n=200 m=  5 B3 grouped small-exponent batch    4,762,056
+sweep n=200 m= 10 B2 small-exponent batch            6,059,445
+sweep n=200 m= 10 B3 grouped small-exponent batch    4,845,908
+sweep n=200 m= 50 B2 small-exponent batch            6,455,258
+sweep n=200 m= 50 B3 grouped small-exponent batch    5,514,491
+sweep n=200 m=200 B2 small-exponent batch            7,942,770
+sweep n=200 m=200 B3 grouped small-exponent batch    8,036,317
+anchor n=10 each=249,128 root=57,922
+anchor n=100 each=2,295,554 root=165,878
+anchor n=500 each=11,390,578 root=660,150
+written to results-full
+EXIT 0

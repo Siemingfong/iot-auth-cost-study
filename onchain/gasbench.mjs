@@ -50,16 +50,20 @@ function extract(kgc, idx) {
   return { idx, qPt: q, qh, commit: kec('0x' + qh), sk: q.multiply(kgc.s) }
 }
 
-function sign(dev, i) {
+// signing domain (chain id and verifier address) and a strictly increasing timestamp for every record,
+// because the verifier rejects a record whose timestamp is not above its pseudonym's last accepted one
+let DOM = null
+let TS = 1_700_000_000n
+function sign(dev, i, dom = DOM) {
   const ct = '0x' + crypto.randomBytes(32).toString('hex')
-  const ts = BigInt(1_700_000_000 + i)
+  const ts = ++TS
   const chk = '0x' + crypto.randomBytes(32).toString('hex')
   const seed = '0x' + crypto.randomBytes(20).toString('hex')
   const r = randScalar()
   const U = dev.qPt.multiply(r)
   const uh = encG1(U)
-  const h = modR(kec(abi.encode(['bytes32', 'bytes32', 'uint64', 'bytes32', 'bytes20', 'bytes32[4]'],
-    [dev.commit, ct, ts, chk, seed, words4(uh)])))
+  const h = modR(kec(abi.encode(['uint256', 'address', 'bytes32', 'bytes32', 'uint64', 'bytes32', 'bytes20', 'bytes32[4]'],
+    [dom.chainId, dom.addr, dev.commit, ct, ts, chk, seed, words4(uh)])))
   const V = dev.sk.multiply((r + h) % R)
   return { ct, ts, chk, seed, uh, vPt: V, vh: encG1(V) }
 }
@@ -105,6 +109,7 @@ const iface = new Interface(C.abi)
 const dep = await send(undefined, hexToBytes('0x' + C.bytecode))
 if (!dep.ok) throw new Error('deploy failed ' + dep.err)
 const target = dep.addr
+DOM = { chainId: common.chainId(), addr: target.toString() }
 console.log('deployed, gas', dep.gas)
 
 const MAXDEV = 200
@@ -118,10 +123,10 @@ for (let j = 0; j < MAXDEV; j++) {
 console.log('device registration gas', regGas[1])
 
 const devTuple = (d) => [d.idx, words4(d.qh)]
-function makeBatch(n, m) {
+function makeBatch(n, m, dom = DOM) {
   const ds = devices.slice(0, m)
   const msgs = []
-  for (let i = 0; i < n; i++) { const pos = i % m; msgs.push({ pos, ...sign(ds[pos], i) }) }
+  for (let i = 0; i < n; i++) { const pos = i % m; msgs.push({ pos, ...sign(ds[pos], i, dom) }) }
   return { ds, msgs }
 }
 const msgTuple = (x) => [x.pos, x.ct, x.ts, x.chk, x.seed, words4(x.uh), words4(x.vh)]
@@ -146,29 +151,38 @@ const results = { environment: {
   hardfork: 'osaka', solc: solc.version(), optimizer_runs: 200, via_ir: true, tx_gas_cap: Number(TX_GAS_CAP) },
   deploy_gas: Number(dep.gas), register_device_gas: regGas[1], tests: {}, scaling: [], device_sweep: [], anchoring: [] }
 
-// ---- correctness / attack tests on-chain
+// ---- correctness / attack tests on-chain (a fresh batch for every submission, because accepted
+// records advance each pseudonym's timestamp and a resubmission is rejected as a replay)
 {
-  const b = makeBatch(20, 5)
+  const MODES = [[0, 'naive'], [1, 'set'], [2, 'grouped']]
   results.tests.valid = {}
-  for (const [mode, name] of [[0, 'naive'], [1, 'set'], [2, 'grouped']])
-    results.tests.valid[name] = (await batchTx(b, mode)).ok
-  const bad = makeBatch(20, 5)
-  bad.msgs[7].vh = encG1(bad.msgs[7].vPt.add(G1.BASE))
+  for (const [mode, name] of MODES) results.tests.valid[name] = (await batchTx(makeBatch(20, 5), mode)).ok
   results.tests.single_invalid_rejected = {}
-  for (const [mode, name] of [[0, 'naive'], [1, 'set'], [2, 'grouped']])
+  for (const [mode, name] of MODES) {
+    const bad = makeBatch(20, 5)
+    bad.msgs[7].vh = encG1(bad.msgs[7].vPt.add(G1.BASE))
     results.tests.single_invalid_rejected[name] = !(await batchTx(bad, mode)).ok
-  const atk = makeBatch(20, 5)
-  const X = G1.BASE.multiply(randScalar())
-  atk.msgs[3].vh = encG1(atk.msgs[3].vPt.add(X))
-  atk.msgs[11].vh = encG1(atk.msgs[11].vPt.subtract(X))
-  const one = { ds: atk.ds, msgs: [atk.msgs[3]] }
+  }
+  const attack = () => {
+    const atk = makeBatch(20, 5)
+    const X = G1.BASE.multiply(randScalar())
+    atk.msgs[3].vh = encG1(atk.msgs[3].vPt.add(X))
+    atk.msgs[11].vh = encG1(atk.msgs[11].vPt.subtract(X))
+    return atk
+  }
+  const a0 = attack()
   results.tests.cancellation_attack = {
-    msg3_individual_accepted: (await batchTx(one, 1)).ok,
-    naive_batch_ACCEPTS: (await batchTx(atk, 0)).ok,
-    set_batch_accepts: (await batchTx(atk, 1)).ok,
-    grouped_batch_accepts: (await batchTx(atk, 2)).ok }
-  const ind = makeBatch(1, 1)
-  results.tests.individual_valid = (await individualTxs(ind)).ok
+    msg3_individual_accepted: (await batchTx({ ds: a0.ds, msgs: [a0.msgs[3]] }, 1)).ok,
+    naive_batch_ACCEPTS: (await batchTx(attack(), 0)).ok,
+    set_batch_accepts: (await batchTx(attack(), 1)).ok,
+    grouped_batch_accepts: (await batchTx(attack(), 2)).ok }
+  results.tests.individual_valid = (await individualTxs(makeBatch(1, 1))).ok
+  // replay and domain separation
+  const rb = makeBatch(20, 5)
+  const first = (await batchTx(rb, 2)).ok
+  results.tests.replay = { first_submission_accepted: first, resubmission_rejected: !(await batchTx(rb, 2)).ok,
+    wrong_chain_rejected: !(await batchTx(makeBatch(20, 5, { chainId: DOM.chainId + 1n, addr: DOM.addr }), 2)).ok,
+    wrong_contract_rejected: !(await batchTx(makeBatch(20, 5, { chainId: DOM.chainId, addr: '0x' + '42'.repeat(20) }), 2)).ok }
   console.log(JSON.stringify(results.tests, null, 1))
 }
 

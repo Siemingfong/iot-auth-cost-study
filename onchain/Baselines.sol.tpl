@@ -6,7 +6,17 @@ pragma solidity ^0.8.28;
 abstract contract Anchoring {
     mapping(bytes32 => uint256) public recordBlock;   // one storage slot per record
     mapping(bytes32 => uint256) public rootBlock;     // one storage slot per batch (Merkle root)
+    /// last accepted timestamp per device; 1 after registration, 0 for unregistered devices
+    mapping(uint256 => uint64) public lastTs;
     event BatchAnchored(bytes32 indexed root, uint256 n);
+    error Stale(uint256 i);
+
+    /// replay protection: a device's records must carry strictly increasing timestamps
+    function _fresh(uint256 dev, uint64 ts, uint256 i) internal {
+        uint64 last = lastTs[dev];
+        if (last == 0 || ts <= last) revert Stale(i);
+        lastTs[dev] = ts;
+    }
 
     function _merkleRoot(bytes32[] memory h) internal pure returns (bytes32) {
         uint256 n = h.length;
@@ -48,18 +58,18 @@ contract AnchorOnly is Anchoring {
 contract K1Verifier is Anchoring {
     uint256 internal constant HALF_N = 0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0;
     address public immutable kgc;
-    mapping(address => bool) public registered;
     struct Msg { bytes32 ct; uint64 ts; bytes32 chk; bytes20 seed; uint8 v; bytes32 r; bytes32 s; }
     error BadSignature(uint256 i);
 
     constructor() { kgc = msg.sender; }
-    function registerDevice(address dev) external { require(msg.sender == kgc); registered[dev] = true; }
+    function registerDevice(address dev) external { require(msg.sender == kgc); lastTs[uint160(dev)] = 1; }
 
-    function _check(Msg calldata m, uint256 i) internal view returns (bytes32 leaf) {
-        bytes32 h = keccak256(abi.encode(address(this), m.ct, m.ts, m.chk, m.seed));
+    function _check(Msg calldata m, uint256 i) internal returns (bytes32 leaf) {
+        bytes32 h = keccak256(abi.encode(block.chainid, address(this), m.ct, m.ts, m.chk, m.seed));
         if (uint256(m.s) > HALF_N) revert BadSignature(i);
         address a = ecrecover(h, m.v, m.r, m.s);
-        if (a == address(0) || !registered[a]) revert BadSignature(i);
+        if (a == address(0)) revert BadSignature(i);
+        _fresh(uint160(a), m.ts, i);              // also rejects unregistered signers (lastTs == 0)
         leaf = keccak256(abi.encode(a, m.ct, m.ts, m.chk, m.seed));
     }
     function submitOne(Msg calldata m) external { recordBlock[_check(m, 0)] = block.number; }
@@ -81,16 +91,17 @@ contract R1Verifier is Anchoring {
 
     constructor() { kgc = msg.sender; }
     function registerDevice(uint32 idx, bytes32 qx, bytes32 qy) external {
-        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(qx, qy));
+        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(qx, qy)); lastTs[idx] = 1;
     }
     function _commit(Dev calldata d, uint256 j) internal view returns (bytes32 c) {
         c = devCommit[d.idx];
         if (c == bytes32(0) || c != keccak256(abi.encode(d.qx, d.qy))) revert BadDevice(j);
     }
-    function _check(Dev calldata d, bytes32 c, Msg calldata m, uint256 i) internal view returns (bytes32) {
-        bytes32 h = sha256(abi.encode(address(this), m.ct, m.ts, m.chk, m.seed));
+    function _check(Dev calldata d, bytes32 c, Msg calldata m, uint256 i) internal returns (bytes32) {
+        bytes32 h = sha256(abi.encode(block.chainid, address(this), m.ct, m.ts, m.chk, m.seed));
         (bool ok, bytes memory out) = address(0x100).staticcall(abi.encode(h, m.r, m.s, d.qx, d.qy));
         if (!ok || out.length != 32 || uint256(bytes32(out)) != 1) revert BadSignature(i);
+        _fresh(d.idx, m.ts, i);
         return keccak256(abi.encode(c, m.ct, m.ts, m.chk, m.seed));
     }
     function submitOne(Dev calldata d, Msg calldata m) external {
@@ -122,7 +133,7 @@ contract BLSAggVerifier is Anchoring {
 
     constructor() { kgc = msg.sender; }
     function registerDevice(uint32 idx, bytes32[8] calldata pk) external {
-        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(pk));
+        require(msg.sender == kgc); devCommit[idx] = keccak256(abi.encode(pk)); lastTs[idx] = 1;
     }
 
     // ---------------------------------------------------------- RFC 9380 hash_to_curve
@@ -177,7 +188,7 @@ contract BLSAggVerifier is Anchoring {
         leaves = new bytes32[](ms.length);
         for (uint256 i = 0; i < ms.length; i++) {
             Msg calldata mi = ms[i];
-            bytes memory enc = abi.encode(cs[mi.dev], mi.ct, mi.ts, mi.chk, mi.seed);
+            bytes memory enc = abi.encode(block.chainid, address(this), cs[mi.dev], mi.ct, mi.ts, mi.chk, mi.seed);
             bytes memory hp = hashToG1(enc);
             acc[mi.dev] = acc[mi.dev].length == 0 ? hp : _add(acc[mi.dev], hp);
             leaves[i] = keccak256(enc);
@@ -190,11 +201,16 @@ contract BLSAggVerifier is Anchoring {
         }
         if (res[0] != 1) revert BadSignature();
     }
+    function _freshAll(Dev[] calldata ds, Msg[] calldata ms) internal {
+        for (uint256 i = 0; i < ms.length; i++) _fresh(ds[ms[i].dev].idx, ms[i].ts, i);
+    }
     function submitOne(Dev[] calldata ds, Msg[] calldata ms, bytes32[4] calldata sig) external {
+        _freshAll(ds, ms);
         bytes32[] memory leaves = _verify(ds, ms, sig);
         recordBlock[leaves[0]] = block.number;
     }
     function submitBatch(Dev[] calldata ds, Msg[] calldata ms, bytes32[4] calldata aggSig) external {
+        _freshAll(ds, ms);
         _anchor(_verify(ds, ms, aggSig));
     }
 }

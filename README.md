@@ -67,3 +67,13 @@ instructions (in Traditional Chinese) are in [`docs/RASPBERRY_PI.md`](docs/RASPB
 (Cortex-A53 at 1 GHz, 64-bit Raspberry Pi OS, Python 3.13), measured by the co-authors on 14 November 2026.
 `machine.json` and `machine_after.json` record the board, temperature and throttling state (0x0, no throttling)
 before and after the run.
+
+## Domain separation and replay protection (November 2026)
+All four on-chain verifiers bind every signed message to the chain id and the verifier's address, and keep,
+per device, the timestamp of its last accepted record: a record is accepted only if its timestamp is strictly
+larger, which stops an aggregator from anchoring an old, validly signed record again. The slot is initialised
+at registration, so unregistered devices fail the same check. Both harnesses test that a resubmitted batch, a
+batch signed for another chain and a batch signed for another contract are all rejected
+(`replay_*` and `wrong_*` entries in `onchain/results/*.json`). All on-chain results in `onchain/results/` were
+re-measured with these contracts. The off-chain timing scripts sign the record without the domain prefix,
+which adds 64 bytes to the hashed input and does not measurably change signing or verification times.

@@ -75,7 +75,13 @@ async function deploy(name) {
 
 // ------------------------------------------------------------------ records
 const M = 10
-function record(i) { return { ct: rnd(32), ts: BigInt(1_700_000_000 + i), chk: rnd(32), seed: rnd(20) } }
+// every record gets a strictly increasing timestamp: the verifiers reject a record whose timestamp is
+// not above its device's last accepted one (replay protection)
+let TS = 1_700_000_000n
+function record(i) { return { ct: rnd(32), ts: ++TS, chk: rnd(32), seed: rnd(20) } }
+const CHAIN_ID = common.chainId()
+// signing domain: chain id and verifier address (overridden only by the domain-separation tests)
+function domainOf(S, dom) { return dom ?? { chainId: CHAIN_ID, addr: S.c.addr.toString() } }
 
 // ------------------------------------------------------------------ schemes
 const schemes = {}
@@ -95,14 +101,15 @@ schemes.K1 = {
       this.regGas = r.gas
     }
   },
-  sign(rec, j) {
-    const h = keccak_256(hexToBytes(abi.encode(['address', 'bytes32', 'uint64', 'bytes32', 'bytes20'],
-      [this.c.addr.toString(), rec.ct, rec.ts, rec.chk, rec.seed])))
+  sign(rec, j, dom) {
+    const d = domainOf(this, dom)
+    const h = keccak_256(hexToBytes(abi.encode(['uint256', 'address', 'bytes32', 'uint64', 'bytes32', 'bytes20'],
+      [d.chainId, d.addr, rec.ct, rec.ts, rec.chk, rec.seed])))
     const s = secp256k1.Signature.fromBytes(secp256k1.sign(h, this.devs[j].sk, { prehash: false, format: 'recovered' }), 'recovered')
     return [rec.ct, rec.ts, rec.chk, rec.seed, 27 + s.recovery, '0x' + s.r.toString(16).padStart(64, '0'), '0x' + s.s.toString(16).padStart(64, '0')]
   },
-  batch(n, tamper = false) {
-    const ms = Array.from({ length: n }, (_, i) => this.sign(record(i), i % M))
+  batch(n, tamper = false, dom) {
+    const ms = Array.from({ length: n }, (_, i) => this.sign(record(i), i % M, dom))
     if (tamper) ms[Math.floor(n / 2)][2] = rnd(32)
     return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', [ms]))
   },
@@ -124,16 +131,17 @@ schemes.R1 = {
       this.regGas = r.gas
     }
   },
-  sign(rec, j) {
-    const h = sha256(hexToBytes(abi.encode(['address', 'bytes32', 'uint64', 'bytes32', 'bytes20'],
-      [this.c.addr.toString(), rec.ct, rec.ts, rec.chk, rec.seed])))
+  sign(rec, j, dom) {
+    const d = domainOf(this, dom)
+    const h = sha256(hexToBytes(abi.encode(['uint256', 'address', 'bytes32', 'uint64', 'bytes32', 'bytes20'],
+      [d.chainId, d.addr, rec.ct, rec.ts, rec.chk, rec.seed])))
     const sig = p256.sign(h, this.devs[j].sk, { prehash: false, format: 'compact' })
     return [j, rec.ct, rec.ts, rec.chk, rec.seed, hex(sig.slice(0, 32)), hex(sig.slice(32))]
   },
   dev(j) { return [j, this.devs[j].qx, this.devs[j].qy] },
-  batch(n, tamper = false) {
+  batch(n, tamper = false, dom) {
     const m = Math.min(n, M)
-    const ms = Array.from({ length: n }, (_, i) => this.sign(record(i), i % m))
+    const ms = Array.from({ length: n }, (_, i) => this.sign(record(i), i % m, dom))
     if (tamper) ms[Math.floor(n / 2)][3] = rnd(32)
     return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', [Array.from({ length: m }, (_, j) => this.dev(j)), ms]))
   },
@@ -153,20 +161,23 @@ schemes.BLS = {
       this.devs.push({ sk, pkh, commit: '0x' + Buffer.from(keccak_256(hexToBytes('0x' + pkh))).toString('hex') })
     }
   },
-  enc(rec, j) { return abi.encode(['bytes32', 'bytes32', 'uint64', 'bytes32', 'bytes20'], [this.devs[j].commit, rec.ct, rec.ts, rec.chk, rec.seed]) },
+  enc(rec, j, dom) {
+    const d = domainOf(this, dom)
+    return abi.encode(['uint256', 'address', 'bytes32', 'bytes32', 'uint64', 'bytes32', 'bytes20'], [d.chainId, d.addr, this.devs[j].commit, rec.ct, rec.ts, rec.chk, rec.seed])
+  },
   H(e) { return bls12_381.G1.hashToCurve(hexToBytes(e), { DST }) },
-  build(n, m, tamper) {
+  build(n, m, tamper, dom) {
     let agg = G1.ZERO
     const ms = []
     for (let i = 0; i < n; i++) {
       const j = i % m, rec = record(i)
-      agg = agg.add(this.H(this.enc(rec, j)).multiply(this.devs[j].sk))
+      agg = agg.add(this.H(this.enc(rec, j, dom)).multiply(this.devs[j].sk))
       ms.push([j, rec.ct, rec.ts, rec.chk, rec.seed])
     }
     if (tamper) ms[Math.floor(n / 2)][3] = rnd(32)
     return [Array.from({ length: m }, (_, j) => [j, words(this.devs[j].pkh, 8)]), ms, words(encG1(agg), 4)]
   },
-  batch(n, tamper = false) { return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', this.build(n, Math.min(n, M), tamper))) },
+  batch(n, tamper = false, dom) { return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', this.build(n, Math.min(n, M), tamper, dom))) },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', this.build(1, 1, false))) },
 }
 
@@ -180,6 +191,13 @@ for (const [key, S] of Object.entries(schemes)) {
   // correctness
   info.valid_batch_accepted = (await send(S.c.addr, S.batch(20))).ok
   info.tampered_batch_rejected = !(await send(S.c.addr, S.batch(20, true))).ok
+  {   // replay and domain separation
+    const data = S.batch(20)
+    info.replay_first_accepted = (await send(S.c.addr, data)).ok
+    info.replay_resubmission_rejected = !(await send(S.c.addr, data)).ok
+    info.wrong_chain_rejected = !(await send(S.c.addr, S.batch(20, false, { chainId: CHAIN_ID + 1n, addr: S.c.addr.toString() }))).ok
+    info.wrong_contract_rejected = !(await send(S.c.addr, S.batch(20, false, { chainId: CHAIN_ID, addr: '0x' + '42'.repeat(20) }))).ok
+  }
   if (key === 'BLS') {   // on-chain hash_to_curve must equal RFC 9380 reference (noble)
     const e = S.enc(record(0), 0)
     const r = await call(S.c.addr, hexToBytes(S.c.iface.encodeFunctionData('hashToG1', [e])))
