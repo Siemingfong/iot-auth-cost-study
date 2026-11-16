@@ -99,3 +99,9 @@ per-transaction cap, so transactions are limited to the 36-million block gas lim
 `offchain/parallel_bench.py` measures batch-verification throughput with 1, 2 and 4 worker processes (each worker
 verifies its own pre-signed batches of 1,000 records; throughput = records / slowest worker's time). It runs in the
 GitHub Actions workflow and, on a Raspberry Pi, with `offchain/run_parallel_bench.sh` (see `docs/RASPBERRY_PI.md`).
+
+### Further GitHub-hosted runs
+`offchain/results-github-*-run2/` and `-run3/` hold workflow runs 2 and 3. GitHub assigns different machines to
+different runs (run 1 used an AMD EPYC 9V74 x86-64 runner, runs 2 and 3 an Intel Xeon 6975P-C with two cores and
+two hardware threads each). Run 3 includes the parallel aggregator throughput (`parallel.csv`, Table 4 of the
+manuscript); Table 3 uses run 1.

@@ -1,0 +1,31 @@
+{
+  "python": "3.12.16",
+  "os": "Linux-7.0.0-1017-azure-aarch64-with-glibc2.39",
+  "machine": "aarch64",
+  "logical_cpus": 4,
+  "packages": {
+    "coincurve": "21.0.0",
+    "cryptography": "46.0.6",
+    "py_arkworks_bls12381": "0.5.0"
+  },
+  "runner": {
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "ARM64",
+    "ImageOS": "ubuntu24-arm64",
+    "ImageVersion": "20261111.182.1"
+  },
+  "lscpu": {
+    "Architecture": "aarch64",
+    "CPU(s)": "4",
+    "Vendor ID": "ARM",
+    "Model name": "Neoverse-N2",
+    "Thread(s) per core": "1",
+    "Core(s) per socket": "4",
+    "Socket(s)": "1",
+    "BogoMIPS": "2000.00",
+    "L1d cache": "256 KiB (4 instances)",
+    "L2 cache": "4 MiB (4 instances)",
+    "L3 cache": "128 MiB (1 instance)"
+  },
+  "mem_total_kb": 16324148
+}

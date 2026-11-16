@@ -1,0 +1,13 @@
+  K1              workers= 1     22047.2 records/s  speedup  1.00
+  K1              workers= 2     44089.3 records/s  speedup  2.00
+  K1              workers= 4     87464.3 records/s  speedup  3.97
+  R1              workers= 1     14889.3 records/s  speedup  1.00
+  R1              workers= 2     29824.2 records/s  speedup  2.00
+  R1              workers= 4     59098.1 records/s  speedup  3.97
+  BLS             workers= 1      3874.0 records/s  speedup  1.00
+  BLS             workers= 2      7748.6 records/s  speedup  2.00
+  BLS             workers= 4     15391.0 records/s  speedup  3.97
+  IBS (Q cached)  workers= 1     30920.4 records/s  speedup  1.00
+  IBS (Q cached)  workers= 2     61618.8 records/s  speedup  1.99
+  IBS (Q cached)  workers= 4    123346.6 records/s  speedup  3.99
+written results-ARM64/parallel.csv

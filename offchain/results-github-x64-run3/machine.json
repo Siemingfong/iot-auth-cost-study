@@ -1,0 +1,32 @@
+{
+  "python": "3.12.16",
+  "os": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "logical_cpus": 4,
+  "packages": {
+    "coincurve": "21.0.0",
+    "cryptography": "46.0.6",
+    "py_arkworks_bls12381": "0.5.0"
+  },
+  "runner": {
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "X64",
+    "ImageOS": "ubuntu24",
+    "ImageVersion": "20261111.127.1"
+  },
+  "lscpu": {
+    "Architecture": "x86_64",
+    "CPU(s)": "4",
+    "Vendor ID": "GenuineIntel",
+    "Model name": "Intel(R) Xeon(R) 6975P-C",
+    "Thread(s) per core": "2",
+    "Core(s) per socket": "2",
+    "Socket(s)": "1",
+    "BogoMIPS": "5400.00",
+    "Hypervisor vendor": "KVM",
+    "L1d cache": "96 KiB (2 instances)",
+    "L2 cache": "4 MiB (2 instances)",
+    "L3 cache": "480 MiB (1 instance)"
+  },
+  "mem_total_kb": 16078420
+}
