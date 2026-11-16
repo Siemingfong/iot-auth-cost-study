@@ -1,0 +1,16 @@
+K1 {"label":"ECDSA secp256k1 (ecrecover)","deploy_gas":483408,"register_device_gas":44097,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":55475,"individual_calldata":228}
+  K1 n=   1       58,361  58,361/msg
+  K1 n=  10      178,972  17,897/msg
+  K1 n=  50      520,330  10,407/msg
+  K1 n= 100      949,160  9,492/msg
+  K1 n= 200    1,815,818  9,079/msg
+  K1 n= 500    4,481,861  8,964/msg
+  K1 n=1000    9,150,862  9,151/msg
+  K1 n=2000   19,335,209  9,668/msg
+R1 not supported under cancun
+BLS not supported under cancun
+anchor n=10 root-only=45495 leaves+root=57633 each=249090
+anchor n=100 root-only=45495 leaves+root=164461 each=2295354
+anchor n=500 root-only=45507 leaves+root=642932 each=11389990
+anchor n=1000 root-only=45507 leaves+root=1255110 each=22758270
+written to results-cancun

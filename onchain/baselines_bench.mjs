@@ -23,7 +23,12 @@ const QUICK = process.argv.includes('--quick')
 const OUT = process.argv.includes('--out') ? process.argv[process.argv.indexOf('--out') + 1] : 'results'
 fs.mkdirSync(OUT, { recursive: true })
 const abi = AbiCoder.defaultAbiCoder()
-const TX_GAS_CAP = 16_777_216n
+const FORK = process.argv.includes('--fork') ? process.argv[process.argv.indexOf('--fork') + 1] : 'osaka'
+const HF = { cancun: Hardfork.Cancun, prague: Hardfork.Prague, osaka: Hardfork.Osaka }[FORK]
+if (!HF) throw new Error('unknown --fork ' + FORK)
+// EIP-7825 caps a transaction at 2^24 gas from Osaka (Fusaka) on; before it, a transaction is bounded only by
+// the block gas limit (36 million when Pectra activated)
+const TX_GAS_CAP = FORK === 'osaka' ? 16_777_216n : 36_000_000n
 const DST = 'MLAV-BENCH-BLS-SIG_BLS12381G1_XMD:SHA-256_SSWU_RO_'
 const G1 = bls12_381.G1.Point, G2 = bls12_381.G2.Point
 const R = bls12_381.fields.Fr.ORDER
@@ -48,7 +53,7 @@ fs.writeFileSync(`${OUT}/Baselines.sol`, src)
 const C = out.contracts['Baselines.sol']
 
 // ------------------------------------------------------------------ EVM
-const common = new Common({ chain: Mainnet, hardfork: Hardfork.Osaka })
+const common = new Common({ chain: Mainnet, hardfork: HF })
 const vm = await createVM({ common })
 const pk = hexToBytes('0x' + '22'.repeat(32))
 const sender = new Address(privateToAddress(pk))
@@ -185,14 +190,18 @@ schemes.BLS = {
 }
 
 // ------------------------------------------------------------------ run
-const results = { environment: { evm: '@ethereumjs/vm 10.1.3', hardfork: 'osaka', solc: solc.version(), via_ir: true,
-  tx_gas_cap: Number(TX_GAS_CAP), devices: M }, schemes: {}, scaling: [], max_batch: {}, anchoring: [] }
+const results = { environment: { evm: '@ethereumjs/vm 10.1.3', hardfork: FORK, solc: solc.version(), via_ir: true,
+  tx_gas_cap: Number(TX_GAS_CAP), fork: FORK, devices: M }, schemes: {}, scaling: [], max_batch: {}, anchoring: [] }
 
 for (const [key, S] of Object.entries(schemes)) {
   await S.setup()
   const info = { label: S.label, deploy_gas: S.c.deployGas, register_device_gas: S.regGas }
   // correctness
   info.valid_batch_accepted = (await send(S.c.addr, S.batch(20))).ok
+  if (!info.valid_batch_accepted) {   // precompile not available under this fork
+    info.supported = false; results.schemes[key] = info; console.log(key, 'not supported under', FORK); continue
+  }
+  info.supported = true
   info.tampered_batch_rejected = !(await send(S.c.addr, S.batch(20, true))).ok
   {   // replay and domain separation
     const data = S.batch(20)
@@ -224,7 +233,7 @@ for (const [key, S] of Object.entries(schemes)) {
     console.log(`  ${key} n=${String(n).padStart(4)} ${r.ok ? r.gas.toLocaleString().padStart(12) + '  ' + Math.round(r.gas / n).toLocaleString() + '/msg' : 'FAILED (cap)'}`)
   }
   // largest batch under the per-transaction cap
-  if (!QUICK) {
+  if (!QUICK && FORK === 'osaka') {
     let lo = 50, hi = 4000
     while (hi - lo > 10) { const mid = (lo + hi) >> 1; if ((await send(S.c.addr, S.batch(mid))).ok) lo = mid; else hi = mid }
     results.max_batch[key] = lo

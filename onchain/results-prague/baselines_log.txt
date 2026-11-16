@@ -1,0 +1,24 @@
+K1 {"label":"ECDSA secp256k1 (ecrecover)","deploy_gas":483408,"register_device_gas":44097,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":55458,"individual_calldata":228}
+  K1 n=   1       58,361  58,361/msg
+  K1 n=  10      178,996  17,900/msg
+  K1 n=  50      520,474  10,409/msg
+  K1 n= 100      949,424  9,494/msg
+  K1 n= 200    1,815,878  9,079/msg
+  K1 n= 500    4,481,465  8,963/msg
+  K1 n=1000    9,151,450  9,151/msg
+  K1 n=2000   19,335,257  9,668/msg
+R1 not supported under prague
+BLS {"label":"BLS12-381 aggregate (EIP-2537)","deploy_gas":942740,"register_device_gas":69763,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"hash_to_curve_matches_rfc9380":true,"hash_to_g1_call_gas":30269,"individual_gas":186475,"individual_calldata":708}
+  BLS n=   1      188,064  188,064/msg
+  BLS n=  10      818,620  81,862/msg
+  BLS n=  50    1,918,711  38,374/msg
+  BLS n= 100    3,432,827  34,328/msg
+  BLS n= 200    6,925,759  34,629/msg
+  BLS n= 500   21,125,616  42,251/msg
+  BLS n=1000 FAILED (cap)
+  BLS n=2000 FAILED (cap)
+anchor n=10 root-only=45495 leaves+root=57633 each=249102
+anchor n=100 root-only=45495 leaves+root=164377 each=2295438
+anchor n=500 root-only=45507 leaves+root=659850 each=11389786
+anchor n=1000 root-only=45507 leaves+root=1298410 each=22758306
+written to results-prague

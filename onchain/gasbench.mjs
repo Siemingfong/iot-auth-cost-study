@@ -20,7 +20,12 @@ fs.mkdirSync(OUT, { recursive: true })
 const G1 = bls12_381.G1.Point, G2 = bls12_381.G2.Point
 const R = bls12_381.fields.Fr.ORDER
 const DST = 'MLAV-IoP-V01-H1_BLS12381G1_XMD:SHA-256_SSWU_RO_'
-const TX_GAS_CAP = 16_777_216n   // EIP-7825
+const FORK = process.argv.includes('--fork') ? process.argv[process.argv.indexOf('--fork') + 1] : 'osaka'
+const HF = { cancun: Hardfork.Cancun, prague: Hardfork.Prague, osaka: Hardfork.Osaka }[FORK]
+if (!HF) throw new Error('unknown --fork ' + FORK)
+// EIP-7825 caps a transaction at 2^24 gas from Osaka (Fusaka) on; before it, a transaction is bounded only by
+// the block gas limit (36 million when Pectra activated)
+const TX_GAS_CAP = FORK === 'osaka' ? 16_777_216n : 36_000_000n   // EIP-7825
 const abi = AbiCoder.defaultAbiCoder()
 
 // ------------------------------------------------------------------ encoding helpers
@@ -83,7 +88,7 @@ function compile(kgc) {
   return { abi: c.abi, bytecode: c.evm.bytecode.object, source: src }
 }
 
-const common = new Common({ chain: Mainnet, hardfork: Hardfork.Osaka })
+const common = new Common({ chain: Mainnet, hardfork: HF })
 const vm = await createVM({ common })
 const pk = hexToBytes('0x' + '11'.repeat(32))
 const sender = new Address(privateToAddress(pk))
@@ -102,6 +107,12 @@ async function send(to, data, gasLimit = TX_GAS_CAP) {
 }
 
 // ------------------------------------------------------------------ experiment
+if (FORK === 'cancun') {   // the BLS12-381 precompiles (EIP-2537) arrived with Prague
+  fs.mkdirSync(OUT, { recursive: true })
+  fs.writeFileSync(`${OUT}/gas_results.json`, JSON.stringify({ environment: { hardfork: FORK }, supported: false,
+    reason: 'EIP-2537 BLS12-381 precompiles not available before Prague' }, null, 2))
+  console.log('MLAV-IBS not supported under', FORK); process.exit(0)
+}
 const kgc = setupKGC()
 const C = compile(kgc)
 fs.writeFileSync(`${OUT}/MLAVVerifier.sol`, C.source)
@@ -148,7 +159,7 @@ async function individualTxs(b) {
 
 const results = { environment: {
   evm: '@ethereumjs/vm ' + JSON.parse(fs.readFileSync('node_modules/@ethereumjs/vm/package.json')).version,
-  hardfork: 'osaka', solc: solc.version(), optimizer_runs: 200, via_ir: true, tx_gas_cap: Number(TX_GAS_CAP) },
+  hardfork: FORK, solc: solc.version(), optimizer_runs: 200, via_ir: true, tx_gas_cap: Number(TX_GAS_CAP) },
   deploy_gas: Number(dep.gas), register_device_gas: regGas[1], tests: {}, scaling: [], device_sweep: [], anchoring: [] }
 
 // ---- correctness / attack tests on-chain (a fresh batch for every submission, because accepted
@@ -208,7 +219,7 @@ for (const n of SIZES) {
 
 // ---- largest batch that fits under the EIP-7825 per-transaction cap (binary search, m = 10)
 results.max_batch = {}
-if (!QUICK) {
+if (!QUICK && FORK === 'osaka') {
   for (const [mode, name] of [[0, 'B1 naive batch (insecure)'], [1, 'B2 small-exponent batch'], [2, 'B3 grouped small-exponent batch']]) {
     let lo = 100, hi = 1200
     while (hi - lo > 5) {

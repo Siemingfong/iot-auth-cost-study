@@ -1,0 +1,428 @@
+{
+  "environment": {
+    "evm": "@ethereumjs/vm 10.1.3",
+    "hardfork": "prague",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "optimizer_runs": 200,
+    "via_ir": true,
+    "tx_gas_cap": 36000000
+  },
+  "deploy_gas": 1196048,
+  "register_device_gas": 68085,
+  "tests": {
+    "valid": {
+      "naive": true,
+      "set": true,
+      "grouped": true
+    },
+    "single_invalid_rejected": {
+      "naive": true,
+      "set": true,
+      "grouped": true
+    },
+    "cancellation_attack": {
+      "msg3_individual_accepted": false,
+      "naive_batch_ACCEPTS": true,
+      "set_batch_accepts": false,
+      "grouped_batch_accepts": false
+    },
+    "individual_valid": true,
+    "replay": {
+      "first_submission_accepted": true,
+      "resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "wrong_contract_rejected": true,
+      "reregistration_rejected": true
+    }
+  },
+  "scaling": [
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "V individual (n txs)",
+      "total_gas": 176920,
+      "per_msg_gas": 176920,
+      "calldata_bytes": 580,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 192354,
+      "per_msg_gas": 192354,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B2 small-exponent batch",
+      "total_gas": 205848,
+      "per_msg_gas": 205848,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 206662,
+      "per_msg_gas": 206662,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 10,
+      "devices": 10,
+      "method": "V individual (n txs)",
+      "total_gas": 1769440,
+      "per_msg_gas": 176944,
+      "calldata_bytes": 5800,
+      "ok": true
+    },
+    {
+      "n": 10,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 501270,
+      "per_msg_gas": 50127,
+      "calldata_bytes": 5924,
+      "ok": true
+    },
+    {
+      "n": 10,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 584867,
+      "per_msg_gas": 58487,
+      "calldata_bytes": 5924,
+      "ok": true
+    },
+    {
+      "n": 10,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 589442,
+      "per_msg_gas": 58944,
+      "calldata_bytes": 5924,
+      "ok": true
+    },
+    {
+      "n": 50,
+      "devices": 10,
+      "method": "V individual (n txs)",
+      "total_gas": 8847248,
+      "per_msg_gas": 176945,
+      "calldata_bytes": 29000,
+      "ok": true
+    },
+    {
+      "n": 50,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 1389838,
+      "per_msg_gas": 27797,
+      "calldata_bytes": 22564,
+      "ok": true
+    },
+    {
+      "n": 50,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 1730603,
+      "per_msg_gas": 34612,
+      "calldata_bytes": 22564,
+      "ok": true
+    },
+    {
+      "n": 50,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 1503958,
+      "per_msg_gas": 30079,
+      "calldata_bytes": 22564,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "V individual (n txs)",
+      "total_gas": 17694760,
+      "per_msg_gas": 176948,
+      "calldata_bytes": 58000,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 2504823,
+      "per_msg_gas": 25048,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 3124045,
+      "per_msg_gas": 31240,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 2577613,
+      "per_msg_gas": 25776,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "V individual (n txs)",
+      "total_gas": 35389532,
+      "per_msg_gas": 176948,
+      "calldata_bytes": 116000,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 4846539,
+      "per_msg_gas": 24233,
+      "calldata_bytes": 84964,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 6059973,
+      "per_msg_gas": 30300,
+      "calldata_bytes": 84964,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 4845632,
+      "per_msg_gas": 24228,
+      "calldata_bytes": 84964,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 7271588,
+      "per_msg_gas": 24239,
+      "calldata_bytes": 126564,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 9131084,
+      "per_msg_gas": 30437,
+      "calldata_bytes": 126564,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 7247097,
+      "per_msg_gas": 24157,
+      "calldata_bytes": 126564,
+      "ok": true
+    },
+    {
+      "n": 400,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 9778207,
+      "per_msg_gas": 24446,
+      "calldata_bytes": 168164,
+      "ok": true
+    },
+    {
+      "n": 400,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 12307858,
+      "per_msg_gas": 30770,
+      "calldata_bytes": 168164,
+      "ok": true
+    },
+    {
+      "n": 400,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 9736958,
+      "per_msg_gas": 24342,
+      "calldata_bytes": 168164,
+      "ok": true
+    },
+    {
+      "n": 500,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 12368442,
+      "per_msg_gas": 24737,
+      "calldata_bytes": 209764,
+      "ok": true
+    },
+    {
+      "n": 500,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 15599987,
+      "per_msg_gas": 31200,
+      "calldata_bytes": 209764,
+      "ok": true
+    },
+    {
+      "n": 500,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 12316448,
+      "per_msg_gas": 24633,
+      "calldata_bytes": 209764,
+      "ok": true
+    },
+    {
+      "n": 600,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 15040877,
+      "per_msg_gas": 25068,
+      "calldata_bytes": 251364,
+      "ok": true
+    },
+    {
+      "n": 600,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 19000835,
+      "per_msg_gas": 31668,
+      "calldata_bytes": 251364,
+      "ok": true
+    },
+    {
+      "n": 600,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 14987761,
+      "per_msg_gas": 24980,
+      "calldata_bytes": 251364,
+      "ok": true
+    }
+  ],
+  "device_sweep": [
+    {
+      "n": 200,
+      "devices": 1,
+      "method": "B2 small-exponent batch",
+      "total_gas": 5968683,
+      "per_msg_gas": 29843,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 1,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 4693686,
+      "per_msg_gas": 23468,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 5,
+      "method": "B2 small-exponent batch",
+      "total_gas": 6010402,
+      "per_msg_gas": 30052,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 5,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 4761996,
+      "per_msg_gas": 23810,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 6059829,
+      "per_msg_gas": 30299,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 4845548,
+      "per_msg_gas": 24228,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 50,
+      "method": "B2 small-exponent batch",
+      "total_gas": 6455198,
+      "per_msg_gas": 32276,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 50,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 5514215,
+      "per_msg_gas": 27571,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 200,
+      "method": "B2 small-exponent batch",
+      "total_gas": 7943586,
+      "per_msg_gas": 39718,
+      "ok": true
+    },
+    {
+      "n": 200,
+      "devices": 200,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 8036233,
+      "per_msg_gas": 40181,
+      "ok": true
+    }
+  ],
+  "anchoring": [
+    {
+      "n": 10,
+      "each_slot_gas": 249140,
+      "merkle_root_gas": 57934
+    },
+    {
+      "n": 100,
+      "each_slot_gas": 2295506,
+      "merkle_root_gas": 165830
+    },
+    {
+      "n": 500,
+      "each_slot_gas": 11390494,
+      "merkle_root_gas": 659940
+    }
+  ],
+  "max_batch": {}
+}

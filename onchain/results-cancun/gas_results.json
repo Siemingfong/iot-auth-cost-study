@@ -1,0 +1,7 @@
+{
+  "environment": {
+    "hardfork": "cancun"
+  },
+  "supported": false,
+  "reason": "EIP-2537 BLS12-381 precompiles not available before Prague"
+}

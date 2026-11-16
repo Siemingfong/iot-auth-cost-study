@@ -1,0 +1,143 @@
+{
+  "environment": {
+    "evm": "@ethereumjs/vm 10.1.3",
+    "hardfork": "cancun",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "via_ir": true,
+    "tx_gas_cap": 36000000,
+    "fork": "cancun",
+    "devices": 10
+  },
+  "schemes": {
+    "K1": {
+      "label": "ECDSA secp256k1 (ecrecover)",
+      "deploy_gas": 483408,
+      "register_device_gas": 44097,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "individual_gas": 55475,
+      "individual_calldata": 228
+    },
+    "R1": {
+      "label": "ECDSA P-256 (EIP-7951)",
+      "deploy_gas": 683081,
+      "register_device_gas": 67334,
+      "valid_batch_accepted": false,
+      "supported": false
+    },
+    "BLS": {
+      "label": "BLS12-381 aggregate (EIP-2537)",
+      "deploy_gas": 942740,
+      "register_device_gas": 69739,
+      "valid_batch_accepted": false,
+      "supported": false
+    }
+  },
+  "scaling": [
+    {
+      "scheme": "K1",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 58361,
+      "per_msg_gas": 58361,
+      "calldata_bytes": 292,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 10,
+      "devices": 10,
+      "total_gas": 178972,
+      "per_msg_gas": 17897,
+      "calldata_bytes": 2308,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 50,
+      "devices": 10,
+      "total_gas": 520330,
+      "per_msg_gas": 10407,
+      "calldata_bytes": 11268,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 949160,
+      "per_msg_gas": 9492,
+      "calldata_bytes": 22468,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 10,
+      "total_gas": 1815818,
+      "per_msg_gas": 9079,
+      "calldata_bytes": 44868,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 500,
+      "devices": 10,
+      "total_gas": 4481861,
+      "per_msg_gas": 8964,
+      "calldata_bytes": 112068,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 1000,
+      "devices": 10,
+      "total_gas": 9150862,
+      "per_msg_gas": 9151,
+      "calldata_bytes": 224068,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 2000,
+      "devices": 10,
+      "total_gas": 19335209,
+      "per_msg_gas": 9668,
+      "calldata_bytes": 448068,
+      "ok": true
+    }
+  ],
+  "max_batch": {},
+  "anchoring": [
+    {
+      "n": 10,
+      "root_only_gas": 45495,
+      "leaves_root_gas": 57633,
+      "each_slot_gas": 249090
+    },
+    {
+      "n": 100,
+      "root_only_gas": 45495,
+      "leaves_root_gas": 164461,
+      "each_slot_gas": 2295354
+    },
+    {
+      "n": 500,
+      "root_only_gas": 45507,
+      "leaves_root_gas": 642932,
+      "each_slot_gas": 11389990
+    },
+    {
+      "n": 1000,
+      "root_only_gas": 45507,
+      "leaves_root_gas": 1255110,
+      "each_slot_gas": 22758270
+    }
+  ]
+}

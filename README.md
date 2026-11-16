@@ -87,3 +87,10 @@ which adds 64 bytes to the hashed input and does not measurably change signing o
 the time of any reading. The 16 runs agree within 1% for most timings and within 10% for all, so none was
 throttled; the manuscript reports their medians, computed by `python3 summarize_runs.py results-device-pi-4`
 into `results-device-pi-4/summary_median.csv`.
+
+## Before and after Pectra and Fusaka (Table 4 of the manuscript)
+Both harnesses take `--fork cancun|prague|osaka` (default `osaka`). `onchain/results-cancun/` and
+`onchain/results-prague/` hold the same transactions executed under the rules before Pectra (Cancun) and after
+Pectra (Prague); `onchain/results/` holds the Osaka (Fusaka) run. Designs whose precompile does not exist under a
+fork are reported as unsupported (R1 before Osaka; BLS and MLAV-IBS before Prague). Before Osaka there is no
+per-transaction cap, so transactions are limited to the 36-million block gas limit and no largest batch is searched.
