@@ -1,0 +1,13 @@
+  K1              workers= 1      1718.3 records/s  speedup  1.00
+  K1              workers= 2      3429.7 records/s  speedup  2.00
+  K1              workers= 4      6826.0 records/s  speedup  3.97
+  R1              workers= 1      1250.3 records/s  speedup  1.00
+  R1              workers= 2      2406.3 records/s  speedup  1.92
+  R1              workers= 4      4458.0 records/s  speedup  3.57
+  BLS             workers= 1       330.3 records/s  speedup  1.00
+  BLS             workers= 2       660.7 records/s  speedup  2.00
+  BLS             workers= 4      1319.7 records/s  speedup  4.00
+  IBS (Q cached)  workers= 1      2680.6 records/s  speedup  1.00
+  IBS (Q cached)  workers= 2      5323.4 records/s  speedup  1.99
+  IBS (Q cached)  workers= 4     10403.2 records/s  speedup  3.88
+written results-parallel-raspberry-pi-zero-2-w-rev-1-0-20261117-153342/parallel.csv

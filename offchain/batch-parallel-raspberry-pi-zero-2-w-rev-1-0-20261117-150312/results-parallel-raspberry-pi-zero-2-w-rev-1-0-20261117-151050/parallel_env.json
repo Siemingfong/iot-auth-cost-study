@@ -1,0 +1,12 @@
+{
+  "cpus": 4,
+  "workers": [
+    1,
+    2,
+    4
+  ],
+  "records_per_batch": 1000,
+  "batches_per_worker": 3,
+  "devices": 10,
+  "quick": false
+}

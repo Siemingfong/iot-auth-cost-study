@@ -1,0 +1,16 @@
+  K1              workers= 1      1718.7 records/s  speedup  1.00
+  K1              workers= 2      3429.6 records/s  speedup  2.00
+  K1              workers= 4      6796.6 records/s  speedup  3.95
+  R1              workers= 1      1250.1 records/s  speedup  1.00
+  R1              workers= 2      2391.2 records/s  speedup  1.91
+  R1              workers= 4      4426.3 records/s  speedup  3.54
+  BLS             workers= 1       330.3 records/s  speedup  1.00
+  BLS             workers= 2       660.6 records/s  speedup  2.00
+  BLS             workers= 4      1317.7 records/s  speedup  3.99
+  IBS (Q cached)  workers= 1      2684.7 records/s  speedup  1.00
+  IBS (Q cached)  workers= 2      5322.2 records/s  speedup  1.98
+  IBS (Q cached)  workers= 4     10501.5 records/s  speedup  3.91
+written results-parallel-raspberry-pi-zero-2-w-rev-1-0-20261117-150701/parallel.csv
+
+Done. Send this file back:  offchain/results-parallel-raspberry-pi-zero-2-w-rev-1-0-20261117-150701.tar.gz
+Throttling flags after the run: 0x0 (0x0 means none)

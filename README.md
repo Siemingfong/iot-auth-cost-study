@@ -119,3 +119,10 @@ Pi 4 Model B and the Pi Zero 2 W (16 November 2026); both report `throttled=0x0`
 (`RUNS`, default 10; `PAUSE` seconds between runs, default 60) and `offchain/summarize_runs.py` reports, for every
 timing, the number of runs, mean, standard deviation, coefficient of variation, median, quartiles, minimum, maximum
 and spread, together with the throttling flags recorded before and after each run.
+
+### Repeated runs on the Raspberry Pi boards (Tables 3 and 4 of the manuscript)
+`offchain/batch-device-raspberry-pi-zero-2-w-*/` (10 single-core runs), `offchain/batch-parallel-raspberry-pi-4-*/`
+and `offchain/batch-parallel-raspberry-pi-zero-2-w-*/` (10 parallel runs each) were produced by `run_repeated.sh` on
+17 November 2026; each holds the individual runs and `summary_stats.csv`. All 30 runs report `throttled=0x0` before
+and after. The manuscript reports the medians; coefficients of variation across runs are at most 2.3% (single-core)
+and 1.1% (parallel throughput).

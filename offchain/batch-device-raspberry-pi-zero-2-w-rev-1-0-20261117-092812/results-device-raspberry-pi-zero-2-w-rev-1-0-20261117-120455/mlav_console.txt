@@ -1,0 +1,129 @@
+{
+  "cpu": "unknown",
+  "logical_cpus": 4,
+  "python": "3.13.5",
+  "os": "Linux-6.18.50+rpt-rpi-v8-aarch64-with-glibc2.41",
+  "library": "py_arkworks_bls12381 0.5.0",
+  "curve": "BLS12-381",
+  "delta_bits": 64
+}
+
+[1] tests
+{
+  "valid_all_accept": true,
+  "single_invalid_rejected": {
+    "individual": true,
+    "naive": true,
+    "set": true,
+    "grouped": true
+  },
+  "cancellation_attack": {
+    "msg3_valid": false,
+    "naive_ACCEPTS": true,
+    "set_accepts": false,
+    "grouped_accepts": false
+  },
+  "fresh_randomness_per_signature": true,
+  "kgc_trace_ok": true
+}
+
+[2] primitives
+  pairing (full)                     15.6391 ms
+  multi-pairing check, 2 pairs       20.2973 ms
+  G1 scalar mult (255-bit)            2.7056 ms
+  G1 scalar mult (64-bit)             0.7124 ms
+  G1 point addition                   0.0123 ms
+  GT multiplication                   0.0562 ms
+  hash-to-G1 (RFC 9380)               2.9475 ms
+  H2 (SHA-512 -> Z_r)                 0.0381 ms
+  G1 MSM, 100 points                 54.8988 ms
+  G1 MSM, 1000 points               321.9000 ms
+  Sign (device)                       5.4728 ms
+
+[3] scaling, H1 cached (m = 50)
+  n=    1 V1 individual (2 pairings)              34.20 ms (34.2023/msg)
+  n=    1 V2 individual (multi-pairing)           23.26 ms (23.2568/msg)
+  n=    1 B1 naive batch (insecure)               24.08 ms (24.0766/msg)
+  n=    1 B2 small-exponent batch                 25.39 ms (25.3950/msg)
+  n=    1 B3 grouped small-exponent batch         25.34 ms (25.3414/msg)
+  n=   10 V1 individual (2 pairings)             340.51 ms (34.0512/msg)
+  n=   10 V2 individual (multi-pairing)          230.48 ms (23.0476/msg)
+  n=   10 B1 naive batch (insecure)               33.06 ms (3.3057/msg)
+  n=   10 B2 small-exponent batch                 37.89 ms (3.7890/msg)
+  n=   10 B3 grouped small-exponent batch         37.80 ms (3.7803/msg)
+  n=   50 V1 individual (2 pairings)            1703.49 ms (34.0699/msg)
+  n=   50 V2 individual (multi-pairing)         1154.69 ms (23.0939/msg)
+  n=   50 B1 naive batch (insecure)               64.69 ms (1.2937/msg)
+  n=   50 B2 small-exponent batch                 78.62 ms (1.5724/msg)
+  n=   50 B3 grouped small-exponent batch         79.16 ms (1.5833/msg)
+  n=  100 V1 individual (2 pairings)            3404.47 ms (34.0447/msg)
+  n=  100 V2 individual (multi-pairing)         2305.20 ms (23.0520/msg)
+  n=  100 B1 naive batch (insecure)               97.72 ms (0.9772/msg)
+  n=  100 B2 small-exponent batch                120.01 ms (1.2001/msg)
+  n=  100 B3 grouped small-exponent batch        104.37 ms (1.0437/msg)
+  n=  200 V1 individual (2 pairings)            6810.85 ms (34.0542/msg)
+  n=  200 V2 individual (multi-pairing)         4612.51 ms (23.0626/msg)
+  n=  200 B1 naive batch (insecure)              158.53 ms (0.7927/msg)
+  n=  200 B2 small-exponent batch                198.35 ms (0.9918/msg)
+  n=  200 B3 grouped small-exponent batch        137.58 ms (0.6879/msg)
+  n=  500 V1 individual (2 pairings)           17024.38 ms (34.0488/msg)
+  n=  500 V2 individual (multi-pairing)        11528.82 ms (23.0576/msg)
+  n=  500 B1 naive batch (insecure)              279.80 ms (0.5596/msg)
+  n=  500 B2 small-exponent batch                366.85 ms (0.7337/msg)
+  n=  500 B3 grouped small-exponent batch        246.16 ms (0.4923/msg)
+  n= 1000 V1 individual (2 pairings)           34042.98 ms (34.0430/msg)
+  n= 1000 V2 individual (multi-pairing)        23053.97 ms (23.0540/msg)
+  n= 1000 B1 naive batch (insecure)              502.56 ms (0.5026/msg)
+  n= 1000 B2 small-exponent batch                656.87 ms (0.6569/msg)
+  n= 1000 B3 grouped small-exponent batch        419.80 ms (0.4198/msg)
+
+[4] scaling, H1 recomputed (m = 50)
+  n=    1 V1 individual (2 pairings)              36.94 ms (36.9435/msg)
+  n=    1 V2 individual (multi-pairing)           25.89 ms (25.8934/msg)
+  n=    1 B1 naive batch (insecure)               27.22 ms (27.2199/msg)
+  n=    1 B2 small-exponent batch                 28.28 ms (28.2813/msg)
+  n=    1 B3 grouped small-exponent batch         28.55 ms (28.5463/msg)
+  n=   10 V1 individual (2 pairings)             370.96 ms (37.0956/msg)
+  n=   10 V2 individual (multi-pairing)          261.12 ms (26.1116/msg)
+  n=   10 B1 naive batch (insecure)               62.80 ms (6.2799/msg)
+  n=   10 B2 small-exponent batch                 67.35 ms (6.7349/msg)
+  n=   10 B3 grouped small-exponent batch         67.47 ms (6.7466/msg)
+  n=   50 V1 individual (2 pairings)            1851.54 ms (37.0307/msg)
+  n=   50 V2 individual (multi-pairing)         1302.36 ms (26.0471/msg)
+  n=   50 B1 naive batch (insecure)              211.92 ms (4.2384/msg)
+  n=   50 B2 small-exponent batch                225.96 ms (4.5191/msg)
+  n=   50 B3 grouped small-exponent batch        227.05 ms (4.5409/msg)
+  n=  100 V1 individual (2 pairings)            3704.51 ms (37.0451/msg)
+  n=  100 V2 individual (multi-pairing)         2606.67 ms (26.0667/msg)
+  n=  100 B1 naive batch (insecure)              392.59 ms (3.9259/msg)
+  n=  100 B2 small-exponent batch                414.81 ms (4.1481/msg)
+  n=  100 B3 grouped small-exponent batch        252.48 ms (2.5248/msg)
+  n=  200 V1 individual (2 pairings)            7407.38 ms (37.0369/msg)
+  n=  200 V2 individual (multi-pairing)         5211.02 ms (26.0551/msg)
+  n=  200 B1 naive batch (insecure)              747.84 ms (3.7392/msg)
+  n=  200 B2 small-exponent batch                787.40 ms (3.9370/msg)
+  n=  200 B3 grouped small-exponent batch        285.60 ms (1.4280/msg)
+  n=  500 V1 individual (2 pairings)           18517.80 ms (37.0356/msg)
+  n=  500 V2 individual (multi-pairing)        13024.32 ms (26.0486/msg)
+  n=  500 B1 naive batch (insecure)             1752.61 ms (3.5052/msg)
+  n=  500 B2 small-exponent batch               1839.81 ms (3.6796/msg)
+  n=  500 B3 grouped small-exponent batch        394.74 ms (0.7895/msg)
+  n= 1000 V1 individual (2 pairings)           37017.50 ms (37.0175/msg)
+  n= 1000 V2 individual (multi-pairing)        26036.97 ms (26.0370/msg)
+  n= 1000 B1 naive batch (insecure)             3449.17 ms (3.4492/msg)
+  n= 1000 B2 small-exponent batch               3603.20 ms (3.6032/msg)
+  n= 1000 B3 grouped small-exponent batch        567.27 ms (0.5673/msg)
+
+[5] device sweep (n = 1000)
+  n=1000 m=    1 B2 small-exponent batch               617.60 ms
+  n=1000 m=    1 B3 grouped small-exponent batch       354.89 ms
+  n=1000 m=   10 B2 small-exponent batch               654.71 ms
+  n=1000 m=   10 B3 grouped small-exponent batch       373.13 ms
+  n=1000 m=   50 B2 small-exponent batch               656.75 ms
+  n=1000 m=   50 B3 grouped small-exponent batch       419.59 ms
+  n=1000 m=  200 B2 small-exponent batch               657.27 ms
+  n=1000 m=  200 B3 grouped small-exponent batch       464.17 ms
+  n=1000 m= 1000 B2 small-exponent batch               657.95 ms
+  n=1000 m= 1000 B3 grouped small-exponent batch       668.66 ms
+
+written to results-device-raspberry-pi-zero-2-w-rev-1-0-20261117-120455/
