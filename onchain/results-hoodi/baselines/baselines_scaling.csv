@@ -1,0 +1,10 @@
+scheme,n,devices,total_gas,per_msg_gas,calldata_bytes,ok
+K1,1,1,58349,58349,,true
+K1,100,10,949460,9495,,true
+K1,500,10,4481633,8963,,true
+R1,1,1,68176,68176,,true
+R1,100,10,1513050,15131,,true
+R1,500,10,7271211,14542,,true
+BLS,1,1,188676,188676,,true
+BLS,100,10,3492611,34926,,true
+BLS,500,10,,,,false

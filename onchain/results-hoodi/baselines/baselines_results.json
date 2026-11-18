@@ -1,0 +1,179 @@
+{
+  "environment": {
+    "evm": "live network",
+    "live": {
+      "chainId": "560048",
+      "block": 4038867,
+      "gasLimit": 60000000,
+      "baseFee": 937908658,
+      "client": "Geth/v1.17.10-stable-1df30b18/linux-amd64/go1.25.14",
+      "transferGas": 21000,
+      "headerKeys": [
+        "baseFeePerGas",
+        "blobGasUsed",
+        "difficulty",
+        "excessBlobGas",
+        "extraData",
+        "gasLimit",
+        "gasUsed",
+        "hash",
+        "logsBloom",
+        "miner",
+        "mixHash",
+        "nonce",
+        "number",
+        "parentBeaconBlockRoot",
+        "parentHash",
+        "receiptsRoot",
+        "requestsHash",
+        "sha3Uncles",
+        "size",
+        "stateRoot",
+        "timestamp",
+        "transactions",
+        "transactionsRoot",
+        "uncles",
+        "withdrawals",
+        "withdrawalsRoot"
+      ]
+    },
+    "hardfork": "osaka (live)",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "via_ir": true,
+    "tx_gas_cap": 16777216,
+    "fork": "osaka",
+    "devices": 10
+  },
+  "schemes": {
+    "K1": {
+      "label": "ECDSA secp256k1 (ecrecover)",
+      "deploy_gas": 483408,
+      "register_device_gas": 44097,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "individual_gas": 55470,
+      "individual_calldata": 228
+    },
+    "R1": {
+      "label": "ECDSA P-256 (EIP-7951)",
+      "deploy_gas": 683081,
+      "register_device_gas": 67334,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "individual_gas": 63776,
+      "individual_calldata": 324
+    },
+    "BLS": {
+      "label": "BLS12-381 aggregate (EIP-2537)",
+      "deploy_gas": 942740,
+      "register_device_gas": 69763,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "hash_to_curve_matches_rfc9380": true,
+      "hash_to_g1_call_gas": 0,
+      "individual_gas": 187077,
+      "individual_calldata": 708
+    }
+  },
+  "scaling": [
+    {
+      "scheme": "K1",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 58349,
+      "per_msg_gas": 58349,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 949460,
+      "per_msg_gas": 9495,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 500,
+      "devices": 10,
+      "total_gas": 4481633,
+      "per_msg_gas": 8963,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 68176,
+      "per_msg_gas": 68176,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 1513050,
+      "per_msg_gas": 15131,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 500,
+      "devices": 10,
+      "total_gas": 7271211,
+      "per_msg_gas": 14542,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 188676,
+      "per_msg_gas": 188676,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 3492611,
+      "per_msg_gas": 34926,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 500,
+      "devices": 10,
+      "total_gas": null,
+      "per_msg_gas": null,
+      "ok": false
+    }
+  ],
+  "max_batch": {},
+  "anchoring": [
+    {
+      "n": 500,
+      "root_only_gas": 45507,
+      "leaves_root_gas": 660000,
+      "each_slot_gas": null
+    }
+  ]
+}
