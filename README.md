@@ -127,3 +127,10 @@ and `offchain/batch-parallel-raspberry-pi-zero-2-w-*/` (10 parallel runs each) w
 and after. The Pi 4 single-core batch replaces the 16 earlier runs in `results-device-pi-4/` (which report
 `throttled=0x50000`, i.e. under-voltage since boot) and agrees with their medians within 0.3%. The manuscript reports the medians; coefficients of variation across runs are at most 2.3% (single-core)
 and 1.1% (parallel throughput).
+
+## Devices per batch (Table 2 of the journal version)
+`node baselines_bench.mjs --quick --sweep --out results-device-sweep` registers 200 devices per design and measures a
+batch of 200 records drawn from m = 1, 5, 10, 50 and 200 devices for K1, R1 and BLS
+(`onchain/results-device-sweep/baselines_device_sweep.csv`); the MLAV-IBS values come from the existing device sweep
+in `onchain/results/gas_device_sweep.csv`. With `--quick`, the other parts of the run are abbreviated; the device sweep
+itself is complete.

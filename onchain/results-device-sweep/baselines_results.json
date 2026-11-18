@@ -1,0 +1,280 @@
+{
+  "environment": {
+    "evm": "@ethereumjs/vm 10.1.3",
+    "hardfork": "osaka",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "via_ir": true,
+    "tx_gas_cap": 16777216,
+    "fork": "osaka",
+    "devices": 10
+  },
+  "schemes": {
+    "K1": {
+      "label": "ECDSA secp256k1 (ecrecover)",
+      "deploy_gas": 483408,
+      "register_device_gas": 44097,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "individual_gas": 55470,
+      "individual_calldata": 228
+    },
+    "R1": {
+      "label": "ECDSA P-256 (EIP-7951)",
+      "deploy_gas": 683081,
+      "register_device_gas": 67334,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "individual_gas": 63762,
+      "individual_calldata": 324
+    },
+    "BLS": {
+      "label": "BLS12-381 aggregate (EIP-2537)",
+      "deploy_gas": 942740,
+      "register_device_gas": 69763,
+      "valid_batch_accepted": true,
+      "supported": true,
+      "tampered_batch_rejected": true,
+      "replay_first_accepted": true,
+      "replay_resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "reregistration_rejected": true,
+      "wrong_contract_rejected": true,
+      "hash_to_curve_matches_rfc9380": true,
+      "hash_to_g1_call_gas": 30869,
+      "individual_gas": 187125,
+      "individual_calldata": 708
+    }
+  },
+  "scaling": [
+    {
+      "scheme": "K1",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 58361,
+      "per_msg_gas": 58361,
+      "calldata_bytes": 292,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 10,
+      "devices": 10,
+      "total_gas": 178960,
+      "per_msg_gas": 17896,
+      "calldata_bytes": 2308,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 949376,
+      "per_msg_gas": 9494,
+      "calldata_bytes": 22468,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 68164,
+      "per_msg_gas": 68164,
+      "calldata_bytes": 452,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 10,
+      "devices": 10,
+      "total_gas": 270670,
+      "per_msg_gas": 27067,
+      "calldata_bytes": 3332,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 1513254,
+      "per_msg_gas": 15133,
+      "calldata_bytes": 23492,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 1,
+      "devices": 1,
+      "total_gas": 188700,
+      "per_msg_gas": 188700,
+      "calldata_bytes": 708,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 10,
+      "devices": 10,
+      "total_gas": 824620,
+      "per_msg_gas": 82462,
+      "calldata_bytes": 4740,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 100,
+      "devices": 10,
+      "total_gas": 3492611,
+      "per_msg_gas": 34926,
+      "calldata_bytes": 19140,
+      "ok": true
+    }
+  ],
+  "max_batch": {},
+  "anchoring": [
+    {
+      "n": 10,
+      "root_only_gas": 45495,
+      "leaves_root_gas": 57633,
+      "each_slot_gas": 249090
+    },
+    {
+      "n": 100,
+      "root_only_gas": 45495,
+      "leaves_root_gas": 164485,
+      "each_slot_gas": 2295366
+    }
+  ],
+  "device_sweep": [
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 1,
+      "total_gas": 1772438,
+      "per_msg_gas": 8862,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 5,
+      "total_gas": 1791518,
+      "per_msg_gas": 8958,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 10,
+      "total_gas": 1815626,
+      "per_msg_gas": 9078,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 50,
+      "total_gas": 2007206,
+      "per_msg_gas": 10036,
+      "ok": true
+    },
+    {
+      "scheme": "K1",
+      "n": 200,
+      "devices": 200,
+      "total_gas": 2727818,
+      "per_msg_gas": 13639,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 200,
+      "devices": 1,
+      "total_gas": 2834837,
+      "per_msg_gas": 14174,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 200,
+      "devices": 5,
+      "total_gas": 2871923,
+      "per_msg_gas": 14360,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 200,
+      "devices": 10,
+      "total_gas": 2916142,
+      "per_msg_gas": 14581,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 200,
+      "devices": 50,
+      "total_gas": 3268128,
+      "per_msg_gas": 16341,
+      "ok": true
+    },
+    {
+      "scheme": "R1",
+      "n": 200,
+      "devices": 200,
+      "total_gas": 4586964,
+      "per_msg_gas": 22935,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 200,
+      "devices": 1,
+      "total_gas": 6575508,
+      "per_msg_gas": 32878,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 200,
+      "devices": 5,
+      "total_gas": 6772672,
+      "per_msg_gas": 33863,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 200,
+      "devices": 10,
+      "total_gas": 7045771,
+      "per_msg_gas": 35229,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 200,
+      "devices": 50,
+      "total_gas": 10837126,
+      "per_msg_gas": 54186,
+      "ok": true
+    },
+    {
+      "scheme": "BLS",
+      "n": 200,
+      "devices": 200,
+      "total_gas": null,
+      "per_msg_gas": null,
+      "ok": false
+    }
+  ]
+}

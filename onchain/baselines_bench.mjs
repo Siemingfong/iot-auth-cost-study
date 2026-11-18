@@ -79,7 +79,11 @@ async function deploy(name) {
 }
 
 // ------------------------------------------------------------------ records
-const M = 10
+// devices per batch (M) and devices registered (M_REG); --sweep registers 200 devices and measures n = 200
+// records from m = 1, 5, 10, 50 and 200 devices, as the MLAV-IBS device sweep does
+const SWEEP = process.argv.includes('--sweep')
+let M = 10
+const M_REG = SWEEP ? 200 : M
 // every record gets a strictly increasing timestamp: the verifiers reject a record whose timestamp is
 // not above its device's last accepted one (replay protection)
 let TS = 1_700_000_000n
@@ -97,7 +101,7 @@ schemes.K1 = {
   async setup() {
     this.c = await deploy('K1Verifier')
     this.devs = []
-    for (let j = 0; j < M; j++) {
+    for (let j = 0; j < M_REG; j++) {
       const sk = secp256k1.utils.randomSecretKey()
       const pub = secp256k1.getPublicKey(sk, false)
       const addr = '0x' + Buffer.from(keccak_256(pub.slice(1))).subarray(12).toString('hex')
@@ -128,7 +132,7 @@ schemes.R1 = {
   async setup() {
     this.c = await deploy('R1Verifier')
     this.devs = []
-    for (let j = 0; j < M; j++) {
+    for (let j = 0; j < M_REG; j++) {
       const sk = p256.utils.randomSecretKey()
       const pub = p256.getPublicKey(sk, false)
       const qx = hex(pub.slice(1, 33)), qy = hex(pub.slice(33))
@@ -161,7 +165,7 @@ schemes.BLS = {
   async setup() {
     this.c = await deploy('BLSAggVerifier')
     this.devs = []
-    for (let j = 0; j < M; j++) {
+    for (let j = 0; j < M_REG; j++) {
       const sk = randScalar(), pkh = encG2(G2.BASE.multiply(sk))
       const r = await send(this.c.addr, hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [j, words(pkh, 8)])))
       this.regGas = r.gas
@@ -258,4 +262,20 @@ fs.writeFileSync(`${OUT}/baselines_results.json`, JSON.stringify(results, null, 
 const csv = (rows) => [Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n') + '\n'
 fs.writeFileSync(`${OUT}/baselines_scaling.csv`, csv(results.scaling))
 fs.writeFileSync(`${OUT}/anchoring_only.csv`, csv(results.anchoring))
+if (SWEEP) {
+  results.device_sweep = []
+  for (const [key, S] of Object.entries(schemes)) {
+    if (results.schemes[key] && results.schemes[key].supported === false) continue
+    for (const m of [1, 5, 10, 50, 200]) {
+      M = m
+      const r = await send(S.c.addr, S.batch(200))
+      results.device_sweep.push({ scheme: key, n: 200, devices: m, total_gas: r.ok ? r.gas : null,
+        per_msg_gas: r.ok ? Math.round(r.gas / 200) : null, ok: r.ok })
+      console.log(`sweep ${key} n=200 m=${String(m).padStart(3)}  ${r.ok ? Math.round(r.gas / 200).toLocaleString('en-US') + '/msg' : 'FAILED'}`)
+    }
+  }
+  M = 10
+  fs.writeFileSync(`${OUT}/baselines_device_sweep.csv`, csv(results.device_sweep))
+}
+fs.writeFileSync(`${OUT}/baselines_results.json`, JSON.stringify(results, null, 2))
 console.log('written to', OUT)

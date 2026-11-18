@@ -1,0 +1,30 @@
+K1 {"label":"ECDSA secp256k1 (ecrecover)","deploy_gas":483408,"register_device_gas":44097,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":55470,"individual_calldata":228}
+  K1 n=   1       58,361  58,361/msg
+  K1 n=  10      178,960  17,896/msg
+  K1 n= 100      949,376  9,494/msg
+R1 {"label":"ECDSA P-256 (EIP-7951)","deploy_gas":683081,"register_device_gas":67334,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":63762,"individual_calldata":324}
+  R1 n=   1       68,164  68,164/msg
+  R1 n=  10      270,670  27,067/msg
+  R1 n= 100    1,513,254  15,133/msg
+BLS {"label":"BLS12-381 aggregate (EIP-2537)","deploy_gas":942740,"register_device_gas":69763,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"hash_to_curve_matches_rfc9380":true,"hash_to_g1_call_gas":30869,"individual_gas":187125,"individual_calldata":708}
+  BLS n=   1      188,700  188,700/msg
+  BLS n=  10      824,620  82,462/msg
+  BLS n= 100    3,492,611  34,926/msg
+anchor n=10 root-only=45495 leaves+root=57633 each=249090
+anchor n=100 root-only=45495 leaves+root=164485 each=2295366
+sweep K1 n=200 m=  1  8,862/msg
+sweep K1 n=200 m=  5  8,958/msg
+sweep K1 n=200 m= 10  9,078/msg
+sweep K1 n=200 m= 50  10,036/msg
+sweep K1 n=200 m=200  13,639/msg
+sweep R1 n=200 m=  1  14,174/msg
+sweep R1 n=200 m=  5  14,360/msg
+sweep R1 n=200 m= 10  14,581/msg
+sweep R1 n=200 m= 50  16,341/msg
+sweep R1 n=200 m=200  22,935/msg
+sweep BLS n=200 m=  1  32,878/msg
+sweep BLS n=200 m=  5  33,863/msg
+sweep BLS n=200 m= 10  35,229/msg
+sweep BLS n=200 m= 50  54,186/msg
+sweep BLS n=200 m=200  FAILED
+written to /tmp/sweep_r
