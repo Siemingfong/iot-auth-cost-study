@@ -1,0 +1,354 @@
+{
+  "environment": {
+    "chainId": "560048",
+    "block": 293,
+    "gasLimit": 60000000,
+    "baseFee": 8,
+    "client": "anvil/v1.5.1",
+    "transferGas": 21000,
+    "headerKeys": [
+      "hash",
+      "parentHash",
+      "sha3Uncles",
+      "miner",
+      "stateRoot",
+      "transactionsRoot",
+      "receiptsRoot",
+      "logsBloom",
+      "difficulty",
+      "number",
+      "gasLimit",
+      "gasUsed",
+      "timestamp",
+      "extraData",
+      "mixHash",
+      "nonce",
+      "baseFeePerGas",
+      "withdrawalsRoot",
+      "blobGasUsed",
+      "excessBlobGas",
+      "parentBeaconBlockRoot",
+      "requestsHash",
+      "totalDifficulty",
+      "size",
+      "uncles",
+      "transactions",
+      "withdrawals"
+    ]
+  },
+  "transactions": [
+    {
+      "label": "",
+      "hash": "0x39b5fe13ad82f85f5602b18fbb9b0562181d04a1c65facd7ac257e7a8356a239",
+      "block": 294,
+      "to": null,
+      "gasUsed": 1195844,
+      "status": 1,
+      "calldata": 5331
+    },
+    {
+      "label": "",
+      "hash": "0x346cfcc71cbb68bddd7e401dbd6771cb8a680d827f589a74a1dd0d9309a36c69",
+      "block": 295,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68085,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x13cf4fb9f647ecb6ab3dfe5d3146fa1aaf8b18cd5adaeab27f5dba32b80af184",
+      "block": 296,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0xb6fc25b18ee99701ce4f8760f8c0940992585d1b9d29ca48745697e02dcfea49",
+      "block": 297,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68085,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x9946f591510dd52e203f92ca144c1ccb9daf3eae48277743ef996dca2c7eb5d9",
+      "block": 298,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68085,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0xdbb5ea64b54368dc314ac1fc315c6cd3d5ba5d783aba68989156b052df051ffb",
+      "block": 299,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0xe424bf72191aa1041a264cc5e0e7ea31e6016cb652ef4950e2cca8e9f7e994b8",
+      "block": 300,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68085,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x56c0f4ec23202a421fe56e9ab290a03db585ee67655279dfe7d18766fc2d7b79",
+      "block": 301,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x26ee42065198a9a180bbd11d3728b0f35b17c66ded569bdb0d8bc70d51e83f0d",
+      "block": 302,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x2bfcfa429a67e1ffa13e6e0d298550284b286ecf838ba873a7955ff657fa3894",
+      "block": 303,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0xd8550f9f1237d9e23746c28f00d00ee534c99149baffd4478ff5c15db7c43212",
+      "block": 304,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 68097,
+      "status": 1,
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0xce542545bfd93a686d06cccfa751715f4974c3fb40b472216335e402a6157fdd",
+      "block": 305,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 687492,
+      "status": 1,
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "hash": "0x6f2966d01bb0b6e0687ddd879f2328dd3ae7d530a314d0baeb142180185d348f",
+      "block": 306,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 839801,
+      "status": 1,
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "hash": "0xfa052ca9bf7496bd384f03734f0c8765cd5036540275bc1077044dcc039a93a9",
+      "block": 307,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 742440,
+      "status": 1,
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 1380
+    },
+    {
+      "label": "",
+      "hash": "0x9a60a37f8a5480d57a0e9d67263aea1a9ec3d01f9e5958dccb484f4bb00d4cc9",
+      "block": 308,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 687444,
+      "status": 1,
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "hash": "0x02b562eea45aa5c9ae7cb449dcb61df88993ab56476b1f28be5832818cbac99c",
+      "block": 309,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 176944,
+      "status": 1,
+      "calldata": 580
+    },
+    {
+      "label": "",
+      "hash": "0x85bf3d4c7baec89a9332c4efd6416a691ccc0128a48977017135d187d3bdbbb1",
+      "block": 310,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 742512,
+      "status": 1,
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 9284
+    },
+    {
+      "label": "",
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "sent": false,
+      "reason": "reverts (eth_call)",
+      "calldata": 164
+    },
+    {
+      "label": "",
+      "hash": "0x8976792703e1a5d2c8667f86f918916cff8ccf4052e3f3b9049b9a7ab002d553",
+      "block": 311,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 176920,
+      "status": 1,
+      "calldata": 580
+    },
+    {
+      "label": "",
+      "hash": "0x6c4eb826554c111c1d16cd4515d19ab3b3b09f587e18a8a26075472db5a5a3ca",
+      "block": 312,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 192354,
+      "status": 1,
+      "calldata": 740
+    },
+    {
+      "label": "",
+      "hash": "0x72290d240f5362caf249b41ccadbffda98e5320dd0f5084801b7dd713beeb9b1",
+      "block": 313,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 205860,
+      "status": 1,
+      "calldata": 740
+    },
+    {
+      "label": "",
+      "hash": "0xac83c0e73ae6f3fc8214f6b75cdb78d39532d398cd958756d73fcffa38fca41b",
+      "block": 314,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 206674,
+      "status": 1,
+      "calldata": 740
+    },
+    {
+      "label": "",
+      "hash": "0x727a1ce0f0567cdcda08ae1ed77c420a3e5d34e27c8e8957439ce0c5fe46a7cc",
+      "block": 315,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 2504775,
+      "status": 1,
+      "calldata": 43364
+    },
+    {
+      "label": "",
+      "hash": "0xef30946d0a480fb67f8e100a86e10b8e79ce54355761471782c6604cd830d9d9",
+      "block": 316,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 3124249,
+      "status": 1,
+      "calldata": 43364
+    },
+    {
+      "label": "",
+      "hash": "0x6073acca3444054bde6abfe615c58c7552757d9ff6786ae8faa1355ca2dfabd6",
+      "block": 317,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 2577805,
+      "status": 1,
+      "calldata": 43364
+    },
+    {
+      "label": "",
+      "hash": "0x244cb905ab551a18d9eb7d67153fa717b4d4cb7c816414533812664f8fbdc812",
+      "block": 318,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 7271828,
+      "status": 1,
+      "calldata": 126564
+    },
+    {
+      "label": "",
+      "hash": "0x89b919312288569739ee15ea1bc9f33cd29434b462befd375e5e6ad3d7c21e0f",
+      "block": 319,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 9130844,
+      "status": 1,
+      "calldata": 126564
+    },
+    {
+      "label": "",
+      "hash": "0xdd58b18e251bf2072e22d622278df1ce0fa781c950a3110cd7739553b91d1638",
+      "block": 320,
+      "to": "0x5e26289799aDeCd3EE722B8eE4ec7B033Ff7434f",
+      "gasUsed": 7246953,
+      "status": 1,
+      "calldata": 126564
+    }
+  ]
+}

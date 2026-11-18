@@ -15,6 +15,10 @@ import { Account, Address, bytesToHex, hexToBytes, privateToAddress } from '@eth
 
 const QUICK = process.argv.includes('--quick')
 const OUT = process.argv.includes('--out') ? process.argv[process.argv.indexOf('--out') + 1] : 'results'
+import { makeLive } from './live_backend.mjs'
+// --live: run on a live network (Hoodi) through live_backend.mjs instead of the EthereumJS VM
+const LIVE = process.argv.includes('--live')
+const L = LIVE ? await makeLive({ out: OUT, plannedGas: 45_000_000 }) : null
 fs.mkdirSync(OUT, { recursive: true })
 
 const G1 = bls12_381.G1.Point, G2 = bls12_381.G2.Point
@@ -98,6 +102,7 @@ let nonce = 0n
 const block = createBlock({ header: { number: 23_000_000n, gasLimit: 60_000_000n, baseFeePerGas: 1n, timestamp: 1_780_000_000n } }, { common })
 
 async function send(to, data, gasLimit = TX_GAS_CAP) {
+  if (LIVE) { const r = await L.send(to, data, gasLimit); return { ...r, gas: BigInt(r.gas) } }
   const tx = createFeeMarket1559Tx({ nonce: nonce, to, data, gasLimit, maxFeePerGas: 10n ** 10n,
     maxPriorityFeePerGas: 1n, value: 0n }, { common }).sign(pk)
   const r = await runTx(vm, { tx, block, skipBlockGasLimitValidation: true, skipHardForkValidation: true })
@@ -120,10 +125,10 @@ const iface = new Interface(C.abi)
 const dep = await send(undefined, hexToBytes('0x' + C.bytecode))
 if (!dep.ok) throw new Error('deploy failed ' + dep.err)
 const target = dep.addr
-DOM = { chainId: common.chainId(), addr: target.toString() }
+DOM = { chainId: LIVE ? L.chainId : common.chainId(), addr: target.toString() }
 console.log('deployed, gas', dep.gas)
 
-const MAXDEV = 200
+const MAXDEV = LIVE ? 10 : (200)   // live: only the 10 pseudonyms the scaling and tests use
 const devices = []
 const regGas = []
 for (let j = 0; j < MAXDEV; j++) {
@@ -159,7 +164,7 @@ async function individualTxs(b) {
 
 const results = { environment: {
   evm: '@ethereumjs/vm ' + JSON.parse(fs.readFileSync('node_modules/@ethereumjs/vm/package.json')).version,
-  hardfork: FORK, solc: solc.version(), optimizer_runs: 200, via_ir: true, tx_gas_cap: Number(TX_GAS_CAP) },
+  hardfork: LIVE ? 'osaka (live)' : FORK, live: LIVE ? L.env : undefined, solc: solc.version(), optimizer_runs: 200, via_ir: true, tx_gas_cap: Number(TX_GAS_CAP) },
   deploy_gas: Number(dep.gas), register_device_gas: regGas[1], tests: {}, scaling: [], device_sweep: [], anchoring: [] }
 
 // ---- correctness / attack tests on-chain (a fresh batch for every submission, because accepted
@@ -199,12 +204,12 @@ const results = { environment: {
 }
 
 // ---- scaling, m = 10 devices
-const SIZES = QUICK ? [1, 10, 50] : [1, 10, 50, 100, 200, 300, 400, 500, 600]
+const SIZES = LIVE ? [1, 100, 300] : QUICK ? [1, 10, 50] : [1, 10, 50, 100, 200, 300, 400, 500, 600]
 const M = 10
 for (const n of SIZES) {
   const b = makeBatch(n, Math.min(n, M))
   const rows = []
-  if (n <= 200) rows.push(['V individual (n txs)', await individualTxs(b)])
+  if (n <= (LIVE ? 1 : 200)) rows.push(['V individual (n txs)', await individualTxs(b)])
   for (const [mode, name] of [[0, 'B1 naive batch (insecure)'], [1, 'B2 small-exponent batch'], [2, 'B3 grouped small-exponent batch']]) {
     const r = await batchTx(makeBatch(n, Math.min(n, M)), mode)   // fresh batch: no warm/duplicate root slot
     rows.push([name, r.ok ? r : { ...r, gas: null }])
@@ -219,7 +224,7 @@ for (const n of SIZES) {
 
 // ---- largest batch that fits under the EIP-7825 per-transaction cap (binary search, m = 10)
 results.max_batch = {}
-if (!QUICK && FORK === 'osaka') {
+if (!QUICK && !LIVE && FORK === 'osaka') {
   for (const [mode, name] of [[0, 'B1 naive batch (insecure)'], [1, 'B2 small-exponent batch'], [2, 'B3 grouped small-exponent batch']]) {
     let lo = 100, hi = 1200
     while (hi - lo > 5) {
@@ -234,7 +239,7 @@ if (!QUICK && FORK === 'osaka') {
 
 // ---- device sweep, n fixed
 const NS = QUICK ? 50 : 200
-for (const m of [1, 5, 10, 50, 200].filter(x => x <= NS)) {
+for (const m of (LIVE ? [] : [1, 5, 10, 50, 200]).filter(x => x <= NS)) {
   for (const [mode, name] of [[1, 'B2 small-exponent batch'], [2, 'B3 grouped small-exponent batch']]) {
     const r = await batchTx(makeBatch(NS, m), mode)
     results.device_sweep.push({ n: NS, devices: m, method: name, total_gas: Number(r.gas), per_msg_gas: Math.round(Number(r.gas) / NS), ok: r.ok })
@@ -243,7 +248,7 @@ for (const m of [1, 5, 10, 50, 200].filter(x => x <= NS)) {
 }
 
 // ---- anchoring only: one slot per record vs Merkle root
-for (const n of QUICK ? [10, 100] : [10, 100, 500]) {
+for (const n of LIVE ? [] : QUICK ? [10, 100] : [10, 100, 500]) {
   const h = Array.from({ length: n }, () => '0x' + crypto.randomBytes(32).toString('hex'))
   const each = await send(target, hexToBytes(iface.encodeFunctionData('anchorEach', [h])))
   const root = await send(target, hexToBytes(iface.encodeFunctionData('anchorRoot', [h])))
@@ -252,7 +257,7 @@ for (const n of QUICK ? [10, 100] : [10, 100, 500]) {
 }
 
 fs.writeFileSync(`${OUT}/gas_results.json`, JSON.stringify(results, null, 2))
-const csv = (rows) => [Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')
+const csv = (rows) => rows.length ? [Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n') : ''
 fs.writeFileSync(`${OUT}/gas_scaling.csv`, csv(results.scaling))
 fs.writeFileSync(`${OUT}/gas_device_sweep.csv`, csv(results.device_sweep))
 fs.writeFileSync(`${OUT}/gas_anchoring.csv`, csv(results.anchoring))

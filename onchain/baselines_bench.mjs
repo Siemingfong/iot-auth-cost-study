@@ -21,6 +21,10 @@ import { Account, Address, bytesToHex, hexToBytes, privateToAddress } from '@eth
 
 const QUICK = process.argv.includes('--quick')
 const OUT = process.argv.includes('--out') ? process.argv[process.argv.indexOf('--out') + 1] : 'results'
+import { makeLive } from './live_backend.mjs'
+// --live: run on a live network (Hoodi) through live_backend.mjs instead of the EthereumJS VM
+const LIVE = process.argv.includes('--live')
+const L = LIVE ? await makeLive({ out: OUT, plannedGas: 30_000_000 }) : null
 fs.mkdirSync(OUT, { recursive: true })
 const abi = AbiCoder.defaultAbiCoder()
 const FORK = process.argv.includes('--fork') ? process.argv[process.argv.indexOf('--fork') + 1] : 'osaka'
@@ -61,6 +65,7 @@ await vm.stateManager.putAccount(sender, new Account(0n, 10n ** 30n))
 const block = createBlock({ header: { number: 23_000_000n, gasLimit: 60_000_000n, baseFeePerGas: 1n, timestamp: 1_780_000_000n } }, { common })
 let nonce = 0n
 async function send(to, data, gasLimit = TX_GAS_CAP) {
+  if (LIVE) return L.send(to, data, gasLimit)
   nonce = (await vm.stateManager.getAccount(sender)).nonce
   const tx = createFeeMarket1559Tx({ nonce, to, data, gasLimit, maxFeePerGas: 10n ** 10n, maxPriorityFeePerGas: 1n }, { common }).sign(pk)
   const r = await runTx(vm, { tx, block, skipBlockGasLimitValidation: true, skipHardForkValidation: true })
@@ -69,6 +74,7 @@ async function send(to, data, gasLimit = TX_GAS_CAP) {
            calldata: data.length, err: r.execResult.exceptionError?.error }
 }
 async function call(to, data) {
+  if (LIVE) return L.call(to, data)
   const r = await vm.evm.runCall({ to, caller: new Address(hexToBytes('0x' + '33'.repeat(20))), data, gasLimit: 10_000_000n, block })
   return r.execResult
 }
@@ -88,7 +94,7 @@ const M_REG = SWEEP ? 200 : M
 // not above its device's last accepted one (replay protection)
 let TS = 1_700_000_000n
 function record(i) { return { ct: rnd(32), ts: ++TS, chk: rnd(32), seed: rnd(20) } }
-const CHAIN_ID = common.chainId()
+const CHAIN_ID = LIVE ? L.chainId : common.chainId()
 // signing domain: chain id and verifier address (overridden only by the domain-separation tests)
 function domainOf(S, dom) { return dom ?? { chainId: CHAIN_ID, addr: S.c.addr.toString() } }
 
@@ -194,7 +200,7 @@ schemes.BLS = {
 }
 
 // ------------------------------------------------------------------ run
-const results = { environment: { evm: '@ethereumjs/vm 10.1.3', hardfork: FORK, solc: solc.version(), via_ir: true,
+const results = { environment: { evm: LIVE ? 'live network' : '@ethereumjs/vm 10.1.3', live: LIVE ? L.env : undefined, hardfork: LIVE ? 'osaka (live)' : FORK, solc: solc.version(), via_ir: true,
   tx_gas_cap: Number(TX_GAS_CAP), fork: FORK, devices: M }, schemes: {}, scaling: [], max_batch: {}, anchoring: [] }
 
 for (const [key, S] of Object.entries(schemes)) {
@@ -230,14 +236,14 @@ for (const [key, S] of Object.entries(schemes)) {
   results.schemes[key] = info
   console.log(key, JSON.stringify(info))
   // scaling
-  for (const n of QUICK ? [1, 10, 100] : [1, 10, 50, 100, 200, 500, 1000, 2000]) {
+  for (const n of LIVE ? [1, 100, 500] : QUICK ? [1, 10, 100] : [1, 10, 50, 100, 200, 500, 1000, 2000]) {
     const r = await send(S.c.addr, S.batch(n))
     results.scaling.push({ scheme: key, n, devices: Math.min(n, M), total_gas: r.ok ? r.gas : null,
       per_msg_gas: r.ok ? Math.round(r.gas / n) : null, calldata_bytes: r.calldata, ok: r.ok })
     console.log(`  ${key} n=${String(n).padStart(4)} ${r.ok ? r.gas.toLocaleString().padStart(12) + '  ' + Math.round(r.gas / n).toLocaleString() + '/msg' : 'FAILED (cap)'}`)
   }
   // largest batch under the per-transaction cap
-  if (!QUICK && FORK === 'osaka') {
+  if (!QUICK && !LIVE && FORK === 'osaka') {
     let lo = 50, hi = 4000
     while (hi - lo > 10) { const mid = (lo + hi) >> 1; if ((await send(S.c.addr, S.batch(mid))).ok) lo = mid; else hi = mid }
     results.max_batch[key] = lo
@@ -248,11 +254,11 @@ for (const [key, S] of Object.entries(schemes)) {
 // ------------------------------------------------------------------ anchoring without authentication
 {
   const A = await deploy('AnchorOnly')
-  for (const n of QUICK ? [10, 100] : [10, 100, 500, 1000]) {
+  for (const n of LIVE ? [500] : QUICK ? [10, 100] : [10, 100, 500, 1000]) {
     const h = Array.from({ length: n }, () => rnd(32))
     const t0 = await send(A.addr, hexToBytes(A.iface.encodeFunctionData('anchorRootOnly', [rnd(32), n])))
     const t1 = await send(A.addr, hexToBytes(A.iface.encodeFunctionData('anchorLeaves', [h])))
-    const each = await send(A.addr, hexToBytes(A.iface.encodeFunctionData('anchorEach', [h.map(() => rnd(32))])))
+    const each = LIVE ? { ok: false } : await send(A.addr, hexToBytes(A.iface.encodeFunctionData('anchorEach', [h.map(() => rnd(32))])))
     results.anchoring.push({ n, root_only_gas: t0.gas, leaves_root_gas: t1.gas, each_slot_gas: each.ok ? each.gas : null })
     console.log(`anchor n=${n} root-only=${t0.gas} leaves+root=${t1.gas} each=${each.ok ? each.gas : 'FAILED'}`)
   }

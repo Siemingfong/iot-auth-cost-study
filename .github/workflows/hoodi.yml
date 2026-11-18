@@ -1,0 +1,71 @@
+# Gas measurement on the Hoodi testnet (Osaka rules) with the same harnesses and transactions as the
+# EthereumJS runs: baselines_bench.mjs (K1, R1, BLS, anchoring) and gasbench.mjs (MLAV-IBS) in --live mode.
+# Runs only when started by hand; the first run should be a dry run.
+#
+# Required repository secrets (Settings > Secrets and variables > Actions):
+#   HOODI_RPC_URL      a Hoodi JSON-RPC endpoint
+#   HOODI_PRIVATE_KEY  private key of a NEW wallet used only for this, funded with Hoodi ETH
+name: Hoodi gas measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only check the network, the Osaka rules and the balance (no transactions)"
+        type: boolean
+        default: true
+      parts:
+        description: "What to measure"
+        type: choice
+        options: [both, baselines, ibs]
+        default: both
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    defaults:
+      run:
+        working-directory: onchain
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install the package versions used in the paper
+        run: npm install --no-package-lock
+
+      - name: Baselines (K1, R1, BLS, anchoring) on Hoodi
+        if: inputs.parts != 'ibs'
+        env:
+          HOODI_RPC_URL: ${{ secrets.HOODI_RPC_URL }}
+          HOODI_PRIVATE_KEY: ${{ secrets.HOODI_PRIVATE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: |
+          set -o pipefail
+          mkdir -p results-hoodi/baselines
+          node baselines_bench.mjs --live --out results-hoodi/baselines 2>&1 | tee results-hoodi/baselines/console.txt
+
+      - name: MLAV-IBS on Hoodi
+        if: inputs.parts != 'baselines'
+        env:
+          HOODI_RPC_URL: ${{ secrets.HOODI_RPC_URL }}
+          HOODI_PRIVATE_KEY: ${{ secrets.HOODI_PRIVATE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: |
+          set -o pipefail
+          mkdir -p results-hoodi/ibs
+          node gasbench.mjs --live --out results-hoodi/ibs 2>&1 | tee results-hoodi/ibs/console.txt
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hoodi-results-${{ github.run_number }}
+          path: onchain/results-hoodi/
+          if-no-files-found: ignore

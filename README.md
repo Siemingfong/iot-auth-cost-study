@@ -134,3 +134,12 @@ batch of 200 records drawn from m = 1, 5, 10, 50 and 200 devices for K1, R1 and 
 (`onchain/results-device-sweep/baselines_device_sweep.csv`); the MLAV-IBS values come from the existing device sweep
 in `onchain/results/gas_device_sweep.csv`. With `--quick`, the other parts of the run are abbreviated; the device sweep
 itself is complete.
+
+## Live networks: an independent EVM (revm) and the Hoodi testnet
+Both harnesses take `--live`, which sends the same transactions to a JSON-RPC endpoint through
+`onchain/live_backend.mjs` and reads gas from the receipts. Every transaction is first simulated with `eth_call`;
+one that would revert (the negative tests) or exceed the EIP-7825 cap is reported as rejected without being sent.
+Before any transaction the backend checks the chain id and that the network runs the Osaka rules (a plain transfer
+costs 21,000 gas; no block-access-list field in the header).
+- `onchain/results-revm/`: a local anvil 1.5.1 node (revm) with Hoodi's chain id and the Osaka hardfork.
+- `.github/workflows/hoodi.yml`: the same runs on the Hoodi testnet (secrets `HOODI_RPC_URL`, `HOODI_PRIVATE_KEY`).
