@@ -1,0 +1,71 @@
+n,devices,method,recompute_H1,total_ms,per_msg_ms,min_ms,max_ms,reps
+1,1,V1 individual (2 pairings),False,13.537,13.5366,13.509,13.703,7
+1,1,V2 individual (multi-pairing),False,9.214,9.2142,9.196,9.323,7
+1,1,B1 naive batch (insecure),False,9.475,9.4749,9.457,9.821,7
+1,1,B2 small-exponent batch,False,9.999,9.9994,9.965,10.141,7
+1,1,B3 grouped small-exponent batch,False,10.007,10.0071,9.972,10.188,7
+10,10,V1 individual (2 pairings),False,134.448,13.4448,134.368,135.11,7
+10,10,V2 individual (multi-pairing),False,91.284,9.1284,91.195,91.841,7
+10,10,B1 naive batch (insecure),False,13.255,1.3255,13.238,13.332,7
+10,10,B2 small-exponent batch,False,15.099,1.5099,15.014,15.182,7
+10,10,B3 grouped small-exponent batch,False,15.242,1.5242,15.068,15.68,7
+50,50,V1 individual (2 pairings),False,672.903,13.4581,672.629,673.694,7
+50,50,V2 individual (multi-pairing),False,456.786,9.1357,456.243,458.018,7
+50,50,B1 naive batch (insecure),False,26.281,0.5256,26.26,26.465,7
+50,50,B2 small-exponent batch,False,32.035,0.6407,31.959,32.295,7
+50,50,B3 grouped small-exponent batch,False,32.294,0.6459,32.211,32.558,7
+100,50,V1 individual (2 pairings),False,1346.132,13.4613,1345.332,1347.291,7
+100,50,V2 individual (multi-pairing),False,913.886,9.1389,913.276,914.596,7
+100,50,B1 naive batch (insecure),False,39.963,0.3996,39.922,40.099,7
+100,50,B2 small-exponent batch,False,49.385,0.4939,49.209,49.663,7
+100,50,B3 grouped small-exponent batch,False,42.813,0.4281,42.785,42.928,7
+200,50,V1 individual (2 pairings),False,2693.683,13.4684,2692.634,2694.567,7
+200,50,V2 individual (multi-pairing),False,1828.899,9.1445,1827.968,1829.157,7
+200,50,B1 naive batch (insecure),False,65.253,0.3263,65.197,65.547,7
+200,50,B2 small-exponent batch,False,81.741,0.4087,81.527,81.902,7
+200,50,B3 grouped small-exponent batch,False,56.961,0.2848,56.718,57.629,7
+500,50,V1 individual (2 pairings),False,6732.979,13.466,6732.889,6733.313,4
+500,50,V2 individual (multi-pairing),False,4571.718,9.1434,4570.336,4573.467,4
+500,50,B1 naive batch (insecure),False,116.278,0.2326,116.123,116.596,7
+500,50,B2 small-exponent batch,False,152.477,0.305,152.264,153.68,7
+500,50,B3 grouped small-exponent batch,False,102.266,0.2045,102.2,102.855,7
+1000,50,V1 individual (2 pairings),False,13465.061,13.4651,13464.49,13465.632,2
+1000,50,V2 individual (multi-pairing),False,9138.921,9.1389,9138.879,9138.962,2
+1000,50,B1 naive batch (insecure),False,208.699,0.2087,208.333,209.183,7
+1000,50,B2 small-exponent batch,False,272.644,0.2726,272.16,273.17,7
+1000,50,B3 grouped small-exponent batch,False,175.557,0.1756,175.373,175.971,7
+1,1,V1 individual (2 pairings),True,14.722,14.7224,14.696,14.842,7
+1,1,V2 individual (multi-pairing),True,10.397,10.3973,10.38,10.438,7
+1,1,B1 naive batch (insecure),True,10.761,10.7605,10.752,10.812,7
+1,1,B2 small-exponent batch,True,11.397,11.3974,11.248,11.809,7
+1,1,B3 grouped small-exponent batch,True,11.321,11.3206,11.211,11.41,7
+10,10,V1 individual (2 pairings),True,147.449,14.7449,147.325,148.553,7
+10,10,V2 individual (multi-pairing),True,104.24,10.424,104.196,104.939,7
+10,10,B1 naive batch (insecure),True,26.122,2.6122,26.069,26.712,7
+10,10,B2 small-exponent batch,True,27.852,2.7852,27.794,27.973,7
+10,10,B3 grouped small-exponent batch,True,27.942,2.7942,27.852,28.059,7
+50,50,V1 individual (2 pairings),True,737.777,14.7555,737.262,738.332,7
+50,50,V2 individual (multi-pairing),True,521.544,10.4309,521.449,521.833,7
+50,50,B1 naive batch (insecure),True,89.896,1.7979,89.831,90.876,7
+50,50,B2 small-exponent batch,True,95.835,1.9167,95.646,96.618,7
+50,50,B3 grouped small-exponent batch,True,96.185,1.9237,95.913,96.337,7
+100,50,V1 individual (2 pairings),True,1474.804,14.748,1473.866,1475.276,7
+100,50,V2 individual (multi-pairing),True,1042.298,10.423,1042.061,1042.747,7
+100,50,B1 naive batch (insecure),True,167.147,1.6715,167.104,168.065,7
+100,50,B2 small-exponent batch,True,176.676,1.7668,176.456,177.506,7
+100,50,B3 grouped small-exponent batch,True,106.71,1.0671,106.585,108.504,7
+200,50,V1 individual (2 pairings),True,2951.331,14.7567,2951.155,2951.89,7
+200,50,V2 individual (multi-pairing),True,2086.281,10.4314,2086.061,2086.803,7
+200,50,B1 naive batch (insecure),True,319.901,1.5995,319.567,320.55,7
+200,50,B2 small-exponent batch,True,336.924,1.6846,335.807,337.013,7
+200,50,B3 grouped small-exponent batch,True,120.676,0.6034,120.549,122.59,7
+500,50,V1 individual (2 pairings),True,7378.234,14.7565,7378.109,7379.877,4
+500,50,V2 individual (multi-pairing),True,5216.62,10.4332,5216.172,5217.031,4
+500,50,B1 naive batch (insecure),True,752.651,1.5053,752.511,753.331,7
+500,50,B2 small-exponent batch,True,789.209,1.5784,788.856,789.631,7
+500,50,B3 grouped small-exponent batch,True,166.649,0.3333,166.411,168.546,7
+1000,50,V1 individual (2 pairings),True,14748.455,14.7485,14747.527,14749.382,2
+1000,50,V2 individual (multi-pairing),True,10424.479,10.4245,10423.776,10425.182,2
+1000,50,B1 naive batch (insecure),True,1481.668,1.4817,1481.089,1481.75,7
+1000,50,B2 small-exponent batch,True,1545.603,1.5456,1545.062,1545.936,7
+1000,50,B3 grouped small-exponent batch,True,239.708,0.2397,239.571,241.578,7

@@ -1,0 +1,12 @@
+operation,median_ms
+pairing (full),6.1421
+"multi-pairing check, 2 pairs",7.9663
+G1 scalar mult (255-bit),1.0848
+G1 scalar mult (64-bit),0.2878
+G1 point addition,0.0049
+GT multiplication,0.0209
+hash-to-G1 (RFC 9380),1.2658
+H2 (SHA-512 -> Z_r),0.0154
+"G1 MSM, 100 points",22.5658
+"G1 MSM, 1000 points",133.0095
+Sign (device),2.3053

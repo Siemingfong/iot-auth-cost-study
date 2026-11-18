@@ -1,0 +1,11 @@
+n,devices,method,total_ms,per_msg_ms,min_ms,max_ms,reps
+1000,1,B2 small-exponent batch,256.678,0.2567,256.264,257.611,7
+1000,1,B3 grouped small-exponent batch,149.83,0.1498,148.864,150.828,7
+1000,10,B2 small-exponent batch,271.801,0.2718,271.693,272.618,7
+1000,10,B3 grouped small-exponent batch,157.02,0.157,156.476,157.664,7
+1000,50,B2 small-exponent batch,272.692,0.2727,272.108,273.067,7
+1000,50,B3 grouped small-exponent batch,175.902,0.1759,175.545,177.03,7
+1000,200,B2 small-exponent batch,272.86,0.2729,272.284,273.74,7
+1000,200,B3 grouped small-exponent batch,193.903,0.1939,193.519,195.178,7
+1000,1000,B2 small-exponent batch,272.193,0.2722,271.937,272.684,7
+1000,1000,B3 grouped small-exponent batch,277.086,0.2771,276.72,278.08,7

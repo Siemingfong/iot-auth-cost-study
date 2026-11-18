@@ -1,0 +1,37 @@
+{
+  "python": "3.13.5",
+  "os": "Linux-6.18.50+rpt-rpi-v8-aarch64-with-glibc2.41",
+  "machine": "aarch64",
+  "logical_cpus": 4,
+  "packages": {
+    "coincurve": "21.0.0",
+    "cryptography": "46.0.6",
+    "py_arkworks_bls12381": "0.5.0"
+  },
+  "runner": {
+    "RUNNER_OS": null,
+    "RUNNER_ARCH": null,
+    "ImageOS": null,
+    "ImageVersion": null
+  },
+  "lscpu": {
+    "Architecture": "aarch64",
+    "CPU(s)": "4",
+    "Vendor ID": "ARM",
+    "Model name": "Cortex-A72",
+    "Thread(s) per core": "1",
+    "Socket(s)": "-",
+    "CPU max MHz": "1800.0000",
+    "CPU min MHz": "600.0000",
+    "BogoMIPS": "108.00",
+    "L1d cache": "128 KiB (4 instances)",
+    "L2 cache": "1 MiB (1 instance)"
+  },
+  "mem_total_kb": 1891972,
+  "board_model": "Raspberry Pi 4 Model B Rev 1.5",
+  "vcgencmd": {
+    "temp": "temp=40.4'C",
+    "throttled": "throttled=0x0",
+    "arm_clock_hz": "frequency(48)=1800457088"
+  }
+}
