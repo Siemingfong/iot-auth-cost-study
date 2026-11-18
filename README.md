@@ -1,8 +1,8 @@
 # Authenticating IoT data on Ethereum after Pectra/Fusaka: code and data
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24328819.svg)](https://doi.org/10.5281/zenodo.24328819)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24331362.svg)](https://doi.org/10.5281/zenodo.24331362)
 
-Release v1.1, cited by the manuscript, is archived at Zenodo under DOI [10.5281/zenodo.24328819](https://doi.org/10.5281/zenodo.24328819); release v1.0 under [10.5281/zenodo.24277045](https://doi.org/10.5281/zenodo.24277045). The code is released under the MIT License (`LICENSE`); see `CITATION.cff` for how to cite it.
+Release v1.2, cited by the journal version of the manuscript, is archived at Zenodo under DOI [10.5281/zenodo.24331362](https://doi.org/10.5281/zenodo.24331362); release v1.1, cited by the arXiv version, under [10.5281/zenodo.24328819](https://doi.org/10.5281/zenodo.24328819); release v1.0 under [10.5281/zenodo.24277045](https://doi.org/10.5281/zenodo.24277045). The code is released under the MIT License (`LICENSE`); see `CITATION.cff` for how to cite it.
 
 Reproduces every number and figure in the manuscript.
 

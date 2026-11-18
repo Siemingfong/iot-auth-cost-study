@@ -20,6 +20,7 @@ authors:
     affiliation: "National Taiwan University"
 license: MIT
 version: "v1.2"
+doi: "10.5281/zenodo.24331362"
 date-released: "2026-11-19"
 repository-code: "https://github.com/Siemingfong/iot-auth-cost-study"
 keywords:
