@@ -11,7 +11,7 @@
   "schemes": {
     "K1": {
       "label": "ECDSA secp256k1 (ecrecover)",
-      "deploy_gas": 483408,
+      "deploy_gas": 484692,
       "register_device_gas": 44097,
       "valid_batch_accepted": true,
       "supported": true,
@@ -21,20 +21,20 @@
       "wrong_chain_rejected": true,
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
-      "individual_gas": 55475,
+      "individual_gas": 55467,
       "individual_calldata": 228
     },
     "R1": {
       "label": "ECDSA P-256 (EIP-7951)",
-      "deploy_gas": 683081,
+      "deploy_gas": 685925,
       "register_device_gas": 67334,
       "valid_batch_accepted": false,
       "supported": false
     },
     "BLS": {
       "label": "BLS12-381 aggregate (EIP-2537)",
-      "deploy_gas": 942740,
-      "register_device_gas": 69739,
+      "deploy_gas": 1004578,
+      "register_device_gas": 69766,
       "valid_batch_accepted": false,
       "supported": false
     }
@@ -44,8 +44,8 @@
       "scheme": "K1",
       "n": 1,
       "devices": 1,
-      "total_gas": 58361,
-      "per_msg_gas": 58361,
+      "total_gas": 58373,
+      "per_msg_gas": 58373,
       "calldata_bytes": 292,
       "ok": true
     },
@@ -53,8 +53,8 @@
       "scheme": "K1",
       "n": 10,
       "devices": 10,
-      "total_gas": 178972,
-      "per_msg_gas": 17897,
+      "total_gas": 177622,
+      "per_msg_gas": 17762,
       "calldata_bytes": 2308,
       "ok": true
     },
@@ -62,8 +62,8 @@
       "scheme": "K1",
       "n": 50,
       "devices": 10,
-      "total_gas": 520330,
-      "per_msg_gas": 10407,
+      "total_gas": 511613,
+      "per_msg_gas": 10232,
       "calldata_bytes": 11268,
       "ok": true
     },
@@ -71,8 +71,8 @@
       "scheme": "K1",
       "n": 100,
       "devices": 10,
-      "total_gas": 949160,
-      "per_msg_gas": 9492,
+      "total_gas": 928556,
+      "per_msg_gas": 9286,
       "calldata_bytes": 22468,
       "ok": true
     },
@@ -80,8 +80,8 @@
       "scheme": "K1",
       "n": 200,
       "devices": 10,
-      "total_gas": 1815818,
-      "per_msg_gas": 9079,
+      "total_gas": 1762726,
+      "per_msg_gas": 8814,
       "calldata_bytes": 44868,
       "ok": true
     },
@@ -89,8 +89,8 @@
       "scheme": "K1",
       "n": 500,
       "devices": 10,
-      "total_gas": 4481861,
-      "per_msg_gas": 8964,
+      "total_gas": 4264574,
+      "per_msg_gas": 8529,
       "calldata_bytes": 112068,
       "ok": true
     },
@@ -98,8 +98,8 @@
       "scheme": "K1",
       "n": 1000,
       "devices": 10,
-      "total_gas": 9150862,
-      "per_msg_gas": 9151,
+      "total_gas": 8435351,
+      "per_msg_gas": 8435,
       "calldata_bytes": 224068,
       "ok": true
     },
@@ -107,8 +107,8 @@
       "scheme": "K1",
       "n": 2000,
       "devices": 10,
-      "total_gas": 19335209,
-      "per_msg_gas": 9668,
+      "total_gas": 16779177,
+      "per_msg_gas": 8390,
       "calldata_bytes": 448068,
       "ok": true
     }
@@ -118,26 +118,26 @@
     {
       "n": 10,
       "root_only_gas": 45495,
-      "leaves_root_gas": 57633,
-      "each_slot_gas": 249090
+      "leaves_root_gas": 56598,
+      "each_slot_gas": 249078
     },
     {
       "n": 100,
       "root_only_gas": 45495,
-      "leaves_root_gas": 164461,
-      "each_slot_gas": 2295354
+      "leaves_root_gas": 152639,
+      "each_slot_gas": 2295390
     },
     {
       "n": 500,
       "root_only_gas": 45507,
-      "leaves_root_gas": 642932,
-      "each_slot_gas": 11389990
+      "leaves_root_gas": 576851,
+      "each_slot_gas": 11389918
     },
     {
       "n": 1000,
       "root_only_gas": 45507,
-      "leaves_root_gas": 1255110,
-      "each_slot_gas": 22758270
+      "leaves_root_gas": 1108880,
+      "each_slot_gas": 22758222
     }
   ]
 }

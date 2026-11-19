@@ -23,7 +23,14 @@ abstract contract Anchoring {
         while (n > 1) {
             uint256 k = 0;
             for (uint256 i = 0; i < n; i += 2) {
-                h[k++] = (i + 1 < n) ? keccak256(abi.encodePacked(h[i], h[i + 1])) : h[i];
+                if (i + 1 < n) {
+                    bytes32 a = h[i]; bytes32 b = h[i + 1]; bytes32 r;
+                    // hash the pair in the scratch space instead of allocating memory for every node
+                    assembly ("memory-safe") { mstore(0x00, a) mstore(0x20, b) r := keccak256(0x00, 0x40) }
+                    h[k++] = r;
+                } else {
+                    h[k++] = h[i];
+                }
             }
             n = k;
         }
@@ -78,7 +85,11 @@ contract K1Verifier is Anchoring {
     function submitOne(Msg calldata m) external { recordBlock[_check(m, 0)] = block.number; }
     function submitBatch(Msg[] calldata ms) external {
         bytes32[] memory leaves = new bytes32[](ms.length);
-        for (uint256 i = 0; i < ms.length; i++) leaves[i] = _check(ms[i], i);
+        for (uint256 i = 0; i < ms.length; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
+            leaves[i] = _check(ms[i], i);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
+        }
         _anchor(leaves);
     }
 }
@@ -113,9 +124,17 @@ contract R1Verifier is Anchoring {
     }
     function submitBatch(Dev[] calldata ds, Msg[] calldata ms) external {
         bytes32[] memory cs = new bytes32[](ds.length);
-        for (uint256 j = 0; j < ds.length; j++) cs[j] = _commit(ds[j], j);
+        for (uint256 j = 0; j < ds.length; j++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
+            cs[j] = _commit(ds[j], j);
+            assembly ("memory-safe") { mstore(0x40, fmp) }
+        }
         bytes32[] memory leaves = new bytes32[](ms.length);
-        for (uint256 i = 0; i < ms.length; i++) leaves[i] = _check(ds[ms[i].dev], cs[ms[i].dev], ms[i], i);
+        for (uint256 i = 0; i < ms.length; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
+            leaves[i] = _check(ds[ms[i].dev], cs[ms[i].dev], ms[i], i);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
+        }
         _anchor(leaves);
     }
 }
@@ -186,20 +205,46 @@ contract BLSAggVerifier is Anchoring {
         uint256 m = ds.length;
         bytes32[] memory cs = new bytes32[](m);
         for (uint256 j = 0; j < m; j++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
             cs[j] = devCommit[ds[j].idx];
             if (cs[j] == bytes32(0) || cs[j] != keccak256(abi.encode(ds[j].pk))) revert BadDevice(j);
+            assembly ("memory-safe") { mstore(0x40, fmp) }
         }
+        // one accumulator per device, allocated once (the all-zero encoding is the point at infinity)
         bytes[] memory acc = new bytes[](m);
+        for (uint256 j = 0; j < m; j++) acc[j] = new bytes(128);
+        bool[] memory seen = new bool[](m);
         leaves = new bytes32[](ms.length);
         for (uint256 i = 0; i < ms.length; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
             Msg calldata mi = ms[i];
             bytes memory enc = abi.encode(block.chainid, address(this), cs[mi.dev], mi.ct, mi.ts, mi.chk, mi.seed);
             bytes memory hp = hashToG1(enc);
-            acc[mi.dev] = acc[mi.dev].length == 0 ? hp : _add(acc[mi.dev], hp);
+            bytes memory a = acc[mi.dev];
+            if (!seen[mi.dev]) {
+                seen[mi.dev] = true;
+                assembly ("memory-safe") { mcopy(add(a, 32), add(hp, 32), 128) }
+            } else {
+                bytes memory pair = abi.encodePacked(a, hp);
+                assembly ("memory-safe") {
+                    if iszero(staticcall(gas(), 0x0b, add(pair, 32), 256, add(a, 32), 128)) { revert(0, 0) }
+                }
+            }
             leaves[i] = keccak256(enc);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
         }
-        bytes memory input = abi.encodePacked(sig, NEG_P2);
-        for (uint256 j = 0; j < m; j++) input = abi.encodePacked(input, acc[j], ds[j].pk);
+        // pairing input: header, then (accumulated point, public key) per device, written in place
+        bytes memory head = abi.encodePacked(sig, NEG_P2);
+        uint256 hl = head.length;
+        bytes memory input = new bytes(hl + 384 * m);
+        assembly ("memory-safe") { mcopy(add(input, 32), add(head, 32), hl) }
+        for (uint256 j = 0; j < m; j++) {
+            bytes memory a = acc[j];
+            uint256 o = hl + 384 * j;
+            assembly ("memory-safe") { mcopy(add(add(input, 32), o), add(a, 32), 128) }
+            bytes32[8] calldata pk = ds[j].pk;
+            assembly ("memory-safe") { calldatacopy(add(add(input, 32), add(o, 128)), pk, 256) }
+        }
         uint256[1] memory res;
         assembly ("memory-safe") {
             if iszero(staticcall(gas(), 0x0f, add(input, 32), mload(input), res, 32)) { revert(0, 0) }

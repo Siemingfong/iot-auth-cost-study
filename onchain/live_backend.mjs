@@ -46,8 +46,14 @@ export async function makeLive({ out, plannedGas }) {
   const save = () => fs.writeFileSync(`${out}/live_transactions.json`, JSON.stringify({ environment: env, transactions: txs }, null, 2))
   async function send(to, data, _gasLimit, label = '') {
     const req = { from: wallet.address, to: to ? to.toString() : null, data: hex(data) }
+    const rpcReq = to ? { from: req.from, to: req.to, data: req.data } : { from: req.from, data: req.data }
     let est
-    try { est = await provider.estimateGas(req) } catch (e) {
+    // simulate and estimate against the latest mined block explicitly: without a block tag, a node may use a pending
+    // state that does not yet include the previous transaction, so a replay would be simulated as valid
+    try {
+      await provider.send('eth_call', [rpcReq, 'latest'])
+      est = BigInt(await provider.send('eth_estimateGas', [rpcReq, 'latest']))
+    } catch (e) {
       txs.push({ label, to: req.to, sent: false, reason: 'reverts (eth_call)', calldata: data.length }); save()
       return { gas: 0, ok: false, err: 'reverts (eth_call)', addr: undefined, calldataBytes: data.length }
     }
@@ -58,7 +64,11 @@ export async function makeLive({ out, plannedGas }) {
     const gasLimit = est * 12n / 10n > CAP ? CAP : est * 12n / 10n
     const tx = await wallet.sendTransaction({ to: req.to, data: req.data, gasLimit, nonce })
     nonce++
-    const rc = await tx.wait()
+    let rc
+    try { rc = await tx.wait() } catch (e) {
+      // reverted on-chain although the simulation passed: record it and report a rejection instead of aborting
+      rc = e.receipt ?? await provider.getTransactionReceipt(tx.hash)
+    }
     txs.push({ label, hash: tx.hash, block: rc.blockNumber, to: req.to, gasUsed: Number(rc.gasUsed), status: rc.status, calldata: data.length }); save()
     return { gas: Number(rc.gasUsed), ok: rc.status === 1, err: rc.status === 1 ? undefined : 'reverted', addr: rc.contractAddress ?? undefined, calldataBytes: data.length }
   }

@@ -9,7 +9,7 @@ pragma solidity ^0.8.28;
 contract MLAVVerifier {
     uint256 internal constant R = 0x73eda753299d7d483339d80809a1d80553bda402fffe5bfeffffffff00000001;
     bytes internal constant P2 = hex"00000000000000000000000000000000024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb80000000000000000000000000000000013e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e000000000000000000000000000000000ce5d527727d6e118cc9cdc6da2e351aadfd9baa8cbdd3a76d429a695160d12c923ac9cc3baca289e193548608b82801000000000000000000000000000000000606c4a02ea734cc32acd2b02bc28b99cb3e287e85a763af267492ab572e99ab3f370d275cec1da1aaa9075ff05f79be";
-    bytes internal constant NPPUB2 = hex"000000000000000000000000000000000ef94e634825bd1ca434623fff4d4c98ec2b59483ae801c8cd58da2b71b98ed9ed8ce3138ea3065ed0fe3d9dc834c2aa0000000000000000000000000000000014b3eefec111f93ff442a43262350c8daafd11ccf28c24871da4017b1e0309bdc3663d83bcc43aecce0a74800543dec80000000000000000000000000000000000bf66a9386b2ed427e4dc76e694c827260bc13e6b76a4a1795ce742f0bd7d08135a22fba8023985e8a2865137e4d8d90000000000000000000000000000000019647c754ddcac963dee121d24af2dda4ab0d7159abce408396c68b7c3e506c53aea33de233e7850b70b8240583d82d9";
+    bytes internal constant NPPUB2 = hex"000000000000000000000000000000000a2891ec0a2e748457d96685b8eeb7bd90ce4e5445981ac95ff970346be12b6cfe9978684beb724fadaef22c34567ce7000000000000000000000000000000000287ce1b37c5f774341e78aee7ac1071a3d40307c69844a3d766963938d0c6099d4559d6b5accf8829fe6d68847dc86d000000000000000000000000000000000530029052c9450aca4c61611dc854fbd4a9d7b1c1db3a7a796d7c7bcdc9560ac8ca60a1bffe23a2287eb7f31e4e85d700000000000000000000000000000000179bdb6520786a6a8cf56a539aa7695369217dcf49de8e4263e35d91fc13b6c8a099643c85ff62fa9bd1eea74f2411f3";
 
     struct Dev { uint32 idx; bytes32[4] q; }
     struct Msg { uint16 dev; bytes32 ct; uint64 ts; bytes32 chk; bytes20 seed; bytes32[4] u; bytes32[4] v; }
@@ -70,14 +70,14 @@ contract MLAVVerifier {
         }
     }
 
-    function _g1add(bytes memory a, bytes32[4] calldata b) internal view returns (bytes memory out) {
+    function _g1add(bytes memory a, bytes32[4] calldata b) internal view returns (bytes memory) {
         bytes memory input = new bytes(256);
-        out = new bytes(128);
         assembly ("memory-safe") {
             mcopy(add(input, 32), add(a, 32), 128)
             calldatacopy(add(input, 160), b, 128)
-            if iszero(staticcall(gas(), 0x0b, add(input, 32), 256, add(out, 32), 128)) { revert(0, 0) }
+            if iszero(staticcall(gas(), 0x0b, add(input, 32), 256, add(a, 32), 128)) { revert(0, 0) }
         }
+        return a;   // the sum is written into a, so no memory is allocated for it
     }
 
     function _pairing2(bytes memory s, bytes memory t) internal view returns (bool ok) {
@@ -99,7 +99,14 @@ contract MLAVVerifier {
         while (n > 1) {
             uint256 k = 0;
             for (uint256 i = 0; i < n; i += 2) {
-                h[k++] = (i + 1 < n) ? keccak256(abi.encodePacked(h[i], h[i + 1])) : h[i];
+                if (i + 1 < n) {
+                    bytes32 a = h[i]; bytes32 b = h[i + 1]; bytes32 r;
+                    // hash the pair in the scratch space instead of allocating memory for every node
+                    assembly ("memory-safe") { mstore(0x00, a) mstore(0x20, b) r := keccak256(0x00, 0x40) }
+                    h[k++] = r;
+                } else {
+                    h[k++] = h[i];
+                }
             }
             n = k;
         }
@@ -124,7 +131,11 @@ contract MLAVVerifier {
         uint256 m = devs.length;
         uint256 n = msgs.length;
         bytes32[] memory cs = new bytes32[](m);
-        for (uint256 j = 0; j < m; j++) cs[j] = _commit(devs[j]);
+        for (uint256 j = 0; j < m; j++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
+            cs[j] = _commit(devs[j]);
+            assembly ("memory-safe") { mstore(0x40, fmp) }
+        }
         for (uint256 i = 0; i < n; i++) _fresh(devs[msgs[i].dev].idx, msgs[i].ts, i);
         bytes32[] memory leaves = new bytes32[](n);
         bytes memory S;
@@ -145,12 +156,14 @@ contract MLAVVerifier {
         S = _copy(msgs[0].v);
         T = new bytes(320 * n);
         for (uint256 i = 0; i < n; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
             Msg calldata mi = msgs[i];
             bytes32 c = cs[mi.dev];
-            if (i > 0) S = _g1add(S, mi.v);
+            if (i > 0) _g1add(S, mi.v);
             _put(T, 160 * i, mi.u, 1);
             _put(T, 160 * (n + i), devs[mi.dev].q, _h(c, mi));
             leaves[i] = _recordHash(c, mi);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
         }
     }
 
@@ -162,6 +175,7 @@ contract MLAVVerifier {
         S = new bytes(160 * n);
         T = new bytes(320 * n);
         for (uint256 i = 0; i < n; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
             Msg calldata mi = msgs[i];
             bytes32 c = cs[mi.dev];
             uint256 dlt = uint256(keccak256(abi.encode(seed, i))) >> 128;
@@ -169,6 +183,7 @@ contract MLAVVerifier {
             _put(T, 160 * i, mi.u, dlt);
             _put(T, 160 * (n + i), devs[mi.dev].q, mulmod(dlt, _h(c, mi), R));
             leaves[i] = _recordHash(c, mi);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
         }
         S = _msm(S);
     }
@@ -183,6 +198,7 @@ contract MLAVVerifier {
         T = new bytes(160 * (n + m));
         uint256[] memory acc = new uint256[](m);
         for (uint256 i = 0; i < n; i++) {
+            uint256 fmp; assembly ("memory-safe") { fmp := mload(0x40) }
             Msg calldata mi = msgs[i];
             bytes32 c = cs[mi.dev];
             uint256 dlt = uint256(keccak256(abi.encode(seed, i))) >> 128;
@@ -190,6 +206,7 @@ contract MLAVVerifier {
             _put(T, 160 * i, mi.u, dlt);
             acc[mi.dev] = addmod(acc[mi.dev], mulmod(dlt, _h(c, mi), R), R);
             leaves[i] = _recordHash(c, mi);
+            assembly ("memory-safe") { mstore(0x40, fmp) }   // reuse the memory of this record's temporaries
         }
         for (uint256 j = 0; j < m; j++) _put(T, 160 * (n + j), devs[j].q, acc[j]);
         S = _msm(S);

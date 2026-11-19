@@ -1,7 +1,7 @@
-chain 560048, block 293, gas limit 60000000, base fee 8 wei, client anvil/v1.5.1
-wallet 0x841849e85092581b473B527B7955bC88bCdfDfbb, balance 99.945816622347881721 ETH; planned ~15M gas, ~0.01500000024 ETH at 1000000016 wei/gas
-deployed, gas 1195844n
-device registration gas 68097
+chain 560048, block 66, gas limit 60000000, base fee 204379 wei, client anvil/v1.5.1
+wallet 0x841849e85092581b473B527B7955bC88bCdfDfbb, balance 99.958748668203215892 ETH; planned ~45M gas, ~0.04501839411 ETH at 1000408758 wei/gas
+deployed, gas 1196516n
+device registration gas 68085
 {
  "valid": {
   "naive": true,
@@ -28,15 +28,14 @@ device registration gas 68097
   "reregistration_rejected": true
  }
 }
-n=   1 V individual (n txs)                    176,920  176,920/msg
-n=   1 B1 naive batch (insecure)               192,354  192,354/msg
-n=   1 B2 small-exponent batch                 205,860  205,860/msg
-n=   1 B3 grouped small-exponent batch         206,674  206,674/msg
-n= 100 B1 naive batch (insecure)             2,504,775  25,048/msg
-n= 100 B2 small-exponent batch               3,124,249  31,242/msg
-n= 100 B3 grouped small-exponent batch       2,577,805  25,778/msg
-n= 300 B1 naive batch (insecure)             7,271,828  24,239/msg
-n= 300 B2 small-exponent batch               9,130,844  30,436/msg
-n= 300 B3 grouped small-exponent batch       7,246,953  24,157/msg
-written to /tmp/live_g
-EXIT 0
+n=   1 V individual (n txs)                    176,760  176,760/msg
+n=   1 B1 naive batch (insecure)               192,305  192,305/msg
+n=   1 B2 small-exponent batch                 205,815  205,815/msg
+n=   1 B3 grouped small-exponent batch         206,656  206,656/msg
+n= 100 B1 naive batch (insecure)             2,431,363  24,314/msg
+n= 100 B2 small-exponent batch               3,065,952  30,660/msg
+n= 100 B3 grouped small-exponent batch       2,525,155  25,252/msg
+n= 300 B1 naive batch (insecure)             6,817,367  22,725/msg
+n= 300 B2 small-exponent batch               8,725,215  29,084/msg
+n= 300 B3 grouped small-exponent batch       6,886,584  22,955/msg
+written to R/revm/ibs

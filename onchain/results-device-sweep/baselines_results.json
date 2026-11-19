@@ -11,7 +11,7 @@
   "schemes": {
     "K1": {
       "label": "ECDSA secp256k1 (ecrecover)",
-      "deploy_gas": 483408,
+      "deploy_gas": 484692,
       "register_device_gas": 44097,
       "valid_batch_accepted": true,
       "supported": true,
@@ -21,12 +21,12 @@
       "wrong_chain_rejected": true,
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
-      "individual_gas": 55470,
+      "individual_gas": 55477,
       "individual_calldata": 228
     },
     "R1": {
       "label": "ECDSA P-256 (EIP-7951)",
-      "deploy_gas": 683081,
+      "deploy_gas": 685925,
       "register_device_gas": 67334,
       "valid_batch_accepted": true,
       "supported": true,
@@ -36,13 +36,13 @@
       "wrong_chain_rejected": true,
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
-      "individual_gas": 63762,
+      "individual_gas": 63788,
       "individual_calldata": 324
     },
     "BLS": {
       "label": "BLS12-381 aggregate (EIP-2537)",
-      "deploy_gas": 942740,
-      "register_device_gas": 69763,
+      "deploy_gas": 1004578,
+      "register_device_gas": 69766,
       "valid_batch_accepted": true,
       "supported": true,
       "tampered_batch_rejected": true,
@@ -52,8 +52,8 @@
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
       "hash_to_curve_matches_rfc9380": true,
-      "hash_to_g1_call_gas": 30869,
-      "individual_gas": 187125,
+      "hash_to_g1_call_gas": 30870,
+      "individual_gas": 188168,
       "individual_calldata": 708
     }
   },
@@ -62,8 +62,8 @@
       "scheme": "K1",
       "n": 1,
       "devices": 1,
-      "total_gas": 58361,
-      "per_msg_gas": 58361,
+      "total_gas": 58337,
+      "per_msg_gas": 58337,
       "calldata_bytes": 292,
       "ok": true
     },
@@ -71,8 +71,8 @@
       "scheme": "K1",
       "n": 10,
       "devices": 10,
-      "total_gas": 178960,
-      "per_msg_gas": 17896,
+      "total_gas": 177574,
+      "per_msg_gas": 17757,
       "calldata_bytes": 2308,
       "ok": true
     },
@@ -80,8 +80,8 @@
       "scheme": "K1",
       "n": 100,
       "devices": 10,
-      "total_gas": 949376,
-      "per_msg_gas": 9494,
+      "total_gas": 928628,
+      "per_msg_gas": 9286,
       "calldata_bytes": 22468,
       "ok": true
     },
@@ -89,8 +89,8 @@
       "scheme": "R1",
       "n": 1,
       "devices": 1,
-      "total_gas": 68164,
-      "per_msg_gas": 68164,
+      "total_gas": 68204,
+      "per_msg_gas": 68204,
       "calldata_bytes": 452,
       "ok": true
     },
@@ -98,8 +98,8 @@
       "scheme": "R1",
       "n": 10,
       "devices": 10,
-      "total_gas": 270670,
-      "per_msg_gas": 27067,
+      "total_gas": 269023,
+      "per_msg_gas": 26902,
       "calldata_bytes": 3332,
       "ok": true
     },
@@ -107,8 +107,8 @@
       "scheme": "R1",
       "n": 100,
       "devices": 10,
-      "total_gas": 1513254,
-      "per_msg_gas": 15133,
+      "total_gas": 1482955,
+      "per_msg_gas": 14830,
       "calldata_bytes": 23492,
       "ok": true
     },
@@ -116,8 +116,8 @@
       "scheme": "BLS",
       "n": 1,
       "devices": 1,
-      "total_gas": 188700,
-      "per_msg_gas": 188700,
+      "total_gas": 189753,
+      "per_msg_gas": 189753,
       "calldata_bytes": 708,
       "ok": true
     },
@@ -125,8 +125,8 @@
       "scheme": "BLS",
       "n": 10,
       "devices": 10,
-      "total_gas": 824620,
-      "per_msg_gas": 82462,
+      "total_gas": 812358,
+      "per_msg_gas": 81236,
       "calldata_bytes": 4740,
       "ok": true
     },
@@ -134,8 +134,8 @@
       "scheme": "BLS",
       "n": 100,
       "devices": 10,
-      "total_gas": 3492611,
-      "per_msg_gas": 34926,
+      "total_gas": 3054901,
+      "per_msg_gas": 30549,
       "calldata_bytes": 19140,
       "ok": true
     }
@@ -145,14 +145,14 @@
     {
       "n": 10,
       "root_only_gas": 45495,
-      "leaves_root_gas": 57633,
+      "leaves_root_gas": 56586,
       "each_slot_gas": 249090
     },
     {
       "n": 100,
-      "root_only_gas": 45495,
-      "leaves_root_gas": 164485,
-      "each_slot_gas": 2295366
+      "root_only_gas": 45483,
+      "leaves_root_gas": 152567,
+      "each_slot_gas": 2295378
     }
   ],
   "device_sweep": [
@@ -160,121 +160,121 @@
       "scheme": "K1",
       "n": 200,
       "devices": 1,
-      "total_gas": 1772438,
-      "per_msg_gas": 8862,
+      "total_gas": 1719514,
+      "per_msg_gas": 8598,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 200,
       "devices": 5,
-      "total_gas": 1791518,
-      "per_msg_gas": 8958,
+      "total_gas": 1738870,
+      "per_msg_gas": 8694,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 200,
       "devices": 10,
-      "total_gas": 1815626,
-      "per_msg_gas": 9078,
+      "total_gas": 1762846,
+      "per_msg_gas": 8814,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 200,
       "devices": 50,
-      "total_gas": 2007206,
-      "per_msg_gas": 10036,
+      "total_gas": 1954726,
+      "per_msg_gas": 9774,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 200,
       "devices": 200,
-      "total_gas": 2727818,
-      "per_msg_gas": 13639,
+      "total_gas": 2674726,
+      "per_msg_gas": 13374,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 200,
       "devices": 1,
-      "total_gas": 2834837,
-      "per_msg_gas": 14174,
+      "total_gas": 2750777,
+      "per_msg_gas": 13754,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 200,
       "devices": 5,
-      "total_gas": 2871923,
-      "per_msg_gas": 14360,
+      "total_gas": 2787661,
+      "per_msg_gas": 13938,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 200,
       "devices": 10,
-      "total_gas": 2916142,
-      "per_msg_gas": 14581,
+      "total_gas": 2831365,
+      "per_msg_gas": 14157,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 200,
       "devices": 50,
-      "total_gas": 3268128,
-      "per_msg_gas": 16341,
+      "total_gas": 3179793,
+      "per_msg_gas": 15899,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 200,
       "devices": 200,
-      "total_gas": 4586964,
-      "per_msg_gas": 22935,
+      "total_gas": 4487352,
+      "per_msg_gas": 22437,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 200,
       "devices": 1,
-      "total_gas": 6575508,
-      "per_msg_gas": 32878,
+      "total_gas": 5146547,
+      "per_msg_gas": 25733,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 200,
       "devices": 5,
-      "total_gas": 6772672,
-      "per_msg_gas": 33863,
+      "total_gas": 5325019,
+      "per_msg_gas": 26625,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 200,
       "devices": 10,
-      "total_gas": 7045771,
-      "per_msg_gas": 35229,
+      "total_gas": 5546181,
+      "per_msg_gas": 27731,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 200,
       "devices": 50,
-      "total_gas": 10837126,
-      "per_msg_gas": 54186,
+      "total_gas": 7315381,
+      "per_msg_gas": 36577,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 200,
       "devices": 200,
-      "total_gas": null,
-      "per_msg_gas": null,
-      "ok": false
+      "total_gas": 13971608,
+      "per_msg_gas": 69858,
+      "ok": true
     }
   ]
 }

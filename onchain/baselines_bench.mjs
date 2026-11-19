@@ -24,7 +24,7 @@ const OUT = process.argv.includes('--out') ? process.argv[process.argv.indexOf('
 import { makeLive } from './live_backend.mjs'
 // --live: run on a live network (Hoodi) through live_backend.mjs instead of the EthereumJS VM
 const LIVE = process.argv.includes('--live')
-const L = LIVE ? await makeLive({ out: OUT, plannedGas: 30_000_000 }) : null
+const L = LIVE ? await makeLive({ out: OUT, plannedGas: 45_000_000 }) : null
 fs.mkdirSync(OUT, { recursive: true })
 const abi = AbiCoder.defaultAbiCoder()
 const FORK = process.argv.includes('--fork') ? process.argv[process.argv.indexOf('--fork') + 1] : 'osaka'

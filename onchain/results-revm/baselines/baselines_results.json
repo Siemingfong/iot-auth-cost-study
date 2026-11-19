@@ -3,9 +3,9 @@
     "evm": "live network",
     "live": {
       "chainId": "560048",
-      "block": 34,
+      "block": 0,
       "gasLimit": 60000000,
-      "baseFee": 12727342,
+      "baseFee": 1000000000,
       "client": "anvil/v1.5.1",
       "transferGas": 21000,
       "headerKeys": [
@@ -48,7 +48,7 @@
   "schemes": {
     "K1": {
       "label": "ECDSA secp256k1 (ecrecover)",
-      "deploy_gas": 483408,
+      "deploy_gas": 484692,
       "register_device_gas": 44097,
       "valid_batch_accepted": true,
       "supported": true,
@@ -58,13 +58,13 @@
       "wrong_chain_rejected": true,
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
-      "individual_gas": 55470,
+      "individual_gas": 55472,
       "individual_calldata": 228
     },
     "R1": {
       "label": "ECDSA P-256 (EIP-7951)",
-      "deploy_gas": 683081,
-      "register_device_gas": 67322,
+      "deploy_gas": 685925,
+      "register_device_gas": 67334,
       "valid_batch_accepted": true,
       "supported": true,
       "tampered_batch_rejected": true,
@@ -73,13 +73,13 @@
       "wrong_chain_rejected": true,
       "reregistration_rejected": true,
       "wrong_contract_rejected": true,
-      "individual_gas": 63786,
+      "individual_gas": 63776,
       "individual_calldata": 324
     },
     "BLS": {
       "label": "BLS12-381 aggregate (EIP-2537)",
-      "deploy_gas": 942740,
-      "register_device_gas": 69763,
+      "deploy_gas": 1004578,
+      "register_device_gas": 69718,
       "valid_batch_accepted": true,
       "supported": true,
       "tampered_batch_rejected": true,
@@ -90,7 +90,7 @@
       "wrong_contract_rejected": true,
       "hash_to_curve_matches_rfc9380": true,
       "hash_to_g1_call_gas": 0,
-      "individual_gas": 187113,
+      "individual_gas": 188141,
       "individual_calldata": 708
     }
   },
@@ -99,73 +99,73 @@
       "scheme": "K1",
       "n": 1,
       "devices": 1,
-      "total_gas": 58337,
-      "per_msg_gas": 58337,
+      "total_gas": 58349,
+      "per_msg_gas": 58349,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 100,
       "devices": 10,
-      "total_gas": 949388,
-      "per_msg_gas": 9494,
+      "total_gas": 928724,
+      "per_msg_gas": 9287,
       "ok": true
     },
     {
       "scheme": "K1",
       "n": 500,
       "devices": 10,
-      "total_gas": 4481381,
-      "per_msg_gas": 8963,
+      "total_gas": 4264562,
+      "per_msg_gas": 8529,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 1,
       "devices": 1,
-      "total_gas": 68188,
-      "per_msg_gas": 68188,
+      "total_gas": 68204,
+      "per_msg_gas": 68204,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 100,
       "devices": 10,
-      "total_gas": 1513050,
-      "per_msg_gas": 15131,
+      "total_gas": 1483015,
+      "per_msg_gas": 14830,
       "ok": true
     },
     {
       "scheme": "R1",
       "n": 500,
       "devices": 10,
-      "total_gas": 7271439,
-      "per_msg_gas": 14543,
+      "total_gas": 6875791,
+      "per_msg_gas": 13752,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 1,
       "devices": 1,
-      "total_gas": 188736,
-      "per_msg_gas": 188736,
+      "total_gas": 189729,
+      "per_msg_gas": 189729,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 100,
       "devices": 10,
-      "total_gas": 3492683,
-      "per_msg_gas": 34927,
+      "total_gas": 3054949,
+      "per_msg_gas": 30549,
       "ok": true
     },
     {
       "scheme": "BLS",
       "n": 500,
       "devices": 10,
-      "total_gas": null,
-      "per_msg_gas": null,
-      "ok": false
+      "total_gas": 13019299,
+      "per_msg_gas": 26039,
+      "ok": true
     }
   ],
   "max_batch": {},
@@ -173,7 +173,7 @@
     {
       "n": 500,
       "root_only_gas": 45507,
-      "leaves_root_gas": 660000,
+      "leaves_root_gas": 660090,
       "each_slot_gas": null
     }
   ]
