@@ -85,6 +85,7 @@ def fig_onchain(onchain, out):
     order = [("K1", bres["max_batch"]["K1"]), ("R1", bres["max_batch"]["R1"]),
              ("B3", ires["max_batch"]["B3 grouped small-exponent batch"]),
              ("B2", ires["max_batch"]["B2 small-exponent batch"]), ("BLS", bres["max_batch"]["BLS"])]
+    order = sorted(order, key=lambda kv: -kv[1])   # largest batch first
     names = {"K1": "K1", "R1": "R1", "B3": "IBS-B3", "B2": "IBS-B2", "BLS": "BLS"}
     hatches = {"K1": "", "R1": "////", "B3": "", "B2": "\\\\\\\\", "BLS": "...."}
     y = range(len(order))[::-1]
