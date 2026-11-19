@@ -1,0 +1,11 @@
+n,devices,method,total_gas,per_msg_gas,calldata_bytes,ok
+1,1,V individual (n txs),176760,176760,580,true
+1,1,B1 naive batch (insecure),192305,192305,740,true
+1,1,B2 small-exponent batch,205791,205791,740,true
+1,1,B3 grouped small-exponent batch,206644,206644,740,true
+100,10,B1 naive batch (insecure),2431531,24315,43364,true
+100,10,B2 small-exponent batch,3065628,30656,43364,true
+100,10,B3 grouped small-exponent batch,2524951,25250,43364,true
+300,10,B1 naive batch (insecure),6816983,22723,126564,true
+300,10,B2 small-exponent batch,8725407,29085,126564,true
+300,10,B3 grouped small-exponent batch,6886344,22954,126564,true

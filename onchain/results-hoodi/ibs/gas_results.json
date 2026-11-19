@@ -1,0 +1,169 @@
+{
+  "environment": {
+    "evm": "@ethereumjs/vm 10.1.3",
+    "hardfork": "osaka (live)",
+    "live": {
+      "chainId": "560048",
+      "block": 4045411,
+      "gasLimit": 60000000,
+      "baseFee": 1021659040,
+      "client": "Geth/v1.17.10-stable-1df30b18/linux-amd64/go1.25.14",
+      "transferGas": 21000,
+      "headerKeys": [
+        "baseFeePerGas",
+        "blobGasUsed",
+        "difficulty",
+        "excessBlobGas",
+        "extraData",
+        "gasLimit",
+        "gasUsed",
+        "hash",
+        "logsBloom",
+        "miner",
+        "mixHash",
+        "nonce",
+        "number",
+        "parentBeaconBlockRoot",
+        "parentHash",
+        "receiptsRoot",
+        "requestsHash",
+        "sha3Uncles",
+        "size",
+        "stateRoot",
+        "timestamp",
+        "transactions",
+        "transactionsRoot",
+        "uncles",
+        "withdrawals",
+        "withdrawalsRoot"
+      ]
+    },
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "optimizer_runs": 200,
+    "via_ir": true,
+    "tx_gas_cap": 16777216
+  },
+  "deploy_gas": 1196696,
+  "register_device_gas": 68085,
+  "tests": {
+    "valid": {
+      "naive": true,
+      "set": true,
+      "grouped": true
+    },
+    "single_invalid_rejected": {
+      "naive": true,
+      "set": true,
+      "grouped": true
+    },
+    "cancellation_attack": {
+      "msg3_individual_accepted": false,
+      "naive_batch_ACCEPTS": true,
+      "set_batch_accepts": false,
+      "grouped_batch_accepts": false
+    },
+    "individual_valid": true,
+    "replay": {
+      "first_submission_accepted": true,
+      "resubmission_rejected": true,
+      "wrong_chain_rejected": true,
+      "wrong_contract_rejected": true,
+      "reregistration_rejected": true
+    }
+  },
+  "scaling": [
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "V individual (n txs)",
+      "total_gas": 176760,
+      "per_msg_gas": 176760,
+      "calldata_bytes": 580,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 192305,
+      "per_msg_gas": 192305,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B2 small-exponent batch",
+      "total_gas": 205791,
+      "per_msg_gas": 205791,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 1,
+      "devices": 1,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 206644,
+      "per_msg_gas": 206644,
+      "calldata_bytes": 740,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 2431531,
+      "per_msg_gas": 24315,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 3065628,
+      "per_msg_gas": 30656,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 100,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 2524951,
+      "per_msg_gas": 25250,
+      "calldata_bytes": 43364,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B1 naive batch (insecure)",
+      "total_gas": 6816983,
+      "per_msg_gas": 22723,
+      "calldata_bytes": 126564,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B2 small-exponent batch",
+      "total_gas": 8725407,
+      "per_msg_gas": 29085,
+      "calldata_bytes": 126564,
+      "ok": true
+    },
+    {
+      "n": 300,
+      "devices": 10,
+      "method": "B3 grouped small-exponent batch",
+      "total_gas": 6886344,
+      "per_msg_gas": 22954,
+      "calldata_bytes": 126564,
+      "ok": true
+    }
+  ],
+  "device_sweep": [],
+  "anchoring": [],
+  "max_batch": {}
+}

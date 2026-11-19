@@ -143,9 +143,12 @@ Before any transaction the backend checks the chain id and that the network runs
 costs 21,000 gas; no block-access-list field in the header).
 - `onchain/results-revm/`: a local anvil 1.5.1 node (revm) with Hoodi's chain id and the Osaka hardfork.
 - `.github/workflows/hoodi.yml`: the same runs on the Hoodi testnet (secrets `HOODI_RPC_URL`, `HOODI_PRIVATE_KEY`).
+- `onchain/results-hoodi/`: the Hoodi run of release v1.4 (chain id 560048, Geth v1.17.10, Osaka rules; 93 transactions
+  in blocks 4,045,339 to 4,045,444, all successful; transaction hashes in `live_transactions.json`). Every correctness
+  test gives the same result as on EthereumJS and revm, and every per-record figure agrees with EthereumJS within 0.05%.
 - `onchain/results-hoodi-v1.3/`: the Hoodi run of release v1.3, with the verifiers before memory reuse (chain id 560048, Geth v1.17.10, Osaka rules; 92 transactions in blocks
   4,038,868 to 4,038,975, all successful; transaction hashes in `live_transactions.json`). Every correctness test gives
-  the same result as on EthereumJS and revm, and every per-record figure agrees with EthereumJS within 0.04%.
+  the same result as on EthereumJS and revm.
 
 ## Memory reuse in the verifiers (release v1.4)
 From v1.4 on, the batch verifiers release the memory of each record's temporaries after the record is processed

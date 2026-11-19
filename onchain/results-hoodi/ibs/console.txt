@@ -1,0 +1,41 @@
+chain 560048, block 4045411, gas limit 60000000, base fee 1021659040 wei, client Geth/v1.17.10-stable-1df30b18/linux-amd64/go1.25.14
+wallet 0x77f5F9e52391EC5455b1D864014056ecd50F5474, balance 0.760054997770522621 ETH; planned ~45M gas, ~0.095772554775 ETH at 2128278995 wei/gas
+deployed, gas 1196696n
+device registration gas 68085
+{
+ "valid": {
+  "naive": true,
+  "set": true,
+  "grouped": true
+ },
+ "single_invalid_rejected": {
+  "naive": true,
+  "set": true,
+  "grouped": true
+ },
+ "cancellation_attack": {
+  "msg3_individual_accepted": false,
+  "naive_batch_ACCEPTS": true,
+  "set_batch_accepts": false,
+  "grouped_batch_accepts": false
+ },
+ "individual_valid": true,
+ "replay": {
+  "first_submission_accepted": true,
+  "resubmission_rejected": true,
+  "wrong_chain_rejected": true,
+  "wrong_contract_rejected": true,
+  "reregistration_rejected": true
+ }
+}
+n=   1 V individual (n txs)                    176,760  176,760/msg
+n=   1 B1 naive batch (insecure)               192,305  192,305/msg
+n=   1 B2 small-exponent batch                 205,791  205,791/msg
+n=   1 B3 grouped small-exponent batch         206,644  206,644/msg
+n= 100 B1 naive batch (insecure)             2,431,531  24,315/msg
+n= 100 B2 small-exponent batch               3,065,628  30,656/msg
+n= 100 B3 grouped small-exponent batch       2,524,951  25,250/msg
+n= 300 B1 naive batch (insecure)             6,816,983  22,723/msg
+n= 300 B2 small-exponent batch               8,725,407  29,085/msg
+n= 300 B3 grouped small-exponent batch       6,886,344  22,954/msg
+written to results-hoodi/ibs

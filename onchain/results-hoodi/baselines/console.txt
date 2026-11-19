@@ -1,0 +1,16 @@
+chain 560048, block 4045338, gas limit 60000000, base fee 921514752 wei, client Geth/v1.17.10-stable-1df30b18/linux-amd64/go1.25.14
+wallet 0x77f5F9e52391EC5455b1D864014056ecd50F5474, balance 0.803308963919090022 ETH; planned ~45M gas, ~0.08706213711 ETH at 1934714158 wei/gas
+K1 {"label":"ECDSA secp256k1 (ecrecover)","deploy_gas":484692,"register_device_gas":44097,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":55465,"individual_calldata":228}
+  K1 n=   1       58,373  58,373/msg
+  K1 n= 100      928,604  9,286/msg
+  K1 n= 500    4,264,598  8,529/msg
+R1 {"label":"ECDSA P-256 (EIP-7951)","deploy_gas":685925,"register_device_gas":67334,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":63786,"individual_calldata":324}
+  R1 n=   1       68,180  68,180/msg
+  R1 n= 100    1,483,003  14,830/msg
+  R1 n= 500    6,876,331  13,753/msg
+BLS {"label":"BLS12-381 aggregate (EIP-2537)","deploy_gas":1004578,"register_device_gas":69742,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"hash_to_curve_matches_rfc9380":true,"hash_to_g1_call_gas":0,"individual_gas":188146,"individual_calldata":708}
+  BLS n=   1      189,741  189,741/msg
+  BLS n= 100    3,054,937  30,549/msg
+  BLS n= 500   13,019,671  26,039/msg
+anchor n=500 root-only=45507 leaves+root=660060 each=FAILED
+written to results-hoodi/baselines
