@@ -19,8 +19,7 @@ authors:
     given-names: Shih-wei
     affiliation: "National Taiwan University"
 license: MIT
-version: "v1.4"
-doi: "10.5281/zenodo.24361560"
+version: "v1.5"
 date-released: "2026-11-21"
 repository-code: "https://github.com/Siemingfong/iot-auth-cost-study"
 keywords:

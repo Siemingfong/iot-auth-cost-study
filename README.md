@@ -158,3 +158,13 @@ Solidity never frees memory, so the earlier verifiers allocated fresh memory for
 cost rose for very large batches because EVM memory expansion is priced quadratically. All correctness, replay and
 domain-separation tests pass unchanged, and all on-chain results in this repository were re-measured with these
 contracts.
+
+## Device-signed roots (release v1.5)
+Release v1.5 adds device-signed roots, in which each device signs one Merkle root over its own records:
+`onchain/RootVerifiers.sol.tpl` extends the K1, R1 and BLS verifiers by inheritance (`K1RootVerifier`,
+`R1RootVerifier`, `BLSRootVerifier`) in a separate source file, so that the per-record contracts in
+`onchain/Baselines.sol.tpl` are unchanged from release v1.4 and compile to the same bytecode (their deployment gas
+is identical). Run `node baselines_bench.mjs --roots` to measure them; the results for 1 and 10 devices and 1 to
+1,000 records per device are in `onchain/results-roots/` (EthereumJS, and revm through anvil for up to 100 records
+per device). Invalid signatures, tampered record hashes, resubmitted roots and roots signed for another chain are
+rejected on both.

@@ -47,14 +47,16 @@ const hex = (u8) => '0x' + Buffer.from(u8).toString('hex')
 // ------------------------------------------------------------------ compile all contracts
 const src = fs.readFileSync('Baselines.sol.tpl', 'utf8')
   .replace('{{NEGP2}}', encG2(G2.BASE.negate())).replace('{{DST}}', DST)
+const rsrc = fs.readFileSync('RootVerifiers.sol.tpl', 'utf8')
 const out = JSON.parse(solc.compile(JSON.stringify({ language: 'Solidity',
-  sources: { 'Baselines.sol': { content: src } },
+  sources: { 'Baselines.sol': { content: src }, 'RootVerifiers.sol': { content: rsrc } },
   settings: { optimizer: { enabled: true, runs: 200 }, viaIR: true, evmVersion: 'cancun',
     outputSelection: { '*': { '*': ['abi', 'evm.bytecode.object'] } } } })))
 const errs = (out.errors || []).filter(e => e.severity === 'error')
 if (errs.length) { console.error(errs.map(e => e.formattedMessage).join('\n')); process.exit(1) }
 fs.writeFileSync(`${OUT}/Baselines.sol`, src)
-const C = out.contracts['Baselines.sol']
+fs.writeFileSync(`${OUT}/RootVerifiers.sol`, rsrc)
+const C = { ...out.contracts['Baselines.sol'], ...out.contracts['RootVerifiers.sol'] }
 
 // ------------------------------------------------------------------ EVM
 const common = new Common({ chain: Mainnet, hardfork: HF })
@@ -101,6 +103,20 @@ function domainOf(S, dom) { return dom ?? { chainId: CHAIN_ID, addr: S.c.addr.to
 // ------------------------------------------------------------------ schemes
 const schemes = {}
 
+// device-signed roots: the same Merkle construction as Anchoring._merkleRoot (pairwise keccak256, odd node promoted)
+const ROOT_TAG = '0x' + Buffer.from(keccak_256(new TextEncoder().encode('device-signed root'))).toString('hex')
+function merkleRoot(leaves) {
+  let h = leaves.map(x => hexToBytes(x))
+  while (h.length > 1) {
+    const nx = []
+    for (let i = 0; i < h.length; i += 2) nx.push(i + 1 < h.length ? keccak_256(new Uint8Array([...h[i], ...h[i + 1]])) : h[i])
+    h = nx
+  }
+  return '0x' + Buffer.from(h[0]).toString('hex')
+}
+const leavesOf = (k) => Array.from({ length: k }, () => rnd(32))
+const rootEnc = (d, root, ts) => abi.encode(['uint256', 'address', 'bytes32', 'bytes32', 'uint64'], [d.chainId, d.addr, ROOT_TAG, root, ts])
+
 // --- K1: ECDSA secp256k1 / ecrecover
 schemes.K1 = {
   label: 'ECDSA secp256k1 (ecrecover)',
@@ -130,6 +146,18 @@ schemes.K1 = {
   },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', [this.sign(record(0), 0)])) },
   reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [this.devs[0].addr])) },
+  roots(m, k, { tamper = false, dom } = {}) {
+    const d = domainOf(this, dom)
+    const rs = []
+    for (let j = 0; j < m; j++) {
+      const leaves = leavesOf(k), ts = ++TS
+      const h = keccak_256(hexToBytes(rootEnc(d, merkleRoot(leaves), ts)))
+      const s = secp256k1.Signature.fromBytes(secp256k1.sign(h, this.devs[j].sk, { prehash: false, format: 'recovered' }), 'recovered')
+      rs.push([leaves, ts, 27 + s.recovery, '0x' + s.r.toString(16).padStart(64, '0'), '0x' + s.s.toString(16).padStart(64, '0')])
+    }
+    if (tamper) rs[0][0][0] = rnd(32)
+    return hexToBytes(this.c.iface.encodeFunctionData('submitRoots', [rs]))
+  },
 }
 
 // --- R1: ECDSA P-256 / EIP-7951
@@ -163,6 +191,18 @@ schemes.R1 = {
   },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', [this.dev(0), this.sign(record(0), 0)])) },
   reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [0, this.devs[1].qx, this.devs[1].qy])) },
+  roots(m, k, { tamper = false, dom } = {}) {
+    const d = domainOf(this, dom)
+    const rs = []
+    for (let j = 0; j < m; j++) {
+      const leaves = leavesOf(k), ts = ++TS
+      const h = sha256(hexToBytes(rootEnc(d, merkleRoot(leaves), ts)))
+      const sig = p256.sign(h, this.devs[j].sk, { prehash: false, format: 'compact' })
+      rs.push([leaves, ts, hex(sig.slice(0, 32)), hex(sig.slice(32))])
+    }
+    if (tamper) rs[0][0][0] = rnd(32)
+    return hexToBytes(this.c.iface.encodeFunctionData('submitRoots', [Array.from({ length: m }, (_, j) => this.dev(j)), rs]))
+  },
 }
 
 // --- BLS: per-device keys, aggregate signature
@@ -197,6 +237,19 @@ schemes.BLS = {
   batch(n, tamper = false, dom) { return hexToBytes(this.c.iface.encodeFunctionData('submitBatch', this.build(n, Math.min(n, M), tamper, dom))) },
   one() { return hexToBytes(this.c.iface.encodeFunctionData('submitOne', this.build(1, 1, false))) },
   reregister() { return hexToBytes(this.c.iface.encodeFunctionData('registerDevice', [0, words(this.devs[1].pkh, 8)])) },
+  roots(m, k, { tamper = false, dom } = {}) {
+    const d = domainOf(this, dom)
+    let agg = G1.ZERO
+    const rs = []
+    for (let j = 0; j < m; j++) {
+      const leaves = leavesOf(k), ts = ++TS
+      const enc = abi.encode(['uint256', 'address', 'bytes32', 'bytes32', 'bytes32', 'uint64'], [d.chainId, d.addr, ROOT_TAG, this.devs[j].commit, merkleRoot(leaves), ts])
+      agg = agg.add(this.H(enc).multiply(this.devs[j].sk))
+      rs.push([leaves, ts])
+    }
+    if (tamper) rs[0][0][0] = rnd(32)
+    return hexToBytes(this.c.iface.encodeFunctionData('submitRoots', [Array.from({ length: m }, (_, j) => [j, words(this.devs[j].pkh, 8)]), rs, words(encG1(agg), 4)]))
+  },
 }
 
 // ------------------------------------------------------------------ run
@@ -268,6 +321,33 @@ fs.writeFileSync(`${OUT}/baselines_results.json`, JSON.stringify(results, null, 
 const csv = (rows) => [Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n') + '\n'
 fs.writeFileSync(`${OUT}/baselines_scaling.csv`, csv(results.scaling))
 fs.writeFileSync(`${OUT}/anchoring_only.csv`, csv(results.anchoring))
+if (process.argv.includes('--roots')) {
+  results.roots = { tests: {}, scaling: [] }
+  for (const [key, S] of Object.entries(schemes)) {
+    if (results.schemes[key] && results.schemes[key].supported === false) continue
+    const perRecord = S.c
+    S.c = await deploy({ K1: 'K1RootVerifier', R1: 'R1RootVerifier', BLS: 'BLSRootVerifier' }[key])
+    for (let j = 0; j < M_REG; j++) {
+      const args = key === 'K1' ? [S.devs[j].addr] : key === 'R1' ? [j, S.devs[j].qx, S.devs[j].qy] : [j, words(S.devs[j].pkh, 8)]
+      if (!(await send(S.c.addr, hexToBytes(S.c.iface.encodeFunctionData('registerDevice', args)))).ok) throw new Error('root registration failed')
+    }
+    const data = S.roots(10, 10)
+    const t = { valid_accepted: (await send(S.c.addr, data)).ok }
+    t.resubmission_rejected = !(await send(S.c.addr, data)).ok
+    t.tampered_leaf_rejected = !(await send(S.c.addr, S.roots(10, 10, { tamper: true }))).ok
+    t.wrong_chain_rejected = !(await send(S.c.addr, S.roots(10, 10, { dom: { chainId: CHAIN_ID + 1n, addr: S.c.addr.toString() } }))).ok
+    results.roots.tests[key] = t
+    console.log('roots tests', key, JSON.stringify(t))
+    for (const m of [1, 10]) for (const k of (LIVE ? [1, 10, 100] : [1, 10, 100, 1000])) {
+      const r = await send(S.c.addr, S.roots(m, k))
+      results.roots.scaling.push({ scheme: key, devices: m, per_device: k, records: m * k, total_gas: r.ok ? r.gas : null,
+        per_record_gas: r.ok ? Math.round(r.gas / (m * k)) : null, ok: r.ok })
+      console.log(`roots ${key} m=${String(m).padStart(2)} k=${String(k).padStart(4)}  ${r.ok ? Math.round(r.gas / (m * k)).toLocaleString('en-US') + '/record' : 'FAILED ' + (r.err || '')}`)
+    }
+    S.c = perRecord
+  }
+  fs.writeFileSync(`${OUT}/roots_scaling.csv`, csv(results.roots.scaling))
+}
 if (SWEEP) {
   results.device_sweep = []
   for (const [key, S] of Object.entries(schemes)) {

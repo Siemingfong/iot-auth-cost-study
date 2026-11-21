@@ -1,0 +1,251 @@
+{
+  "environment": {
+    "evm": "@ethereumjs/vm 10.1.3",
+    "hardfork": "osaka",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "via_ir": true,
+    "tx_gas_cap": 16777216,
+    "fork": "osaka",
+    "devices": 10
+  },
+  "roots": {
+    "tests": {
+      "K1": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      },
+      "R1": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      },
+      "BLS": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      }
+    },
+    "scaling": [
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 58524,
+        "per_record_gas": 58524,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 69053,
+        "per_record_gas": 6905,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 165038,
+        "per_record_gas": 1650,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 1000,
+        "records": 1000,
+        "total_gas": 1302480,
+        "per_record_gas": 1302,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 179135,
+        "per_record_gas": 17914,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 284161,
+        "per_record_gas": 2842,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1341600,
+        "per_record_gas": 1342,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 1000,
+        "records": 10000,
+        "total_gas": 12829140,
+        "per_record_gas": 1283,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 67665,
+        "per_record_gas": 67665,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 78206,
+        "per_record_gas": 7821,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 174255,
+        "per_record_gas": 1743,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 1000,
+        "records": 1000,
+        "total_gas": 1306190,
+        "per_record_gas": 1306,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 265235,
+        "per_record_gas": 26524,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 370310,
+        "per_record_gas": 3703,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1368260,
+        "per_record_gas": 1368,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 1000,
+        "records": 10000,
+        "total_gas": 12855140,
+        "per_record_gas": 1286,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 187365,
+        "per_record_gas": 187365,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 197959,
+        "per_record_gas": 19796,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 294719,
+        "per_record_gas": 2947,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 1000,
+        "records": 1000,
+        "total_gas": 1313400,
+        "per_record_gas": 1313,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 797573,
+        "per_record_gas": 79757,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 903328,
+        "per_record_gas": 9033,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1868096,
+        "per_record_gas": 1868,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 1000,
+        "records": 10000,
+        "total_gas": 12891090,
+        "per_record_gas": 1289,
+        "ok": true
+      }
+    ]
+  }
+}

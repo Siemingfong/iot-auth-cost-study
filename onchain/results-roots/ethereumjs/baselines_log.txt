@@ -1,0 +1,42 @@
+K1 {"label":"ECDSA secp256k1 (ecrecover)","deploy_gas":484692,"register_device_gas":44097,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":55475,"individual_calldata":228}
+  K1 n=   1       58,373  58,373/msg
+  K1 n=  10      177,598  17,760/msg
+  K1 n= 100      928,628  9,286/msg
+R1 {"label":"ECDSA P-256 (EIP-7951)","deploy_gas":685925,"register_device_gas":67334,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"individual_gas":63788,"individual_calldata":324}
+  R1 n=   1       68,192  68,192/msg
+  R1 n=  10      269,011  26,901/msg
+  R1 n= 100    1,482,883  14,829/msg
+BLS {"label":"BLS12-381 aggregate (EIP-2537)","deploy_gas":1004578,"register_device_gas":69766,"valid_batch_accepted":true,"supported":true,"tampered_batch_rejected":true,"replay_first_accepted":true,"replay_resubmission_rejected":true,"wrong_chain_rejected":true,"reregistration_rejected":true,"wrong_contract_rejected":true,"hash_to_curve_matches_rfc9380":true,"hash_to_g1_call_gas":30870,"individual_gas":188160,"individual_calldata":708}
+  BLS n=   1      189,741  189,741/msg
+  BLS n=  10      812,370  81,237/msg
+  BLS n= 100    3,054,889  30,549/msg
+anchor n=10 root-only=45495 leaves+root=56598 each=249090
+anchor n=100 root-only=45495 leaves+root=152555 each=2295378
+roots tests K1 {"valid_accepted":true,"resubmission_rejected":true,"tampered_leaf_rejected":true,"wrong_chain_rejected":true}
+roots K1 m= 1 k=   1  58,524/record
+roots K1 m= 1 k=  10  6,905/record
+roots K1 m= 1 k= 100  1,650/record
+roots K1 m= 1 k=1000  1,302/record
+roots K1 m=10 k=   1  17,914/record
+roots K1 m=10 k=  10  2,842/record
+roots K1 m=10 k= 100  1,342/record
+roots K1 m=10 k=1000  1,283/record
+roots tests R1 {"valid_accepted":true,"resubmission_rejected":true,"tampered_leaf_rejected":true,"wrong_chain_rejected":true}
+roots R1 m= 1 k=   1  67,665/record
+roots R1 m= 1 k=  10  7,821/record
+roots R1 m= 1 k= 100  1,743/record
+roots R1 m= 1 k=1000  1,306/record
+roots R1 m=10 k=   1  26,524/record
+roots R1 m=10 k=  10  3,703/record
+roots R1 m=10 k= 100  1,368/record
+roots R1 m=10 k=1000  1,286/record
+roots tests BLS {"valid_accepted":true,"resubmission_rejected":true,"tampered_leaf_rejected":true,"wrong_chain_rejected":true}
+roots BLS m= 1 k=   1  187,365/record
+roots BLS m= 1 k=  10  19,796/record
+roots BLS m= 1 k= 100  2,947/record
+roots BLS m= 1 k=1000  1,313/record
+roots BLS m=10 k=   1  79,757/record
+roots BLS m=10 k=  10  9,033/record
+roots BLS m=10 k= 100  1,868/record
+roots BLS m=10 k=1000  1,289/record
+written to /tmp/rq2

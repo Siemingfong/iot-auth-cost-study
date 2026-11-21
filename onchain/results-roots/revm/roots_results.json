@@ -1,0 +1,234 @@
+{
+  "environment": {
+    "evm": "live network",
+    "live": {
+      "chainId": "560048",
+      "block": 0,
+      "gasLimit": 60000000,
+      "baseFee": 1000000000,
+      "client": "anvil/v1.5.1",
+      "transferGas": 21000,
+      "headerKeys": [
+        "hash",
+        "parentHash",
+        "sha3Uncles",
+        "miner",
+        "stateRoot",
+        "transactionsRoot",
+        "receiptsRoot",
+        "logsBloom",
+        "difficulty",
+        "number",
+        "gasLimit",
+        "gasUsed",
+        "timestamp",
+        "extraData",
+        "mixHash",
+        "nonce",
+        "baseFeePerGas",
+        "withdrawalsRoot",
+        "blobGasUsed",
+        "excessBlobGas",
+        "parentBeaconBlockRoot",
+        "requestsHash",
+        "totalDifficulty",
+        "size",
+        "uncles",
+        "transactions",
+        "withdrawals"
+      ]
+    },
+    "hardfork": "osaka (live)",
+    "solc": "0.8.28+commit.7893614a.Emscripten.clang",
+    "via_ir": true,
+    "tx_gas_cap": 16777216,
+    "fork": "osaka",
+    "devices": 10
+  },
+  "roots": {
+    "tests": {
+      "K1": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      },
+      "R1": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      },
+      "BLS": {
+        "valid_accepted": true,
+        "resubmission_rejected": true,
+        "tampered_leaf_rejected": true,
+        "wrong_chain_rejected": true
+      }
+    },
+    "scaling": [
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 58524,
+        "per_record_gas": 58524,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 69041,
+        "per_record_gas": 6904,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 165014,
+        "per_record_gas": 1650,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 179147,
+        "per_record_gas": 17915,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 284173,
+        "per_record_gas": 2842,
+        "ok": true
+      },
+      {
+        "scheme": "K1",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1341660,
+        "per_record_gas": 1342,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 67653,
+        "per_record_gas": 67653,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 78170,
+        "per_record_gas": 7817,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 174267,
+        "per_record_gas": 1743,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 265259,
+        "per_record_gas": 26526,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 370370,
+        "per_record_gas": 3704,
+        "ok": true
+      },
+      {
+        "scheme": "R1",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1368890,
+        "per_record_gas": 1369,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 1,
+        "records": 1,
+        "total_gas": 187353,
+        "per_record_gas": 187353,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 10,
+        "records": 10,
+        "total_gas": 197959,
+        "per_record_gas": 19796,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 1,
+        "per_device": 100,
+        "records": 100,
+        "total_gas": 294719,
+        "per_record_gas": 2947,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 1,
+        "records": 10,
+        "total_gas": 797621,
+        "per_record_gas": 79762,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 10,
+        "records": 100,
+        "total_gas": 903268,
+        "per_record_gas": 9033,
+        "ok": true
+      },
+      {
+        "scheme": "BLS",
+        "devices": 10,
+        "per_device": 100,
+        "records": 1000,
+        "total_gas": 1868288,
+        "per_record_gas": 1868,
+        "ok": true
+      }
+    ]
+  }
+}
