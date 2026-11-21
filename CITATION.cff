@@ -10,13 +10,13 @@ authors:
     given-names: Jian-Hong
     affiliation: "National Taiwan University"
   - family-names: Lin
-    given-names: Gwan-yen
+    given-names: Gwan-Yen
     affiliation: "National Taiwan University"
   - family-names: Chen
     given-names: Yen-Shuo
     affiliation: "National Taiwan University"
   - family-names: Liao
-    given-names: Shih-wei
+    given-names: Shih-Wei
     affiliation: "National Taiwan University"
 license: MIT
 version: "v1.5"
